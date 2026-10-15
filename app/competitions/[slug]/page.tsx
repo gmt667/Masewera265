@@ -194,6 +194,9 @@ export default async function CompetitionPage({ params }: { params: Promise<{ sl
                     <dd><b>{footballDetail.currentChampion}</b></dd>
                   </div>
                 )}
+                {footballDetail?.sponsor && <div><dt>Current sponsor</dt><dd>{footballDetail.sponsor} · {footballDetail.season}</dd></div>}
+                {footballDetail?.historicalNames && <div><dt>Historical sponsor names</dt><dd>{footballDetail.historicalNames.map((item) => `${item.name} (${item.period})`).join("; ")}</dd></div>}
+                {footballDetail?.sourceUrl && <div><dt>Current naming source</dt><dd><a href={footballDetail.sourceUrl} target="_blank" rel="noreferrer">FAM announcement</a> · reviewed {footballDetail.reviewedAt}</dd></div>}
                 <div>
                   <dt>Governing Body</dt>
                   <dd>{footballDetail ? footballDetail.organizer : ("organizer" in c ? c.organizer : "SULOM / FAM")}</dd>

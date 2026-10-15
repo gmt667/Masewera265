@@ -6,7 +6,7 @@ import { footballCompetitions, footballSources } from "@/lib/football-data";
 
 export const metadata = {
   title: "Malawian Football Leagues & Cups Directory | Masewera265",
-  description: "Official hierarchy and profiles of Malawian football competitions: TNM Super League, National Division League, FDH Bank Cup, Castel Cup, Airtel Top 8, NBM Women's Premiership.",
+  description: "Season-aware profiles of Malawian football competitions, including the current FDH Bank Premiership and historical TNM Super League editions.",
 };
 
 export default function FootballCompetitionsPage() {
@@ -17,7 +17,7 @@ export default function FootballCompetitionsPage() {
       <PageHero
         eyebrow="PYRAMID &amp; TOURNAMENTS"
         title="Malawian Leagues &amp; Cups"
-        intro="The structured competition hierarchy of Malawian football — from the top-flight TNM Super League and prestigious knockout cups down to regional and district grassroots pyramids."
+        intro="The structured competition hierarchy of Malawian football — from the current FDH Bank Premiership and prestigious knockout cups down to regional and district grassroots pyramids. Historical sponsor names remain attached to their seasons."
       />
 
       <main className="container page-content">
@@ -25,6 +25,7 @@ export default function FootballCompetitionsPage() {
           title="Season-aware competition architecture"
           body="Competition titles, commercial sponsors, and pyramid tiers are recorded with seasonal context. Current sponsors are never applied retrospectively to historical editions."
         />
+        <Link className="button design-primary" href="/football/season/2026-27" style={{ marginBottom: 28 }}>Open 2026/27 FDH Bank Premiership season <ArrowRight size={15} /></Link>
 
         {/* Featured Super League Section */}
         {superLeague && superLeague.standings && (

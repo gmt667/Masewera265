@@ -9,6 +9,7 @@ export interface FootballSource {
 }
 
 export const footballSources: FootballSource[] = [
+  { title: "FAM 2026/27 Season and FDH Bank Premiership Kick-off", url: "https://fam.mw/fam-sets-18-april-kick-off-for-2026-27-season/", reviewed: "15 October 2026", note: "Current top-flight naming and season start notice; does not supply live standings." },
   { title: "FAM Football Competitions Calendar 2025/26", url: "https://fam.mw/fam-football-competitions-calendar-2025-2026-season/", reviewed: "14 October 2026", note: "Authoritative national calendar & competition structure" },
   { title: "FAM Scorchers Senior Women National Team Profile", url: "https://fam.mw/womens-senior-national-team/", reviewed: "14 October 2026", note: "National team selections, squad lists & competition history" },
   { title: "FAM National Division League (NDL) Official Launch & Standings", url: "https://fam.mw/ndl-2025-26/", reviewed: "14 October 2026", note: "Second-tier league structure & regional feeder system" },
@@ -30,6 +31,11 @@ export interface FootballCompetitionDetail {
   state: string;
   summary: string;
   teamsCount: number;
+  season?: string;
+  sponsor?: string;
+  historicalNames?: { period: string; name: string }[];
+  sourceUrl?: string;
+  reviewedAt?: string;
   standings?: {
     rank: number;
     team: string;
@@ -48,17 +54,27 @@ export interface FootballCompetitionDetail {
 export const footballCompetitions: FootballCompetitionDetail[] = [
   {
     slug: "tnm-super-league",
-    name: "TNM Super League (Premiership)",
+    name: "FDH Bank Premiership",
     tier: "Tier 1",
     category: "League",
     organizer: "Super League of Malawi (SULOM) / FAM",
     established: "1986",
-    currentChampion: "FCB Nyasa Big Bullets",
+    currentChampion: "Not yet verified for 2026/27",
     format: "16 clubs · 30 rounds · Round-robin home & away",
-    state: "Active 2025/26 Season",
-    summary: "The top flight of professional football in Malawi. Founded in 1986, the Super League decides Malawi's champion club for entry into the CAF Champions League.",
+    state: "Active 2026/27 season · current results unavailable",
+    summary: "Malawi's current top-flight competition. FAM announced the FDH Bank Premiership for the 2026/27 season, with the season scheduled to begin on 25 April 2026. Historical editions retain their sponsor-era names.",
     teamsCount: 16,
-    standings: [
+    season: "2026/27",
+    sponsor: "FDH Bank",
+    historicalNames: [
+      { period: "2025/26 and earlier in the supplied archive", name: "TNM Super League" },
+      { period: "Historical editions", name: "Super League / other sponsor-era names" },
+    ],
+    sourceUrl: "https://fam.mw/fam-sets-18-april-kick-off-for-2026-27-season/",
+    reviewedAt: "2026-10-15",
+    /* 2026/27 standings are intentionally omitted until a connected source supplies them. */
+    standings: undefined,
+    /*
       { rank: 1, team: "FCB Nyasa Big Bullets", teamSlug: "nyasa-big-bullets", played: 26, won: 18, drawn: 6, lost: 2, gf: 54, ga: 18, gd: 36, points: 60 },
       { rank: 2, team: "Silver Strikers", teamSlug: "silver-strikers", played: 26, won: 17, drawn: 7, lost: 2, gf: 49, ga: 17, gd: 32, points: 58 },
       { rank: 3, team: "Mighty Mukuru Wanderers", teamSlug: "mighty-wanderers", played: 26, won: 15, drawn: 7, lost: 4, gf: 42, ga: 19, gd: 23, points: 52 },
@@ -75,7 +91,7 @@ export const footballCompetitions: FootballCompetitionDetail[] = [
       { rank: 14, team: "FOMO FC", teamSlug: "fomo-fc", played: 26, won: 5, drawn: 7, lost: 14, gf: 18, ga: 39, gd: -21, points: 22 },
       { rank: 15, team: "Baka City", teamSlug: "baka-city", played: 26, won: 3, drawn: 8, lost: 15, gf: 15, ga: 45, gd: -30, points: 17 },
       { rank: 16, team: "Songani Veterans / Regional Promoted", teamSlug: "songani-fc", played: 26, won: 2, drawn: 7, lost: 17, gf: 14, ga: 49, gd: -35, points: 13 },
-    ]
+    ]*/
   },
   {
     slug: "national-division-league",
