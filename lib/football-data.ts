@@ -9,6 +9,7 @@ export interface FootballSource {
 }
 
 export const footballSources: FootballSource[] = [
+  { title: "FAM federation badge reference", url: "https://www.plus.fifa.com/en/showcase/football-association-of-malawi/9594524d-f279-4450-a1f8-1c67f2e9fc99", reviewed: "15 October 2026", note: "Used as the sourced federation identity mark for Flames, Scorchers and age-group profiles; no separate national-team crest is asserted." },
   { title: "FAM 2026/27 Season and FDH Bank Premiership Kick-off", url: "https://fam.mw/fam-sets-18-april-kick-off-for-2026-27-season/", reviewed: "15 October 2026", note: "Current top-flight naming and season start notice; does not supply live standings." },
   { title: "FAM Football Competitions Calendar 2025/26", url: "https://fam.mw/fam-football-competitions-calendar-2025-2026-season/", reviewed: "14 October 2026", note: "Authoritative national calendar & competition structure" },
   { title: "FAM Scorchers Senior Women National Team Profile", url: "https://fam.mw/womens-senior-national-team/", reviewed: "14 October 2026", note: "National team selections, squad lists & competition history" },

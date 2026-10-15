@@ -25,12 +25,14 @@ interface TeamLogoProps {
  */
 const logoRegistry: Record<string, { src: string; source: string }> = {
   // ── National teams ──────────────────────────────────────────────────────────
-  "the-flames":             { src: "/logos/flames.svg",              source: "Football Association of Malawi (FAM)" },
-  "malawi-flames":          { src: "/logos/flames.svg",              source: "Football Association of Malawi (FAM)" },
-  "flames":                 { src: "/logos/flames.svg",              source: "Football Association of Malawi (FAM)" },
-  "the-scorchers":          { src: "/logos/scorchers.svg",           source: "Football Association of Malawi (FAM)" },
-  "malawi-scorchers":       { src: "/logos/scorchers.svg",           source: "Football Association of Malawi (FAM)" },
-  "scorchers":              { src: "/logos/scorchers.svg",           source: "Football Association of Malawi (FAM)" },
+  "the-flames":             { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · public federation imagery" },
+  "malawi-flames":          { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · public federation imagery" },
+  "flames":                 { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · public federation imagery" },
+  "the-scorchers":          { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · shared federation mark; standalone Scorchers crest not verified" },
+  "malawi-scorchers":       { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · shared federation mark; standalone Scorchers crest not verified" },
+  "scorchers":              { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · shared federation mark; standalone Scorchers crest not verified" },
+  "malawi-mens-under-20":   { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · age-group crest not separately verified" },
+  "malawi-mens-under-17":   { src: "/logos/fam-official.png",         source: "Football Association of Malawi badge · age-group crest not separately verified" },
   "malawi-queens":          { src: "/logos/verified/netball-association-malawi.png", source: "Netball Association of Malawi" },
 
   // ── Super League clubs — Wikipedia/Wikimedia originals ───────────────────
