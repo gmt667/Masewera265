@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Navy shield background -->
+  <polygon points="100,10 180,50 180,135 100,192 20,135 20,50" fill="#0a1628" stroke="#c8a826" stroke-width="5"/>
+  <polygon points="100,26 164,62 164,128 100,176 36,128 36,62" fill="#142240" stroke="#c8a826" stroke-width="2"/>
+  <!-- Civil/Government building icon -->
+  <rect x="72" y="78" width="56" height="42" fill="none" stroke="#c8a826" stroke-width="3.5"/>
+  <rect x="88" y="94" width="10" height="26" fill="#c8a826"/>
+  <rect x="102" y="94" width="10" height="26" fill="#c8a826"/>
+  <!-- Columns / pillars -->
+  <line x1="76" y1="78" x2="76" y2="120" stroke="#c8a826" stroke-width="2.5"/>
+  <line x1="88" y1="78" x2="88" y2="120" stroke="#c8a826" stroke-width="2.5"/>
+  <line x1="100" y1="78" x2="100" y2="120" stroke="#c8a826" stroke-width="2.5"/>
+  <line x1="112" y1="78" x2="112" y2="120" stroke="#c8a826" stroke-width="2.5"/>
+  <line x1="124" y1="78" x2="124" y2="120" stroke="#c8a826" stroke-width="2.5"/>
+  <!-- Pediment -->
+  <polygon points="68,78 100,54 132,78" fill="#c8a826"/>
+  <!-- Bottom text -->
+  <text x="100" y="152" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="10.5" font-weight="900" fill="#c8a826" letter-spacing="1">CIVIL</text>
+  <text x="100" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" font-weight="700" fill="#ffffff" letter-spacing="1">SPORTING CLUB</text>
+</svg>

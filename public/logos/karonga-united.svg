@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Lake Malawi blue + white shield -->
+  <polygon points="100,10 180,50 180,135 100,192 20,135 20,50" fill="#0077b6" stroke="#ffffff" stroke-width="5"/>
+  <polygon points="100,26 164,62 164,128 100,176 36,128 36,62" fill="#0096c7" stroke="#ffffff" stroke-width="2.5"/>
+  <!-- Wave lines representing Lake Malawi -->
+  <path d="M 44 90 Q 60 80 76 90 Q 92 100 108 90 Q 124 80 140 90 Q 156 100 160 95" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.8"/>
+  <path d="M 44 102 Q 60 92 76 102 Q 92 112 108 102 Q 124 92 140 102 Q 156 112 160 107" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.8"/>
+  <path d="M 44 114 Q 60 104 76 114 Q 92 124 108 114 Q 124 104 140 114 Q 156 124 160 119" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.8"/>
+  <!-- Football -->
+  <circle cx="100" cy="72" r="18" fill="#ffffff" stroke="#0077b6" stroke-width="2"/>
+  <path d="M 100 54 L 95 62 L 105 62 Z" fill="#0a0a0a"/>
+  <path d="M 86 68 L 90 77 L 82 84 Z" fill="#0a0a0a"/>
+  <path d="M 114 68 L 110 77 L 118 84 Z" fill="#0a0a0a"/>
+  <!-- KARONGA text -->
+  <text x="100" y="152" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="10.5" font-weight="900" fill="#ffffff" letter-spacing="1">KARONGA</text>
+  <text x="100" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#ffd700" letter-spacing="1">UNITED FC</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- FAM Badge – Football Association of Malawi
+       Colours: dark green shield, red sun, black and white football, gold text
+       Inspired by the official FAM crest design -->
+  <!-- Outer shield: dark green with Malawi-flag inspired stepped shoulders -->
+  <polygon points="100,8 186,46 186,136 100,194 14,136 14,46" fill="#006400" stroke="#ffffff" stroke-width="6"/>
+  <!-- Inner shield fill -->
+  <polygon points="100,22 172,56 172,130 100,180 28,130 28,56" fill="#004d00" stroke="none"/>
+  <!-- Rising sun (red) – top of shield -->
+  <path d="M 78 58 A 22 22 0 0 1 122 58" fill="#cc0000" stroke="#cc0000" stroke-width="1"/>
+  <circle cx="100" cy="58" r="14" fill="#cc0000"/>
+  <!-- Sun rays -->
+  <line x1="100" y1="36" x2="100" y2="44" stroke="#cc0000" stroke-width="3"/>
+  <line x1="84" y1="40" x2="87" y2="47" stroke="#cc0000" stroke-width="2.5"/>
+  <line x1="116" y1="40" x2="113" y2="47" stroke="#cc0000" stroke-width="2.5"/>
+  <line x1="72" y1="50" x2="78" y2="55" stroke="#cc0000" stroke-width="2.5"/>
+  <line x1="128" y1="50" x2="122" y2="55" stroke="#cc0000" stroke-width="2.5"/>
+  <!-- Football (centre of shield) -->
+  <circle cx="100" cy="110" r="26" fill="#f0f0f0" stroke="#0a0a0a" stroke-width="2.5"/>
+  <!-- Football panels (simplified hexagonal pattern) -->
+  <polygon points="100,84 108,90 108,100 100,106 92,100 92,90" fill="#1a1a1a" opacity="0.85"/>
+  <polygon points="100,106 108,112 106,122 94,122 92,112" fill="#1a1a1a" opacity="0.85"/>
+  <polygon points="74,102 84,97 92,104 90,116 80,118" fill="#1a1a1a" opacity="0.7"/>
+  <polygon points="126,102 116,97 108,104 110,116 120,118" fill="#1a1a1a" opacity="0.7"/>
+  <!-- Laurel branches (left and right) -->
+  <path d="M 46 110 Q 52 98 58 104 Q 54 112 60 116 Q 56 124 62 128 Q 58 136 64 138" fill="none" stroke="#c8a820" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 154 110 Q 148 98 142 104 Q 146 112 140 116 Q 144 124 138 128 Q 142 136 136 138" fill="none" stroke="#c8a820" stroke-width="3" stroke-linecap="round"/>
+  <!-- FAM text -->
+  <text x="100" y="155" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="9" font-weight="900" fill="#ffffff" letter-spacing="1.5">FOOTBALL ASSOCIATION</text>
+  <text x="100" y="166" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="9" font-weight="900" fill="#ffd700" letter-spacing="1.5">OF MALAWI</text>
+</svg>

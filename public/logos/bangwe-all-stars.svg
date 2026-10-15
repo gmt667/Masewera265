@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Bangwe All Stars – orange/black -->
+  <polygon points="100,10 180,50 180,135 100,192 20,135 20,50" fill="#1a1a1a" stroke="#ff8c00" stroke-width="5"/>
+  <polygon points="100,26 164,62 164,128 100,176 36,128 36,62" fill="#2a2a2a" stroke="#ff8c00" stroke-width="2"/>
+  <!-- Star constellation (5-pointed star) -->
+  <polygon points="100,50 106,68 125,68 110,79 116,97 100,86 84,97 90,79 75,68 94,68" fill="#ff8c00"/>
+  <!-- Four smaller stars -->
+  <polygon points="62,82 64.4,89.4 72,89.4 66,94 68.4,101.4 62,97 55.6,101.4 58,94 52,89.4 59.6,89.4" fill="#ff8c00" opacity="0.7"/>
+  <polygon points="138,82 140.4,89.4 148,89.4 142,94 144.4,101.4 138,97 131.6,101.4 134,94 128,89.4 135.6,89.4" fill="#ff8c00" opacity="0.7"/>
+  <polygon points="75,112 76.8,118 83,118 78,122 79.8,128 75,124 70.2,128 72,122 67,118 73.2,118" fill="#ff8c00" opacity="0.7"/>
+  <polygon points="125,112 126.8,118 133,118 128,122 129.8,128 125,124 120.2,128 122,122 117,118 123.2,118" fill="#ff8c00" opacity="0.7"/>
+  <!-- Text -->
+  <text x="100" y="152" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="10" font-weight="900" fill="#ff8c00" letter-spacing="1">BANGWE</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff" letter-spacing="1">ALL STARS</text>
+</svg>

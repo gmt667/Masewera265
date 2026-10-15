@@ -1,0 +1,2 @@
+import { TeamDirectory } from "@/components/directory-pages"; import { DataNotice, PageHero } from "@/components/ui";
+export const metadata={title:"Teams & Clubs"}; export default function Page(){return <><PageHero eyebrow="Public directory" title="Teams & clubs" intro="Find supported teams, their competitions, fixtures and season records."/><div className="container page-content"><DataNotice/><TeamDirectory/></div></>}

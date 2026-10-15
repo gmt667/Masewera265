@@ -1,0 +1,2 @@
+import { SportsDirectory } from "@/components/directory-pages"; import { PageHero } from "@/components/ui";
+export const metadata={title:"Sports"}; export default function Page(){return <><PageHero eyebrow="Independent sport platforms" title="Every sport has a complete home" intro="Each discipline has its own teams, national representation, competitions, events, athletes and records within one Malawi-wide platform."/><div className="container page-content"><SportsDirectory/></div></>}

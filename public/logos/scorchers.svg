@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Scorchers badge – FAM Women's team
+       Colours: green and gold, flame motif -->
+  <polygon points="100,8 186,46 186,136 100,194 14,136 14,46" fill="#006400" stroke="#ffd700" stroke-width="6"/>
+  <polygon points="100,22 172,56 172,130 100,180 28,130 28,56" fill="#004d00" stroke="none"/>
+  <!-- Rising sun (gold) -->
+  <circle cx="100" cy="56" r="14" fill="#ffd700"/>
+  <line x1="100" y1="34" x2="100" y2="42" stroke="#ffd700" stroke-width="3"/>
+  <line x1="84" y1="38" x2="87" y2="45" stroke="#ffd700" stroke-width="2.5"/>
+  <line x1="116" y1="38" x2="113" y2="45" stroke="#ffd700" stroke-width="2.5"/>
+  <line x1="72" y1="48" x2="78" y2="53" stroke="#ffd700" stroke-width="2.5"/>
+  <line x1="128" y1="48" x2="122" y2="53" stroke="#ffd700" stroke-width="2.5"/>
+  <!-- Flame / scorcher motif -->
+  <path d="M 100 140 Q 80 120 85 100 Q 90 90 100 95 Q 95 80 105 70 Q 115 95 110 100 Q 120 90 118 110 Q 122 125 100 140 Z" fill="#ff6600" stroke="#ffd700" stroke-width="1.5"/>
+  <path d="M 100 130 Q 88 116 91 104 Q 96 96 100 100 Q 104 104 108 96 Q 112 108 110 118 Q 108 126 100 130 Z" fill="#ffcc00"/>
+  <!-- Laurel branches -->
+  <path d="M 46 108 Q 52 96 58 102 Q 54 110 60 114 Q 56 122 62 126 Q 58 134 64 136" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 154 108 Q 148 96 142 102 Q 146 110 140 114 Q 144 122 138 126 Q 142 134 136 136" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
+  <!-- Text -->
+  <text x="100" y="154" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="11" font-weight="900" fill="#ffd700" letter-spacing="1.5">SCORCHERS</text>
+  <text x="100" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" font-weight="700" fill="#ffffff" letter-spacing="1">MALAWI WOMEN</text>
+</svg>

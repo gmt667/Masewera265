@@ -1,0 +1,2 @@
+import { FixtureBrowser } from "@/components/directory-pages"; import { PageHero } from "@/components/ui";
+export const metadata={title:"Latest Results"}; export default function Page(){return <><PageHero eyebrow="Completed events" title="Latest results" intro="Published final scores from the demonstration dataset."/><div className="container page-content"><FixtureBrowser resultOnly/></div></>}

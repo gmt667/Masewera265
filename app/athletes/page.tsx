@@ -1,0 +1,2 @@
+import { AthleteDirectory } from "@/components/directory-pages"; import { DataNotice, PageHero } from "@/components/ui";
+export const metadata={title:"Athletes"}; export default function Page(){return <><PageHero eyebrow="Public directory" title="Athletes" intro="Explore approved public identities, affiliations and published performances."/><div className="container page-content"><DataNotice/><AthleteDirectory/></div></>}

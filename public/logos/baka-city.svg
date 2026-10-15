@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Baka City – teal/gold city skyline -->
+  <polygon points="100,10 180,50 180,135 100,192 20,135 20,50" fill="#006666" stroke="#ffd700" stroke-width="5"/>
+  <polygon points="100,26 164,62 164,128 100,176 36,128 36,62" fill="#004d4d" stroke="#ffd700" stroke-width="2"/>
+  <!-- City skyline silhouette -->
+  <rect x="46" y="105" width="14" height="25" fill="#ffd700" opacity="0.9"/>
+  <rect x="63" y="95" width="10" height="35" fill="#ffd700" opacity="0.9"/>
+  <rect x="76" y="88" width="16" height="42" fill="#ffd700"/>
+  <rect x="94" y="80" width="12" height="50" fill="#ffd700"/>
+  <rect x="109" y="88" width="16" height="42" fill="#ffd700" opacity="0.9"/>
+  <rect x="128" y="95" width="10" height="35" fill="#ffd700" opacity="0.9"/>
+  <rect x="141" y="105" width="14" height="25" fill="#ffd700" opacity="0.9"/>
+  <!-- Windows -->
+  <rect x="78" y="92" width="5" height="5" fill="#006666"/>
+  <rect x="86" y="92" width="5" height="5" fill="#006666"/>
+  <rect x="96" y="84" width="4" height="4" fill="#006666"/>
+  <rect x="103" y="84" width="4" height="4" fill="#006666"/>
+  <rect x="111" y="92" width="5" height="5" fill="#006666"/>
+  <rect x="119" y="92" width="5" height="5" fill="#006666"/>
+  <!-- Ground line -->
+  <line x1="36" y1="130" x2="164" y2="130" stroke="#ffd700" stroke-width="2.5"/>
+  <!-- Text -->
+  <text x="100" y="150" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="13" font-weight="900" fill="#ffd700" letter-spacing="2">BAKA</text>
+  <text x="100" y="164" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="11" font-weight="700" fill="#ffffff" letter-spacing="2">CITY</text>
+</svg>

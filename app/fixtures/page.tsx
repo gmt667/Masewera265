@@ -1,0 +1,2 @@
+import { FixtureBrowser } from "@/components/directory-pages"; import { DataNotice, PageHero } from "@/components/ui";
+export const metadata={title:"Fixtures & Results"}; export default function Page(){return <><PageHero eyebrow="Events & results" title="Fixtures & results" intro="Browse supported events by status, location and competition."/><div className="container page-content"><DataNotice/><FixtureBrowser/></div></>}

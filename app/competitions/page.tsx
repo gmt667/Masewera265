@@ -1,0 +1,2 @@
+import { CompetitionDirectory } from "@/components/directory-pages"; import { DataNotice, PageHero } from "@/components/ui";
+export const metadata={title:"Competitions"}; export default function Page(){return <><PageHero eyebrow="Seasons & tournaments" title="Competitions" intro="Browse available leagues and cups across Malawi's sporting landscape."/><div className="container page-content"><DataNotice/><CompetitionDirectory/></div></>}

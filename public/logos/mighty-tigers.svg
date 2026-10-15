@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Mighty Waka Waka Tigers – black and gold stripes -->
+  <polygon points="100,10 180,50 180,135 100,192 20,135 20,50" fill="#1a1a1a" stroke="#d4a017" stroke-width="5"/>
+  <!-- Tiger stripes -->
+  <polygon points="100,22 172,56 172,130 100,180 28,130 28,56" fill="#d4a017" stroke="none"/>
+  <!-- Black stripes over gold -->
+  <polygon points="100,22 172,56 150,75 100,26" fill="#1a1a1a" opacity="0.85"/>
+  <polygon points="28,56 50,75 100,26 100,22" fill="#1a1a1a" opacity="0.85"/>
+  <polygon points="100,180 172,130 150,110 100,175 50,110 28,130" fill="#1a1a1a" opacity="0.85"/>
+  <!-- Tiger face -->
+  <circle cx="100" cy="95" r="35" fill="#d4a017"/>
+  <!-- Tiger markings -->
+  <ellipse cx="85" cy="90" rx="7" ry="10" fill="#1a1a1a" opacity="0.7"/>
+  <ellipse cx="115" cy="90" rx="7" ry="10" fill="#1a1a1a" opacity="0.7"/>
+  <!-- Eyes -->
+  <ellipse cx="88" cy="87" rx="5" ry="6" fill="#ff8c00"/>
+  <ellipse cx="112" cy="87" rx="5" ry="6" fill="#ff8c00"/>
+  <circle cx="88" cy="88" r="2.5" fill="#0a0a0a"/>
+  <circle cx="112" cy="88" r="2.5" fill="#0a0a0a"/>
+  <!-- Nose -->
+  <polygon points="100,96 96,102 104,102" fill="#1a1a1a"/>
+  <!-- Whiskers -->
+  <line x1="72" y1="100" x2="90" y2="98" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="72" y1="105" x2="90" y2="103" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="128" y1="100" x2="110" y2="98" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="128" y1="105" x2="110" y2="103" stroke="#ffffff" stroke-width="1.5"/>
+  <!-- Text -->
+  <text x="100" y="152" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="9.5" font-weight="900" fill="#d4a017" letter-spacing="0.5">MIGHTY TIGERS</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#ffffff" letter-spacing="0.5">WAKA WAKA</text>
+</svg>

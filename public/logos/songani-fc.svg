@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Songani FC – earth brown and green (Zomba/southern region) -->
+  <polygon points="100,10 180,50 180,135 100,192 20,135 20,50" fill="#8b4513" stroke="#228b22" stroke-width="5"/>
+  <polygon points="100,26 164,62 164,128 100,176 36,128 36,62" fill="#6b340f" stroke="#228b22" stroke-width="2.5"/>
+  <!-- Tree silhouette (Malawian baobab/mango) -->
+  <rect x="95" y="105" width="10" height="28" fill="#228b22"/>
+  <circle cx="100" cy="90" r="26" fill="#228b22"/>
+  <circle cx="82" cy="98" r="16" fill="#228b22"/>
+  <circle cx="118" cy="98" r="16" fill="#228b22"/>
+  <!-- Sun behind tree -->
+  <circle cx="100" cy="70" r="10" fill="#ffd700" opacity="0.8"/>
+  <!-- Ground -->
+  <line x1="40" y1="133" x2="160" y2="133" stroke="#228b22" stroke-width="3"/>
+  <!-- Text -->
+  <text x="100" y="152" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="12" font-weight="900" fill="#ffd700" letter-spacing="1">SONGANI</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff" letter-spacing="1">FC</text>
+</svg>

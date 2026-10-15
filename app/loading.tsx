@@ -1,0 +1,1 @@
+export default function Loading() { return <div className="route-state" role="status" aria-live="polite"><span className="state-spinner"/><h1>Loading Masewera265</h1><p>Preparing the latest available page data.</p></div>; }
