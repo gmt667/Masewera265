@@ -18,7 +18,7 @@ export function FootballHome() {
       {/* Hero Section */}
       <section className="football-hero">
         <Image
-          src="/images/hero-banner.jpg"
+          src="/images/hero-football.jpg"
           width={1680}
           height={945}
           priority

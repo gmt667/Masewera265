@@ -76,7 +76,7 @@ textarea{font:inherit}.sport-filter-tabs{overflow-x:auto;scrollbar-width:thin}.s
 
 /* Reference-led public landing page */
 body:has(.design-home)>.demo-bar{display:none}
-body:has(.design-home)>.site-header{top:0;background:#081424;height:76px;border-bottom:1px solid rgba(255,255,255,0.08)}
+body:has(.design-home)>.site-header{top:0;height:76px}
 body:has(.design-home) .nav-shell{max-width:1240px}
 body:has(.design-home) .desktop-nav>a.active:after{background:#00d084}
 body:has(.design-home) .brand strong{color:#ef233c}
@@ -527,29 +527,36 @@ body:has(.design-home) .brand strong{color:#ef233c}
   position: sticky;
   top: 0;
   z-index: 100;
+  margin-bottom: -78px;
   transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
               backdrop-filter 0.25s ease,
               -webkit-backdrop-filter 0.25s ease,
               border-color 0.25s ease,
               box-shadow 0.25s ease;
 }
-.site-header.is-transparent {
-  background: rgba(16, 24, 39, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+body:has(.design-home) > .site-header {
+  margin-bottom: -76px;
 }
-@supports (backdrop-filter: blur(1px)) {
-  .site-header.is-transparent {
-    background: rgba(10, 16, 28, 0.55);
-  }
+.site-header.is-transparent,
+body:has(.design-home) > .site-header.is-transparent {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
 }
-.site-header.is-scrolled {
+.site-header.is-scrolled,
+body:has(.design-home) > .site-header.is-scrolled {
   background: rgba(10, 16, 28, 0.94) !important;
   backdrop-filter: blur(18px) !important;
   -webkit-backdrop-filter: blur(18px) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+}
+@media(max-width:720px){
+  .site-header {
+    margin-bottom: -66px;
+  }
 }
 .demo-bar {
   transition: height 0.2s ease, font-size 0.2s ease;
@@ -776,14 +783,17 @@ body:has(.design-home) .brand strong{color:#ef233c}
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   border-color: #fff;
 }
+.social-icon-btn[title="WhatsApp"]:hover { color: #25d366; border-color: #25d366; }
+.social-icon-btn[title="Facebook"]:hover { color: #1877f2; border-color: #1877f2; }
 .social-icon-btn[title="TikTok"]:hover { color: #000; border-color: #00f2fe; }
-.social-icon-btn[title="YouTube"]:hover { color: #ff0000; }
-.social-icon-btn[title="LinkedIn"]:hover { color: #0a66c2; }
-.social-icon-btn[title="Instagram"]:hover { color: #e1306c; }
-.social-icon-btn[title="WhatsApp"]:hover { color: #25d366; }
-.social-icon-btn[title="Facebook"]:hover { color: #1877f2; }
-.social-icon-btn[title="Snapchat"]:hover { color: #eab308; }
-.social-icon-btn[title="X"]:hover { color: #000; }
+.social-icon-btn[title="YouTube"]:hover { color: #ff0000; border-color: #ff0000; }
+.social-icon-btn[title="Instagram"]:hover { color: #e1306c; border-color: #e1306c; }
+.social-icon-btn[title="Twitter / X"]:hover, .social-icon-btn[title="X"]:hover { color: #000; border-color: #fff; }
+.social-icon-btn[title="LinkedIn"]:hover { color: #0a66c2; border-color: #0a66c2; }
+.social-icon-btn[title="Snapchat"]:hover { color: #eab308; border-color: #fffc00; }
+.social-icon-btn[title="Yahoo"]:hover { color: #6001d2; border-color: #6001d2; }
+.social-icon-btn[title="Google"]:hover { color: #4285f4; border-color: #4285f4; }
+.social-icon-btn[title="Threads"]:hover { color: #000; border-color: #fff; }
 
 /* ─── Footer: Grid & Developer Card ────────────────────────────────────── */
 .footer-grid {
@@ -945,3 +955,63 @@ body:has(.design-home) .brand strong{color:#ef233c}
     padding: 0 10px;
   }
 }
+
+/* ─── Sport-specific Hero Backgrounds ──────────────────────────────────── */
+.sport-hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 105px 0 65px;
+  overflow: hidden;
+}
+.sport-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(8, 16, 32, 0.90) 0%, rgba(9, 24, 40, 0.82) 45%, rgba(6, 68, 62, 0.82) 100%),
+              linear-gradient(0deg, rgba(8, 16, 32, 0.85) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+.sport-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.sport-hero.sport-football { background-image: url('/images/hero-football.jpg'); }
+.sport-hero.sport-netball { background-image: url('/images/hero-netball.jpg'); }
+.sport-hero.sport-basketball { background-image: url('/images/hero-basketball.jpg'); }
+.sport-hero.sport-volleyball { background-image: url('/images/hero-volleyball.jpg'); }
+.sport-hero.sport-athletics { background-image: url('/images/hero-athletics.jpg'); }
+.sport-hero.sport-boxing { background-image: url('/images/hero-boxing.jpg'); }
+.sport-hero.sport-cricket { background-image: url('/images/hero-cricket.jpg'); }
+.sport-hero.sport-rugby { background-image: url('/images/hero-rugby.jpg'); }
+.sport-hero.sport-chess { background-image: url('/images/hero-chess.jpg'); }
+.sport-hero.sport-tennis { background-image: url('/images/hero-tennis.jpg'); }
+.sport-hero.sport-hockey { background-image: url('/images/hero-hockey.jpg'); }
+.sport-hero.sport-cycling { background-image: url('/images/hero-cycling.jpg'); }
+.sport-hero.sport-swimming { background-image: url('/images/hero-swimming.jpg'); }
+.sport-hero.sport-golf { background-image: url('/images/hero-golf.jpg'); }
+.sport-hero.sport-disability-sport { background-image: url('/images/hero-disability-sport.jpg'); }
+
+/* ─── Hero Spacing for Transparent Navbar ──────────────────────────────── */
+.football-hero-content {
+  padding-top: 96px;
+}
+.page-hero {
+  background: linear-gradient(135deg, #091424 0%, #0d2137 55%, #083c3e 100%);
+  color: white;
+  padding: 100px 0 58px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.page-hero h1 {
+  color: #fff;
+}
+.page-hero .eyebrow {
+  color: #00d084;
+}
+.page-hero .lead {
+  color: #cbd5e1;
+}
+

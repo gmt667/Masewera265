@@ -32,7 +32,7 @@ export function SiteHeader() {
   // Handle immediate transition on scroll
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 12);
+      setScrolled(window.scrollY > 0);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });

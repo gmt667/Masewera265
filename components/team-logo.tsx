@@ -56,6 +56,10 @@ const logoRegistry: Record<string, { src: string; source: string }> = {
   "songani-fc":             { src: "/logos/songani-fc.svg",          source: "Masewera265 representative badge" },
 };
 
+export function getTeamLogoSource(slug: string) {
+  return logoRegistry[slug]?.source ?? "No verified logo asset; neutral initials fallback";
+}
+
 export function TeamLogo({ slug, name = "", size = 44, className = "", alt }: TeamLogoProps) {
   const entry = logoRegistry[slug];
 

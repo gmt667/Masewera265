@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { MapPin, ShieldCheck, Trophy, ArrowRight } from "lucide-react";
 import { athletes, events, teams } from "@/lib/demo-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
-import { TeamLogo } from "@/components/team-logo";
+import { getTeamLogoSource, TeamLogo } from "@/components/team-logo";
 
 const identitySources: Record<string, { label: string; href: string }> = {
   "the-flames": { label: "Football Association of Malawi", href: "https://fam.mw/" },
@@ -29,6 +29,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
   const matches = events.filter((event) => event.homeSlug === slug || event.awaySlug === slug);
   const teamAthletes = athletes.filter((a) => a.teamSlug === slug || a.team.toLowerCase().includes(team.shortName.toLowerCase()));
   const identitySource = identitySources[slug] ?? (team.sourceUrl ? { label: "record source", href: team.sourceUrl } : undefined);
+  const logoSource = getTeamLogoSource(team.slug);
 
   return (
     <>
@@ -54,10 +55,10 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       </section>
 
       <div className="container page-content">
-        <DataNotice
+              <DataNotice
           title={`${team.name} identity page`}
           body={team.logoVerified || team.slug === "malawi-queens" ? "The displayed identity mark is linked to an authoritative source. Event records remain demonstration data." : "The displayed initials are a neutral placeholder, not an official logo. A verified club or federation asset is still required."}
-        />
+              />
 
         <div className="profile-grid">
           <div>
@@ -147,6 +148,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
                 )}
               </dl>
               {identitySource && <a className="source-link" href={identitySource.href} target="_blank" rel="noreferrer">Identity source: {identitySource.label}</a>}
+              <p className="logo-provenance"><strong>Logo status:</strong> {logoSource}</p>
               {team.sourceNote && <p className="source-note">{team.sourceNote}</p>}
               {team.seasonAffiliations?.length ? <div className="season-affiliations"><h3>Verified season affiliations</h3>{team.seasonAffiliations.map((affiliation) => <p key={`${affiliation.season}-${affiliation.competition}`}><a href={affiliation.sourceUrl} target="_blank" rel="noreferrer">{affiliation.season} · {affiliation.competition}</a></p>)}</div> : null}
             </section>
