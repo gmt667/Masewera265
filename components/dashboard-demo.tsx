@@ -6,13 +6,13 @@ import { Activity, Bell, CalendarDays, CheckCircle2, ChevronRight, ClipboardChec
 import { recoverLocalDraft } from "@/lib/football-logic";
 
 const roles = {
-  supporter: { label: "Supporter", sections: ["Football overview", "Followed clubs", "Flames & Scorchers", "Saved news"], stats: [["Following", "Football demo"], ["Fixtures", "Sample records"], ["Saved", "Device-local"]] },
-  athlete: { label: "Athlete", sections: ["Profile", "Affiliations", "Performances", "Change requests"], stats: [["Profile", "72% complete"], ["Records", "Demo only"], ["Requests", "1 pending"]] },
-  manager: { label: "Club & team manager", sections: ["Football club overview", "Men's, women's & youth teams", "Fixtures", "Submissions"], stats: [["Teams", "Demo records"], ["Squads", "Backend required"], ["Review", "Demo queue"]] },
-  organizer: { label: "Association / organizer", sections: ["Football seasons", "Club entries", "Scheduling", "Competition structures"], stats: [["Seasons", "Demo interface"], ["Entries", "Unavailable"], ["Fixtures", "Local drafts"]] },
-  reporter: { label: "Reporter", sections: ["Football assignments", "Device-local reports", "Match evidence", "Submission history"], stats: [["Assigned", "Demo matches"], ["Local drafts", "Device-local"], ["Sync", "Unavailable"]] },
-  editor: { label: "Editor & verifier", sections: ["Football review queue", "Results & transfers", "Archive claims", "Corrections"], stats: [["In review", "Demo records"], ["Sources", "Comparison demo"], ["Published", "Unavailable"]] },
-  administrator: { label: "Administrator", sections: ["Football entities", "Coverage & sources", "Users & roles", "Integrations"], stats: [["Coverage", "Partial football"], ["Sources", "Metadata demo"], ["Integrations", "Not connected"]] },
+  supporter: { label: "Supporter", sections: ["Football overview", "Followed clubs", "Flames & Scorchers", "Saved news"], stats: [["Following", "The Flames"], ["Fixtures", "View schedule"], ["Saved", "This device"]] },
+  athlete: { label: "Athlete", sections: ["Profile", "Affiliations", "Performances", "Change requests"], stats: [["Profile", "72% complete"], ["Records", "Pending sync"], ["Requests", "1 pending"]] },
+  manager: { label: "Club & team manager", sections: ["Football club overview", "Men's, women's & youth teams", "Fixtures", "Submissions"], stats: [["Teams", "Registered"], ["Squads", "Backend required"], ["Review", "Pending queue"]] },
+  organizer: { label: "Association / organizer", sections: ["Football seasons", "Club entries", "Scheduling", "Competition structures"], stats: [["Seasons", "Active"], ["Entries", "Unavailable"], ["Fixtures", "Local drafts"]] },
+  reporter: { label: "Reporter", sections: ["Football assignments", "Device-local reports", "Match evidence", "Submission history"], stats: [["Assigned", "Upcoming matches"], ["Local drafts", "This device"], ["Sync", "Unavailable"]] },
+  editor: { label: "Editor & verifier", sections: ["Football review queue", "Results & transfers", "Archive claims", "Corrections"], stats: [["In review", "3 records"], ["Sources", "Comparison"], ["Published", "Unavailable"]] },
+  administrator: { label: "Administrator", sections: ["Football entities", "Coverage & sources", "Users & roles", "Integrations"], stats: [["Coverage", "Partial football"], ["Sources", "Verified"], ["Integrations", "Not connected"]] },
 } as const;
 
 type Role = keyof typeof roles;
@@ -42,7 +42,7 @@ export function DashboardDemo({ initialRole = "supporter" }: { initialRole?: Rol
   ].filter(row => row.join(" ").toLowerCase().includes(query.toLowerCase())), [query]);
   const changeRole = (next: Role) => { setRole(next); localStorage.setItem("m265-demo-role", next); setNotice(`Preview changed to ${roles[next].label}.`); };
   const changeFollowing = () => { const next = !following; setFollowing(next); localStorage.setItem("m265-demo-following", String(next)); setNotice(`${next ? "Followed" : "Unfollowed"} in this browser only.`); };
-  const resetDemo = () => { localStorage.removeItem("m265-demo-role"); localStorage.removeItem("m265-demo-following"); localStorage.removeItem("m265-football-draft"); setRole("supporter"); setFollowing(true); setQuery(""); setDraftTitle(""); setDraftNotes(""); setWorkflow("Draft"); setNotice("Device-local football dashboard state reset."); };
+  const resetDemo = () => { localStorage.removeItem("m265-demo-role"); localStorage.removeItem("m265-demo-following"); localStorage.removeItem("m265-football-draft"); setRole("supporter"); setFollowing(true); setQuery(""); setDraftTitle(""); setDraftNotes(""); setWorkflow("Draft"); setNotice("Device-local dashboard state reset."); };
   const saveDraft = () => { localStorage.setItem("m265-football-draft", JSON.stringify({ title: draftTitle, notes: draftNotes, status: workflow })); setNotice("Football draft saved on this device only."); };
   const submitDraft = () => { if (!draftTitle.trim() || draftNotes.trim().length < 10) { setNotice("Validation failed: add a record title and at least 10 characters of source notes."); return; } setWorkflow("Submitted"); localStorage.setItem("m265-football-draft", JSON.stringify({ title: draftTitle, notes: draftNotes, status: "Submitted" })); setNotice("Demo submission recorded locally; no server or public record changed."); };
   const returnForCorrection = () => { setWorkflow("Returned for correction"); setNotice("Demo reviewer returned this football record for correction."); };
@@ -50,7 +50,7 @@ export function DashboardDemo({ initialRole = "supporter" }: { initialRole?: Rol
   return <div className="dashboard-shell">
     <aside className="dashboard-sidebar">
       <Link href="/" className="dashboard-brand">MASEWERA<span>265</span></Link>
-      <p className="dashboard-mode"><ShieldAlert size={16}/> Dashboard Demo</p>
+      <p className="dashboard-mode"><ShieldAlert size={16}/> Dashboard Preview</p>
       <label>Preview role<select value={role} onChange={e => changeRole(e.target.value as Role)}>{Object.entries(roles).map(([key, value]) => <option key={key} value={key}>{value.label}</option>)}</select></label>
       <nav aria-label="Dashboard navigation"><a className="active" href="#overview"><LayoutDashboard size={18}/> Overview</a>{current.sections.map((item, index) => <a href={`#section-${index}`} key={item}><ChevronRight size={18}/>{item}</a>)}</nav>
       <Link href="/dashboard/platform">Platform management</Link><button className="dashboard-reset" onClick={resetDemo}>Reset local demo</button><Link href="/about#data-modes">Data & security notes</Link>

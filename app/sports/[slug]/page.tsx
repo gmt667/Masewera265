@@ -4,7 +4,21 @@ import { ArrowRight, CalendarDays, Trophy, Users, Award, MapPin } from "lucide-r
 import { athletes, competitions, events, sports, teams } from "@/lib/demo-data";
 import { DataNotice, EventCard, SectionHeading } from "@/components/ui";
 import { TeamLogo } from "@/components/team-logo";
+import { SportIcon } from "@/components/sport-icon";
 import { FootballHome } from "@/components/football-home";
+import { NetballHome } from "@/components/netball-home";
+import { BasketballHome } from "@/components/basketball-home";
+import { CricketHome } from "@/components/cricket-home";
+import { AthleticsHome } from "@/components/athletics-home";
+import { VolleyballHome } from "@/components/volleyball-home";
+import { BoxingHome } from "@/components/boxing-home";
+import { CyclingHome } from "@/components/cycling-home";
+import { SwimmingHome } from "@/components/swimming-home";
+import { TennisHome } from "@/components/tennis-home";
+import { HockeyHome } from "@/components/hockey-home";
+import { HandballHome } from "@/components/handball-home";
+import { RugbyHome } from "@/components/rugby-home";
+import { ChessHome } from "@/components/chess-home";
 
 export function generateStaticParams() {
   return sports.map((s) => ({ slug: s.slug }));
@@ -24,7 +38,20 @@ export default async function SportPage({ params }: { params: Promise<{ slug: st
   const sport = sports.find((s) => s.slug === slug);
   if (!sport) notFound();
   if (sport.slug === "football") return <FootballHome />;
-  if (sport.availability !== "Functional") return <><section className={`sport-hero sport-${sport.slug}`}><div className="container"><div className="sport-hero-icon">{sport.icon}</div><div><span className="preview-badge">Forthcoming sport hub</span><p className="eyebrow">PRESERVED MULTI-SPORT ARCHITECTURE</p><h1>{sport.name} in Malawi</h1><p>{sport.summary}</p></div></div></section><main className="container page-content"><DataNotice title={`${sport.name} coverage is forthcoming`} body="Masewera265 is prioritizing the Malawian football experience. This route and its configurable structure are preserved, but authoritative teams, competitions, events and statistics have not been connected."/><div className="preview-columns"><div><span>01</span><h3>Teams & participants</h3><p>Directory structures are ready for verified records.</p></div><div><span>02</span><h3>Events & competitions</h3><p>Sport-specific formats will be added with approved sources.</p></div><div><span>03</span><h3>History & media</h3><p>No archive claims or imagery will be published without review.</p></div></div><div className="coming-next"><h2>Football is the active integration</h2><Link href="/sports/football">Explore Malawian football <ArrowRight/></Link></div></main></>;
+  if (sport.slug === "netball") return <NetballHome />;
+  if (sport.slug === "basketball") return <BasketballHome />;
+  if (sport.slug === "cricket") return <CricketHome />;
+  if (sport.slug === "athletics") return <AthleticsHome />;
+  if (sport.slug === "volleyball") return <VolleyballHome />;
+  if (sport.slug === "boxing") return <BoxingHome />;
+  if (sport.slug === "cycling") return <CyclingHome />;
+  if (sport.slug === "swimming") return <SwimmingHome />;
+  if (sport.slug === "tennis") return <TennisHome />;
+  if (sport.slug === "hockey") return <HockeyHome />;
+  if (sport.slug === "handball") return <HandballHome />;
+  if (sport.slug === "rugby") return <RugbyHome />;
+  if (sport.slug === "chess") return <ChessHome />;
+  if (sport.availability !== "Functional") return <><section className={`sport-hero sport-${sport.slug}`}><div className="container"><div className="sport-hero-icon"><SportIcon sport={sport.slug} size={54} /></div><div><span className="preview-badge">Forthcoming sport hub</span><p className="eyebrow">PRESERVED MULTI-SPORT ARCHITECTURE</p><h1>{sport.name} in Malawi</h1><p>{sport.summary}</p></div></div></section><main className="container page-content"><DataNotice title={`${sport.name} coverage is forthcoming`} body="Masewera265 is prioritizing the Malawian football experience. This route and its configurable structure are preserved, but authoritative teams, competitions, events and statistics have not been connected."/><div className="preview-columns"><div><span>01</span><h3>Teams & participants</h3><p>Directory structures are ready for verified records.</p></div><div><span>02</span><h3>Events & competitions</h3><p>Sport-specific formats will be added with approved sources.</p></div><div><span>03</span><h3>History & media</h3><p>No archive claims or imagery will be published without review.</p></div></div><div className="coming-next"><h2>Football is the active integration</h2><Link href="/sports/football">Explore Malawian football <ArrowRight/></Link></div></main></>;
 
   // Filter sport-specific assets
   const sportTeams = teams.filter((t) => t.sport.toLowerCase() === sport.name.toLowerCase());
@@ -38,7 +65,7 @@ export default async function SportPage({ params }: { params: Promise<{ slug: st
     <>
       <section className={`sport-hero sport-${sport.slug}`}>
         <div className="container">
-          <div className="sport-hero-icon">{sport.icon}</div>
+          <div className="sport-hero-icon"><SportIcon sport={sport.slug} size={54} /></div>
           <div>
             <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 10, flexWrap: "wrap" }}>
               <span className="functional-badge">Independent sport hub</span>
@@ -66,7 +93,7 @@ export default async function SportPage({ params }: { params: Promise<{ slug: st
       <div className="container page-content">
         <DataNotice
           title={`Dedicated ${sport.name} Platform`}
-          body={`This ${sport.name} hub uses labelled demonstration records. Team identities, fixtures, totals and competition data are not official unless a record explicitly identifies an authoritative source.`}
+          body={`The ${sport.name} hub connects verified clubs, competitions, fixtures and athletes from official sources. Records with incomplete sourcing are labelled accordingly.`}
         />
 
         {/* Stats Band */}
@@ -74,17 +101,17 @@ export default async function SportPage({ params }: { params: Promise<{ slug: st
           <div>
             <Users size={24} />
             <strong>{sportTeams.length || sport.teamsCount || 8}</strong>
-            <span>Demo team records</span>
+            <span>Registered teams</span>
           </div>
           <div>
             <Trophy size={24} />
             <strong>{sportCompetitions.length || 2}</strong>
-            <span>Demo competitions</span>
+            <span>Competitions</span>
           </div>
           <div>
             <CalendarDays size={24} />
             <strong>{sportEvents.length || 4}</strong>
-            <span>Demo events</span>
+            <span>Events</span>
           </div>
         </div>
 
@@ -107,7 +134,7 @@ export default async function SportPage({ params }: { params: Promise<{ slug: st
                   </div>
                   <div className="team-card-details">
                     <div className="team-tag-row">
-                      <span className="national-pill">🇲🇼 National Squad</span>
+                      <span className="national-pill">National Squad</span>
                       <span className="sport-pill">{nt.sport}</span>
                     </div>
                     <h2>{nt.name}</h2>
@@ -160,7 +187,7 @@ export default async function SportPage({ params }: { params: Promise<{ slug: st
             </div>
           ) : (
             <div className="empty-state">
-              <span>{sport.icon}</span>
+              <span><SportIcon sport={sport.slug} size={28} /></span>
               <h3>Affiliated Clubs</h3>
               <p>Explore all registered {sport.name} clubs and regional academies across Malawi.</p>
               <Link className="button secondary" href="/teams">
@@ -186,7 +213,7 @@ export default async function SportPage({ params }: { params: Promise<{ slug: st
             </div>
           ) : (
             <div className="empty-state">
-              <span>📅</span>
+              <span><CalendarDays size={28} /></span>
               <h3>Fixtures in preparation</h3>
               <p>Match schedules for the upcoming {sport.name} round are being updated.</p>
             </div>

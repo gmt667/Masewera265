@@ -527,10 +527,14 @@ export interface FootballStadium {
   district: string;
   region: "Southern" | "Central" | "Northern";
   capacity: string;
+  capacityNumber: number;
   surface: string;
   opened: string;
   residentClubs: string[];
   summary: string;
+  image: string;
+  floodlights?: boolean;
+  tier?: "Category 1 (International)" | "Category 2 (Premiership Standard)" | "Category 3 (Community / Regional)";
 }
 
 export const footballStadiums: FootballStadium[] = [
@@ -541,10 +545,14 @@ export const footballStadiums: FootballStadium[] = [
     district: "Blantyre",
     region: "Southern",
     capacity: "45,000",
+    capacityNumber: 45000,
     surface: "Artificial Turf (FIFA Certified)",
     opened: "1952 (Renovated)",
     residentClubs: ["FCB Nyasa Big Bullets", "Mighty Mukuru Wanderers", "Mighty Tigers"],
-    summary: "The historic spiritual home of Malawian football. Hosted historic Flames victories including the 1978 and 1988 CECAFA championships and generations of Blantyre derbies."
+    summary: "The historic spiritual home of Malawian football. Hosted historic Flames victories including the 1978 and 1988 CECAFA championships and generations of Blantyre derbies.",
+    image: "/images/stadium-kamuzu.jpg",
+    floodlights: true,
+    tier: "Category 1 (International)"
   },
   {
     slug: "bingu-national-stadium",
@@ -553,22 +561,14 @@ export const footballStadiums: FootballStadium[] = [
     district: "Lilongwe",
     region: "Central",
     capacity: "40,090",
+    capacityNumber: 40090,
     surface: "Natural Grass",
     opened: "January 2017",
     residentClubs: ["Malawi Flames (Selected Matches)", "Malawi Scorchers", "Domestic Cup Finals"],
-    summary: "Malawi's premier, state-of-the-art national stadium. Fully equipped with international standard media, VIP, and athletic facilities."
-  },
-  {
-    slug: "silver-stadium",
-    name: "Silver Stadium",
-    location: "Area 47, Lilongwe",
-    district: "Lilongwe",
-    region: "Central",
-    capacity: "20,000",
-    surface: "Natural Grass",
-    opened: "1984",
-    residentClubs: ["Silver Strikers FC"],
-    summary: "The privately owned home ground of Silver Strikers, known for its pristine natural turf and passionate banker faithful."
+    summary: "Malawi's premier, state-of-the-art national stadium. Fully equipped with international standard media, VIP, and athletic facilities.",
+    image: "/images/stadium-bingu.jpg",
+    floodlights: true,
+    tier: "Category 1 (International)"
   },
   {
     slug: "civo-stadium",
@@ -577,10 +577,30 @@ export const footballStadiums: FootballStadium[] = [
     district: "Lilongwe",
     region: "Central",
     capacity: "25,000",
+    capacityNumber: 25000,
     surface: "Natural Grass",
     opened: "1978",
     residentClubs: ["Civil Service United", "Kamuzu Barracks FC", "Creck Sporting Club"],
-    summary: "The traditional centre of football in the capital city, hosting historic league battles and cup ties."
+    summary: "The traditional centre of football in the capital city, hosting historic league battles, intense military clashes and cup ties.",
+    image: "/images/stadium-civo.jpg",
+    floodlights: true,
+    tier: "Category 2 (Premiership Standard)"
+  },
+  {
+    slug: "silver-stadium",
+    name: "Silver Stadium",
+    location: "Area 47, Lilongwe",
+    district: "Lilongwe",
+    region: "Central",
+    capacity: "20,000",
+    capacityNumber: 20000,
+    surface: "Natural Grass",
+    opened: "1984",
+    residentClubs: ["Silver Strikers FC"],
+    summary: "The privately owned home ground of Silver Strikers, known for its pristine natural turf and passionate banker faithful.",
+    image: "/images/stadium-silver.jpg",
+    floodlights: false,
+    tier: "Category 2 (Premiership Standard)"
   },
   {
     slug: "mzuzu-stadium",
@@ -589,10 +609,14 @@ export const footballStadiums: FootballStadium[] = [
     district: "Mzimba / Mzuzu City",
     region: "Northern",
     capacity: "15,000",
+    capacityNumber: 15000,
     surface: "Natural Grass",
     opened: "1970",
     residentClubs: ["Moyale Barracks FC", "Mzuzu City Hammers"],
-    summary: "The football fortress of Northern Malawi, renowned for intense local support and home of the 'Lions of Kaning'ina'."
+    summary: "The football fortress of Northern Malawi, renowned for intense local support and home of the 'Lions of Kaning'ina'.",
+    image: "/images/stadium-mzuzu.jpg",
+    floodlights: false,
+    tier: "Category 2 (Premiership Standard)"
   },
   {
     slug: "karonga-stadium",
@@ -601,10 +625,30 @@ export const footballStadiums: FootballStadium[] = [
     district: "Karonga",
     region: "Northern",
     capacity: "12,000",
+    capacityNumber: 12000,
     surface: "Natural Grass",
     opened: "2018",
     residentClubs: ["Karonga United FC", "Chitipa United", "Baka City"],
-    summary: "A vibrant football venue on the shores of Lake Malawi near the northern border, serving clubs across Karonga and Chitipa."
+    summary: "A vibrant football venue on the shores of Lake Malawi near the northern border, serving clubs across Karonga and Chitipa.",
+    image: "/images/stadium-karonga.jpg",
+    floodlights: false,
+    tier: "Category 2 (Premiership Standard)"
+  },
+  {
+    slug: "dedza-stadium",
+    name: "Dedza Stadium",
+    location: "Dedza Boma",
+    district: "Dedza",
+    region: "Central",
+    capacity: "12,000",
+    capacityNumber: 12000,
+    surface: "Natural Grass",
+    opened: "1975",
+    residentClubs: ["Dedza Dynamos Salima Sugar FC"],
+    summary: "The high-altitude fortress of Dedza Dynamos, celebrated for creating one of the toughest away fixtures in the TNM Super League.",
+    image: "/images/stadium-dedza.jpg",
+    floodlights: false,
+    tier: "Category 2 (Premiership Standard)"
   },
   {
     slug: "mpira-stadium",
@@ -613,10 +657,30 @@ export const footballStadiums: FootballStadium[] = [
     district: "Blantyre",
     region: "Southern",
     capacity: "8,000",
+    capacityNumber: 8000,
     surface: "Artificial Turf",
     opened: "2019",
     residentClubs: ["Bangwe All Stars", "Mighty Tigers", "FAM Women's League Matches"],
-    summary: "Built at the FAM Technical Centre in Chiendembo with FIFA Forward funds, serving as a hub for top-tier matches, youth development, and women's competitions."
+    summary: "Built at the FAM Technical Centre in Chiendembo with FIFA Forward funds, serving as a hub for top-tier matches, youth development, and women's competitions.",
+    image: "/images/stadium-mpira.jpg",
+    floodlights: true,
+    tier: "Category 2 (Premiership Standard)"
+  },
+  {
+    slug: "nankhaka-stadium",
+    name: "Nankhaka Stadium",
+    location: "Police Headquarters, Area 30, Lilongwe",
+    district: "Lilongwe",
+    region: "Central",
+    capacity: "5,000",
+    capacityNumber: 5000,
+    surface: "Natural Grass",
+    opened: "1988",
+    residentClubs: ["Blue Eagles FC"],
+    summary: "The disciplined and intimate home ground of the Malawi Police Service club Blue Eagles in Area 30.",
+    image: "/images/stadium-nankhaka.jpg",
+    floodlights: false,
+    tier: "Category 3 (Community / Regional)"
   }
 ];
 

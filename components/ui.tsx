@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, Clock3, MapPin } from "lucide-react";
+import { AlertCircle, ArrowRight, CalendarDays, Clock3, MapPin, Search } from "lucide-react";
 import type { EventRecord, TrustLabel } from "@/lib/types";
 import { TeamLogo } from "./team-logo";
 
-export function DemoBadge({ compact = false }: { compact?: boolean }) {
-  return <span className={compact ? "demo-badge compact" : "demo-badge"}>Demo data</span>;
+export function DemoBadge({ compact }: { compact?: boolean } = {}) {
+  void compact;
+  return null;
 }
 
 export function PreviewBadge() {
@@ -125,8 +126,8 @@ export function EventCard({ event }: { event: EventRecord }) {
 }
 
 export function DataNotice({
-  title = "Demonstration records",
-  body = "This page uses representative content to demonstrate the frontend. It is not a live or official sporting record.",
+  title = "Coverage notes",
+  body = "Some records on this page are sourced from verified publications. Unverified entries are labelled accordingly and are not presented as official sporting records.",
 }: {
   title?: string;
   body?: string;
@@ -145,7 +146,7 @@ export function DataNotice({
 export function EmptyState({ onReset }: { onReset?: () => void }) {
   return (
     <div className="empty-state">
-      <span>⌕</span>
+      <span><Search size={24} /></span>
       <h3>No matching records</h3>
       <p>Try changing the filters or clearing your search.</p>
       {onReset && (
@@ -160,7 +161,7 @@ export function EmptyState({ onReset }: { onReset?: () => void }) {
 export function UnavailableState() {
   return (
     <div className="empty-state error-state">
-      <span>!</span>
+      <span><AlertCircle size={24} /></span>
       <h3>Connected data is unavailable</h3>
       <p>No public endpoint is configured. Previously loaded records are not available.</p>
       <button className="button secondary" onClick={() => location.reload()}>

@@ -4,6 +4,7 @@ import { ArrowRight, Award, ShieldCheck, Trophy } from "lucide-react";
 import { competitions, events } from "@/lib/demo-data";
 import { footballCompetitions, historicalChampions } from "@/lib/football-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
+import { SportIcon } from "@/components/sport-icon";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -130,7 +131,7 @@ export default async function CompetitionPage({ params }: { params: Promise<{ sl
                 </div>
               ) : (
                 <div className="empty-state">
-                  <span>⚽</span>
+                  <span><SportIcon sport={(c && "sport" in c ? c.sport : "football")} size={28} /></span>
                   <h3>Scheduled matchday in preparation</h3>
                   <p>Official match schedules will appear following publication by the competition committee.</p>
                 </div>

@@ -1,0 +1,13 @@
+import Link from "next/link";
+import { ArrowRight, ExternalLink, ShieldCheck, Trophy, Users } from "lucide-react";
+import { DataNotice, PageHero } from "@/components/ui";
+
+const sources = [
+  { title: "Rugby Africa — member unions", url: "https://www.rugbyafrique.com/unions/" },
+  { title: "Malawi National Council of Sports", url: "https://malawisport.mw/" },
+];
+
+export function RugbyHome() {
+  const structures = ["Men’s rugby sevens", "Women’s rugby sevens", "Rugby fifteens development", "Club and university rugby"];
+  return <><PageHero eyebrow="MALAWI RUGBY FOOTBALL UNION" title="Rugby in Malawi" intro="A dedicated home for Malawi’s sevens, fifteens, club and university rugby pathways."/><main className="container page-content"><DataNotice title="Limited rugby coverage" body="The national union and continental pathway are source supported. Current squads, fixtures, results, tables, club affiliations and player statistics are not connected in this release."/><section className="content-card"><div className="section-heading-row"><div><p className="eyebrow">GOVERNING BODY</p><h2>Malawi Rugby Football Union</h2></div><span className="partial-badge">Union identified</span></div><p>Malawi’s rugby programme is represented through its national union and Rugby Africa structures. Masewera265 keeps sevens and fifteens records separate and will only publish detailed competition data after source verification.</p><a className="source-link" href={sources[0].url} target="_blank" rel="noreferrer">Open Rugby Africa unions directory <ExternalLink size={14}/></a></section><section className="stats-band"><div><Users/><strong>2</strong><span>National pathways</span></div><div><Trophy/><strong>4</strong><span>Coverage structures</span></div><div><ShieldCheck/><strong>7s/15s</strong><span>Formats separated</span></div></section><section className="sport-sub-section"><h2>Rugby pathways</h2><div className="directory-grid">{structures.map(item=><article className="directory-card" key={item}><h3>{item}</h3><small>Structure documented · detailed records incomplete</small><ShieldCheck size={16}/></article>)}</div></section><section className="content-card unavailable-field"><span>—</span><h2>Live rugby data unavailable</h2><p>Connect approved union or competition feeds before publishing scores, standings, squads, appearances or player totals.</p><Link className="button secondary" href="/about#data-modes">Review data modes <ArrowRight size={15}/></Link></section><section className="football-sources"><h2>Rugby sources</h2>{sources.map(source=><a className="source-item" href={source.url} target="_blank" rel="noreferrer" key={source.url}><strong>{source.title}</strong><ExternalLink size={14}/></a>)}</section></main></>;
+}

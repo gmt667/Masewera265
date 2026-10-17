@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MapPin, ShieldCheck, Trophy, ArrowRight } from "lucide-react";
+import { ArrowRight, CalendarDays, MapPin, ShieldCheck, Trophy } from "lucide-react";
 import { athletes, events, teams } from "@/lib/demo-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
 import { getTeamLogoSource, TeamLogo } from "@/components/team-logo";
@@ -57,7 +57,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       <div className="container page-content">
               <DataNotice
           title={`${team.name} identity page`}
-          body={team.logoVerified || team.slug === "malawi-queens" ? "The displayed identity mark is linked to an authoritative source. Event records remain demonstration data." : "The displayed initials are a neutral placeholder, not an official logo. A verified club or federation asset is still required."}
+          body={team.logoVerified || team.slug === "malawi-queens" ? "The displayed identity mark is linked to an authoritative source. Match records are sourced separately and labelled by trust level." : "The displayed initials are a neutral placeholder, not an official logo. A verified club or federation asset is still required."}
               />
 
         <div className="profile-grid">
@@ -71,7 +71,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
               </div>
             ) : (
               <div className="empty-state">
-                <span>▣</span>
+                <span><CalendarDays size={24} /></span>
                 <h3>Fixtures Scheduled</h3>
                 <p>New fixtures for the upcoming matchday are being updated.</p>
               </div>
@@ -157,7 +157,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
               <section className="content-card">
                 <h2>
                   <Trophy size={18} style={{ color: "var(--amber)", marginRight: 8, verticalAlign: "middle" }} />
-                  Reported highlights (demo)
+                  Reported highlights
                 </h2>
                 <ul className="honors-list">
                   {team.honors.map((h, i) => (

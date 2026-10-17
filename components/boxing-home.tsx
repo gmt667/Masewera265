@@ -1,0 +1,14 @@
+import Link from "next/link";
+import { ArrowRight, ExternalLink, ShieldCheck, Trophy, Users } from "lucide-react";
+import { DataNotice, PageHero } from "@/components/ui";
+
+const sources = [
+  { title: "International Boxing Association — Malawi federation", url: "https://www.iba.sport/national-federations/africa/" },
+  { title: "Malawi Olympic Committee associations", url: "https://www.moc.org.mw/associations/" },
+  { title: "African Boxing federation directory", url: "https://african-boxing.org/about/" },
+];
+
+export function BoxingHome() {
+  const structures = ["Amateur and Olympic-style boxing", "Men’s and women’s national pathways", "Regional championship qualifiers", "Professional boxing governance (separate) "];
+  return <><PageHero eyebrow="MALAWI BOXING ASSOCIATION" title="Boxing in Malawi" intro="A source-aware home for Malawi’s amateur, national-team and professional boxing pathways."/><main className="container page-content"><DataNotice title="Limited boxing coverage" body="International directories confirm Malawi Boxing Association as the national federation. Current bout cards, rankings, weight-class rosters, results and athlete records are not connected in this release."/><section className="content-card"><div className="section-heading-row"><div><p className="eyebrow">GOVERNANCE</p><h2>Malawi Boxing Association</h2></div><span className="partial-badge">IBA listed</span></div><p>The IBA and Malawi Olympic Committee list Malawi Boxing Association as the national association. Professional boxing administration is a separate governance question and is not merged into amateur records here.</p><a className="source-link" href={sources[0].url} target="_blank" rel="noreferrer">Open IBA federation directory <ExternalLink size={14}/></a></section><section className="stats-band"><div><Users/><strong>1</strong><span>National association</span></div><div><Trophy/><strong>4</strong><span>Source-described pathways</span></div><div><ShieldCheck/><strong>IBA</strong><span>International listing</span></div></section><section className="sport-sub-section"><h2>Boxing pathways</h2><div className="directory-grid">{structures.map((item)=><article className="directory-card" key={item}><h3>{item}</h3><small>Structure documented · detailed records incomplete</small><ShieldCheck size={16}/></article>)}</div></section><section className="content-card unavailable-field"><span>—</span><h2>Live bouts and rankings unavailable</h2><p>Connect approved federation or promoter feeds before publishing scores, title claims, rankings or athlete statistics.</p><Link className="button secondary" href="/about#data-modes">Review data modes <ArrowRight size={15}/></Link></section><section className="football-sources"><h2>Boxing sources</h2>{sources.map((source)=><a className="source-item" href={source.url} target="_blank" rel="noreferrer" key={source.url}><strong>{source.title}</strong><ExternalLink size={14}/></a>)}</section></main></>;
+}

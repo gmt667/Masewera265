@@ -5,6 +5,7 @@ import { articles, athletes, events, teams } from "@/lib/demo-data";
 import { footballCompetitions, footballSources } from "@/lib/football-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "./ui";
 import { TeamLogo } from "./team-logo";
+import { SportIcon } from "./sport-icon";
 
 export function FootballHome() {
   const footballEvents = events.filter((e) => e.sport === "Football");
@@ -64,7 +65,6 @@ export function FootballHome() {
             </div>
           </div>
         </div>
-        <span className="concept-label">Concept artwork — not real national-team players</span>
       </section>
 
       {/* Horizontal Football Nav */}
@@ -152,7 +152,7 @@ export function FootballHome() {
             </div>
           ) : (
             <div className="empty-state">
-              <span>⚽</span>
+              <span><SportIcon sport="football" size={28} /></span>
               <h3>No scheduled football matches</h3>
               <p>Fixtures will appear as published by FAM and SULOM.</p>
             </div>

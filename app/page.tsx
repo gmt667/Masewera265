@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, ChevronDown, MapPin, Trophy, Users, BarChart3 } from "lucide-react";
+import { SportIcon } from "@/components/sport-icon";
 import { DemoBadge } from "@/components/ui";
 
 const sampleFixtures = [
@@ -200,19 +201,19 @@ export default function HomePage() {
       <div className="design-sport-bar-wrap">
         <nav className="design-sport-nav container" aria-label="Featured sports">
           <Link className="sport-nav-item active" href="/sports/football">
-            <span className="sport-nav-icon">⚽</span> Football
+            <span className="sport-nav-icon"><SportIcon sport="football" size={17} /></span> Football
           </Link>
           <Link className="sport-nav-item" href="/sports/netball">
-            <span className="sport-nav-icon">◉</span> Netball
+            <span className="sport-nav-icon"><SportIcon sport="netball" size={17} /></span> Netball
           </Link>
           <Link className="sport-nav-item" href="/sports/basketball">
-            <span className="sport-nav-icon">🏀</span> Basketball
+            <span className="sport-nav-icon"><SportIcon sport="basketball" size={17} /></span> Basketball
           </Link>
           <Link className="sport-nav-item" href="/sports/athletics">
-            <span className="sport-nav-icon">🏃</span> Athletics
+            <span className="sport-nav-icon"><SportIcon sport="athletics" size={17} /></span> Athletics
           </Link>
           <Link className="sport-nav-item" href="/sports/volleyball">
-            <span className="sport-nav-icon">🏐</span> Volleyball
+            <span className="sport-nav-icon"><SportIcon sport="volleyball" size={17} /></span> Volleyball
           </Link>
           <Link className="sport-nav-item more-sports-btn" href="/sports">
             <span>•••</span> More Sports <ChevronDown size={14} />
@@ -227,7 +228,7 @@ export default function HomePage() {
             <div className="heading-left">
               <h2>Fixtures &amp; Results</h2>
               <DemoBadge />
-              <span className="design-heading-sub">These are sample fixtures for demonstration purposes only.</span>
+              <span className="design-heading-sub">Upcoming and recent match action across top Malawian competitions.</span>
             </div>
             <Link className="view-all-link" href="/fixtures">
               View all fixtures <ArrowRight size={14} />
@@ -239,7 +240,7 @@ export default function HomePage() {
               <article className="fixture-card" key={fixture.id}>
                 <header className="fixture-card-header">
                   <div className="fixture-sport-badge">
-                    <span>{fixture.sport === "Football" ? "⚽" : fixture.sport === "Netball" ? "◉" : "🏀"}</span>
+                    <span><SportIcon sport={fixture.sport} size={15} /></span>
                     <b>{fixture.sport}</b>
                     <small>• {fixture.category}</small>
                   </div>

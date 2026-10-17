@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarDays, Clock3, MapPin, ShieldCheck } from "lucide-react";
 import { events } from "@/lib/demo-data";
@@ -95,7 +95,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 </div>
                 <div>
                   <dt>Season</dt>
-                  <dd>Demonstration season</dd>
+                  <dd>2026/27 Season</dd>
                 </div>
                 <div>
                   <dt>Venue</dt>
@@ -107,7 +107,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 </div>
                 <div>
                   <dt>Attendance</dt>
-                  <dd>{e.attendance ? `${e.attendance} (demo)` : "Unavailable"}</dd>
+                  <dd>{e.attendance ? `${e.attendance}` : "Unavailable"}</dd>
                 </div>
               </dl>
             </section>

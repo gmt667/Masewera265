@@ -22,6 +22,7 @@ export function SiteHeader() {
   const [appOpen, setAppOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const appDropdownRef = useRef<HTMLDivElement>(null);
+  const exploreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setOpen(false);
@@ -29,30 +30,65 @@ export function SiteHeader() {
     setAppOpen(false);
   }, [path]);
 
-  // Handle immediate transition on scroll
+  // Transparent ONLY at very top (scrollY === 0) — immediately solid the instant any scrolling begins
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 0);
+    const checkScroll = () => {
+      const scrollY =
+        (typeof window !== "undefined"
+          ? window.scrollY ||
+            window.pageYOffset ||
+            document.documentElement.scrollTop ||
+            document.body.scrollTop ||
+            0
+          : 0);
+      setScrolled(scrollY > 0);
     };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
-  // Close app dropdown on outside click
+    checkScroll();
+
+    window.addEventListener("scroll", checkScroll, { passive: true });
+    document.addEventListener("scroll", checkScroll, { passive: true, capture: true });
+    window.addEventListener("wheel", checkScroll, { passive: true });
+    window.addEventListener("touchmove", checkScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+      document.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("wheel", checkScroll);
+      window.removeEventListener("touchmove", checkScroll);
+    };
+  }, [path]);
+
+  // Close popovers and mobile menu on outside click or Escape key
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (appDropdownRef.current && !appDropdownRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (appDropdownRef.current && !appDropdownRef.current.contains(target)) {
         setAppOpen(false);
       }
+      if (exploreRef.current && !exploreRef.current.contains(target)) {
+        setExplore(false);
+      }
     }
-    if (appOpen) {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setAppOpen(false);
+        setExplore(false);
+        setOpen(false);
+      }
+    }
+    if (appOpen || explore || open) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("keydown", handleKeyDown);
+      };
     }
-  }, [appOpen]);
+  }, [appOpen, explore, open]);
 
   const active = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
+  const isSolid = scrolled || open;
 
   return (
     <>
@@ -60,14 +96,14 @@ export function SiteHeader() {
         Skip to content
       </a>
 
-      {/* Top Demonstration Mode Notice Bar */}
-      <div className={`demo-bar ${scrolled ? "demo-bar-scrolled" : ""}`}>
-        <span>DEMONSTRATION MODE</span>
-        <p>Representative records only · No live provider connected</p>
-      </div>
-
-      {/* Main Navigation Header with Transparent -> Scrolled Glassmorphism Transition */}
-      <header className={`site-header ${scrolled ? "is-scrolled" : "is-transparent"}`}>
+      {/* Main Navigation Header: Transparent at top -> Immediately solid on any scroll */}
+      <header
+        className={`site-header ${isSolid ? "is-scrolled" : "is-transparent"}`}
+        data-scrolled={isSolid ? "true" : "false"}
+        style={{
+          backgroundColor: isSolid ? "#0b111c" : "transparent",
+        }}
+      >
         <div className="nav-shell">
           <Link href="/" className="brand" aria-label="Masewera265 home">
             <div className="brand-logo-wrap">
@@ -92,19 +128,23 @@ export function SiteHeader() {
               </Link>
             ))}
 
-            <div className="explore-menu">
-              <button aria-expanded={explore} onClick={() => setExplore(!explore)}>
+            <div className="explore-menu" ref={exploreRef}>
+              <button
+                aria-expanded={explore}
+                onClick={() => setExplore(!explore)}
+                aria-label="Explore more categories"
+              >
                 More <ChevronDown size={14} className={explore ? "rotate-180" : ""} />
               </button>
               {explore && (
-                <div className="menu-popover">
-                  <Link href="/teams">Teams & clubs</Link>
-                  <Link href="/athletes">Athletes</Link>
-                  <Link href="/national-teams">National teams</Link>
-                  <Link href="/venues">Venues</Link>
-                  <Link href="/organizations">Organizations</Link>
-                  <Link href="/dashboard">Dashboard demo</Link>
-                  <Link href="/about">About & coverage</Link>
+                <div className="menu-popover" role="menu">
+                  <Link href="/teams" role="menuitem" onClick={() => setExplore(false)}>Teams & clubs</Link>
+                  <Link href="/athletes" role="menuitem" onClick={() => setExplore(false)}>Athletes</Link>
+                  <Link href="/national-teams" role="menuitem" onClick={() => setExplore(false)}>National teams</Link>
+                  <Link href="/venues" role="menuitem" onClick={() => setExplore(false)}>Venues</Link>
+                  <Link href="/organizations" role="menuitem" onClick={() => setExplore(false)}>Organizations</Link>
+                  <Link href="/dashboard" role="menuitem" onClick={() => setExplore(false)}>Dashboard</Link>
+                  <Link href="/about" role="menuitem" onClick={() => setExplore(false)}>About & coverage</Link>
                 </div>
               )}
             </div>
@@ -165,32 +205,40 @@ export function SiteHeader() {
 
         {/* Mobile Navigation Drawer */}
         {open && (
-          <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
-            <div className="mobile-nav-links">
-              {primary.map(([label, href]) => (
-                <Link key={href} className={active(href) ? "active" : ""} href={href}>
-                  {label}
-                </Link>
-              ))}
-              <span className="mobile-label">Directories</span>
-              <Link href="/teams">Teams &amp; clubs</Link>
-              <Link href="/athletes">Athletes</Link>
-              <Link href="/national-teams">National teams</Link>
-              <Link href="/venues">Venues</Link>
-              <Link href="/organizations">Organizations</Link>
-              <Link href="/dashboard">Dashboard demo</Link>
-              <Link href="/about">About &amp; coverage</Link>
-            </div>
-
-            <div className="mobile-app-download-box">
-              <span className="mobile-download-title">Download Masewera265 App</span>
-              <p>Experience Malawi sport on the go with real-time updates</p>
-              <div className="mobile-download-badges">
-                <AppStoreBadge compact />
-                <GooglePlayBadge compact />
+          <>
+            <div className="mobile-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />
+            <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
+              <div className="mobile-nav-links">
+                {primary.map(([label, href]) => (
+                  <Link
+                    key={href}
+                    className={active(href) ? "active" : ""}
+                    href={href}
+                    onClick={() => setOpen(false)}
+                  >
+                    {label}
+                  </Link>
+                ))}
+                <span className="mobile-label">Directories</span>
+                <Link href="/teams" onClick={() => setOpen(false)}>Teams &amp; clubs</Link>
+                <Link href="/athletes" onClick={() => setOpen(false)}>Athletes</Link>
+                <Link href="/national-teams" onClick={() => setOpen(false)}>National teams</Link>
+                <Link href="/venues" onClick={() => setOpen(false)}>Venues</Link>
+                <Link href="/organizations" onClick={() => setOpen(false)}>Organizations</Link>
+                <Link href="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>
+                <Link href="/about" onClick={() => setOpen(false)}>About &amp; coverage</Link>
               </div>
-            </div>
-          </nav>
+
+              <div className="mobile-app-download-box">
+                <span className="mobile-download-title">Download Masewera265 App</span>
+                <p>Experience Malawi sport on the go with real-time updates</p>
+                <div className="mobile-download-badges">
+                  <AppStoreBadge compact />
+                  <GooglePlayBadge compact />
+                </div>
+              </div>
+            </nav>
+          </>
         )}
       </header>
     </>

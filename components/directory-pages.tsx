@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { athletes, competitions, events, sports, teams } from "@/lib/demo-data";
 import { DemoBadge, EmptyState, EventCard, TimeNote, TrustBadge } from "./ui";
 import { TeamLogo } from "./team-logo";
+import { SportIcon } from "./sport-icon";
 
 export function FixtureBrowser({
   resultOnly = false,
@@ -131,7 +132,7 @@ export function SportsDirectory() {
         {shown.map((s) => (
           <Link href={`/sports/${s.slug}`} className="directory-card sport-directory-card" key={s.slug}>
             <div className="sport-card-header">
-              <span className="big-icon">{s.icon}</span>
+              <span className="big-icon"><SportIcon sport={s.slug} size={32} /></span>
               <span className={s.availability === "Functional" ? "functional-badge" : "preview-badge"}>{s.availability === "Functional" ? "Football-first platform" : "Forthcoming"}</span>
             </div>
             <h2>{s.name}</h2>
@@ -213,7 +214,7 @@ export function TeamDirectory() {
           <span>Category</span>
           <select value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value="ALL">All teams & squads</option>
-            <option value="NATIONAL">🇲🇼 Malawi National Teams</option>
+            <option value="NATIONAL">Malawi National Teams</option>
             <option value="CLUBS">League & Club Teams</option>
           </select>
         </label>

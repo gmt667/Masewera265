@@ -16,6 +16,7 @@ import {
   Users,
   Video,
 } from "lucide-react";
+import { FootballBallIcon } from "@/components/sport-icon";
 import {
   footballLegends,
   footballTimeline,
@@ -489,7 +490,7 @@ export default function FootballHistoryPage() {
               {greatGoals.map((g, idx) => (
                 <article className="goal-card" key={idx}>
                   <div className="goal-card-header">
-                    <span className="goal-badge">⚽ Goal {g.minute}</span>
+                    <span className="goal-badge"><FootballBallIcon size={13} /> Goal {g.minute}</span>
                     <small>{g.date}</small>
                   </div>
                   <h3>{g.title}</h3>

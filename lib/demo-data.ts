@@ -4,7 +4,7 @@ export const sports: Sport[] = [
   {
     slug: "football",
     name: "Football",
-    icon: "⚽",
+    icon: "football",
     availability: "Functional",
     summary: "Comprehensive platform for Malawian football — from TNM Super League to The Flames, The Scorchers, FDH Bank Cup and regional leagues.",
     format: "90 mins · 2 halves",
@@ -15,8 +15,8 @@ export const sports: Sport[] = [
   {
     slug: "netball",
     name: "Netball",
-    icon: "◉",
-    availability: "Preview",
+    icon: "netball",
+    availability: "Limited",
     summary: "Full platform for Malawi's world-renowned sport — home of the legendary Malawi Queens, Rainbow Paints League, FCB Diamonds and Tigresses.",
     format: "60 mins · 4 quarters",
     federation: "Netball Association of Malawi (NAM)",
@@ -26,8 +26,8 @@ export const sports: Sport[] = [
   {
     slug: "basketball",
     name: "Basketball",
-    icon: "◍",
-    availability: "Preview",
+    icon: "basketball",
+    availability: "Limited",
     summary: "Dedicated hub for Malawian basketball — showcasing national champions Bravehearts BC, Central Knights, Cougars, BASMAL National League and regional leagues.",
     format: "40 mins · 4 quarters",
     federation: "Basketball Association of Malawi (BASMAL)",
@@ -37,8 +37,8 @@ export const sports: Sport[] = [
   {
     slug: "volleyball",
     name: "Volleyball",
-    icon: "◒",
-    availability: "Preview",
+    icon: "volleyball",
+    availability: "Limited",
     summary: "Premier volleyball stage across Lilongwe, Blantyre and Mzuzu — featuring Kamuzu Barracks VC, Wolves, Moyale Spikers and National Championships.",
     format: "Best of 5 sets · 25 pts",
     federation: "Volleyball Association of Malawi (VAM)",
@@ -48,8 +48,8 @@ export const sports: Sport[] = [
   {
     slug: "athletics",
     name: "Athletics",
-    icon: "◇",
-    availability: "Preview",
+    icon: "athletics",
+    availability: "Limited",
     summary: "Track, cross-country, and field disciplines from national championships at Bingu National Stadium to international representation.",
     format: "Heats · Finals · Timed Trials",
     federation: "Athletics Malawi",
@@ -59,8 +59,8 @@ export const sports: Sport[] = [
   {
     slug: "boxing",
     name: "Boxing",
-    icon: "◆",
-    availability: "Preview",
+    icon: "boxing",
+    availability: "Limited",
     summary: "Professional and amateur pugilism in Malawi — championship title cards, weight classes, ranking tables, and bout results.",
     format: "3-min rounds · Bouts",
     federation: "Malawi Boxing Association (MABA)",
@@ -70,8 +70,8 @@ export const sports: Sport[] = [
   {
     slug: "cricket",
     name: "Cricket",
-    icon: "●",
-    availability: "Preview",
+    icon: "cricket",
+    availability: "Limited",
     summary: "T20 and 50-over cricket leagues, Blantyre and Lilongwe cricket clubs, and national team fixtures.",
     format: "T20 · 20 Overs / 50 Overs",
     federation: "Cricket Malawi",
@@ -81,8 +81,8 @@ export const sports: Sport[] = [
   {
     slug: "rugby",
     name: "Rugby",
-    icon: "⬭",
-    availability: "Preview",
+    icon: "rugby",
+    availability: "Limited",
     summary: "Club, university, and national 7s and 15s rugby competition across Malawi.",
     format: "80 mins · 2 halves / 7s",
     federation: "Malawi Rugby Football Union (MARFU)",
@@ -92,8 +92,8 @@ export const sports: Sport[] = [
   {
     slug: "chess",
     name: "Chess",
-    icon: "♞",
-    availability: "Preview",
+    icon: "chess",
+    availability: "Limited",
     summary: "National Olympiad squads, Grand Prix tournaments, rating leaderboards and junior championships.",
     format: "Swiss System · Classical & Rapid",
     federation: "Chess Association of Malawi (CHESSAM)",
@@ -103,7 +103,7 @@ export const sports: Sport[] = [
   {
     slug: "tennis",
     name: "Tennis",
-    icon: "◌",
+    icon: "tennis",
     availability: "Preview",
     summary: "National opens, Davis Cup campaigns, singles and doubles tournaments at Lilongwe and Blantyre clubs.",
     format: "Best of 3 sets",
@@ -111,11 +111,11 @@ export const sports: Sport[] = [
     teamsCount: 6,
     accentColor: "#65a30d",
   },
-  { slug: "hockey", name: "Hockey", icon: "H", availability: "Preview", summary: "A dedicated home for hockey clubs, schools, competitions and national selections across Malawi.", format: "4 quarters · goals", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#2563eb" },
-  { slug: "cycling", name: "Cycling", icon: "C", availability: "Preview", summary: "Road, track and community cycling events with rider, route and stage-oriented records.", format: "Road · track · time trial", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#dc2626" },
-  { slug: "swimming", name: "Swimming", icon: "S", availability: "Preview", summary: "Meet, heat, lane and performance-focused coverage for swimmers and aquatic organizations.", format: "Heats · finals · timed events", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#0284c7" },
-  { slug: "golf", name: "Golf", icon: "G", availability: "Preview", summary: "Tournament, round and player coverage for Malawian golf venues and communities.", format: "Stroke play · match play", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#15803d" },
-  { slug: "disability-sport", name: "Disability Sport", icon: "♿", availability: "Preview", summary: "Para-athletics, wheelchair racing, blind football and inclusive sporting disciplines across Malawi.", format: "Adaptive & classified formats", federation: "Malawi Paralympic Committee (MPC)", teamsCount: 4, accentColor: "#0284c7" },
+  { slug: "hockey", name: "Hockey", icon: "hockey", availability: "Preview", summary: "A dedicated home for hockey clubs, schools, competitions and national selections across Malawi.", format: "4 quarters · goals", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#2563eb" },
+  { slug: "cycling", name: "Cycling", icon: "cycling", availability: "Preview", summary: "Road, track and community cycling events with rider, route and stage-oriented records.", format: "Road · track · time trial", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#dc2626" },
+  { slug: "swimming", name: "Swimming", icon: "swimming", availability: "Preview", summary: "Meet, heat, lane and performance-focused coverage for swimmers and aquatic organizations.", format: "Heats · finals · timed events", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#0284c7" },
+  { slug: "golf", name: "Golf", icon: "golf", availability: "Preview", summary: "Tournament, round and player coverage for Malawian golf venues and communities.", format: "Stroke play · match play", federation: "Governing organization pending verification", teamsCount: 0, accentColor: "#15803d" },
+  { slug: "disability-sport", name: "Disability Sport", icon: "disability-sport", availability: "Preview", summary: "Para-athletics, wheelchair racing, blind football and inclusive sporting disciplines across Malawi.", format: "Adaptive & classified formats", federation: "Malawi Paralympic Committee (MPC)", teamsCount: 4, accentColor: "#0284c7" },
 ];
 
 export const teams: Team[] = [
