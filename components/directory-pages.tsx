@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Search, MapPin, Users, Trophy, ArrowRight, Award } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { athletes, competitions, events, sports, teams } from "@/lib/demo-data";
 import { DemoBadge, EmptyState, EventCard, TimeNote, TrustBadge } from "./ui";
 import { TeamLogo } from "./team-logo";
@@ -15,10 +16,30 @@ export function FixtureBrowser({
   resultOnly?: boolean;
   liveOnly?: boolean;
 }) {
-  const [query, setQuery] = useState("");
-  const [status, setStatus] = useState(resultOnly ? "FINAL" : liveOnly ? "LIVE" : "ALL");
-  const [location, setLocation] = useState("ALL");
-  const [sport, setSport] = useState("ALL");
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams?.get("q") || "");
+  const [status, setStatus] = useState(
+    resultOnly
+      ? "FINAL"
+      : liveOnly
+      ? "LIVE"
+      : searchParams?.get("status") || "ALL"
+  );
+  const [location, setLocation] = useState(searchParams?.get("location") || "ALL");
+  const [sport, setSport] = useState(searchParams?.get("sport") || "ALL");
+
+  useEffect(() => {
+    if (searchParams) {
+      const pSport = searchParams.get("sport");
+      if (pSport) setSport(pSport);
+      const pLoc = searchParams.get("location");
+      if (pLoc) setLocation(pLoc);
+      const pQ = searchParams.get("q");
+      if (pQ) setQuery(pQ);
+      const pStatus = searchParams.get("status");
+      if (pStatus && !resultOnly && !liveOnly) setStatus(pStatus);
+    }
+  }, [searchParams, resultOnly, liveOnly]);
 
   const filtered = useMemo(
     () =>
@@ -27,9 +48,9 @@ export function FixtureBrowser({
           (!resultOnly || event.status === "FINAL") &&
           (!liveOnly || event.status === "LIVE") &&
           (status === "ALL" || event.status === status) &&
-          (location === "ALL" || event.location === location) &&
+          (location === "ALL" || event.location.toLowerCase() === location.toLowerCase() || event.venue.toLowerCase().includes(location.toLowerCase())) &&
           (sport === "ALL" || event.sport.toLowerCase() === sport.toLowerCase()) &&
-          `${event.home} ${event.away} ${event.competition} ${event.sport}`
+          `${event.home} ${event.away} ${event.competition} ${event.sport} ${event.venue}`
             .toLowerCase()
             .includes(query.toLowerCase())
       ),
@@ -53,8 +74,8 @@ export function FixtureBrowser({
           <button
             key={s}
             role="tab"
-            aria-selected={sport === s}
-            className={`sport-tab-btn ${sport === s ? "active" : ""}`}
+            aria-selected={sport.toLowerCase() === s.toLowerCase()}
+            className={`sport-tab-btn ${sport.toLowerCase() === s.toLowerCase() ? "active" : ""}`}
             onClick={() => setSport(s)}
           >
             {s === "ALL" ? "All Disciplines" : s}
@@ -69,7 +90,7 @@ export function FixtureBrowser({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search team, sport or competition"
+            placeholder="Search team, sport, venue or competition..."
           />
         </label>
         <label>
@@ -133,7 +154,7 @@ export function SportsDirectory() {
           <Link href={`/sports/${s.slug}`} className="directory-card sport-directory-card" key={s.slug}>
             <div className="sport-card-header">
               <span className="big-icon"><SportIcon sport={s.slug} size={32} /></span>
-              <span className={s.availability === "Functional" ? "functional-badge" : "preview-badge"}>{s.availability === "Functional" ? "Football-first platform" : "Forthcoming"}</span>
+              <span className="functional-badge">Active hub</span>
             </div>
             <h2>{s.name}</h2>
             {s.federation && <p className="sport-federation">{s.federation}</p>}
@@ -158,16 +179,30 @@ export function SportsDirectory() {
 }
 
 export function TeamDirectory() {
-  const [q, setQ] = useState("");
-  const [region, setRegion] = useState("ALL");
-  const [sport, setSport] = useState("ALL");
-  const [category, setCategory] = useState("ALL");
+  const searchParams = useSearchParams();
+  const [q, setQ] = useState(searchParams?.get("q") || "");
+  const [region, setRegion] = useState(searchParams?.get("region") || "ALL");
+  const [sport, setSport] = useState(searchParams?.get("sport") || "ALL");
+  const [category, setCategory] = useState(searchParams?.get("category") || "ALL");
+
+  useEffect(() => {
+    if (searchParams) {
+      const pRegion = searchParams.get("region");
+      if (pRegion) setRegion(pRegion);
+      const pSport = searchParams.get("sport");
+      if (pSport) setSport(pSport);
+      const pCat = searchParams.get("category");
+      if (pCat) setCategory(pCat);
+      const pQ = searchParams.get("q");
+      if (pQ) setQ(pQ);
+    }
+  }, [searchParams]);
 
   const sportList = ["ALL", ...sports.map((item) => item.name)];
 
   const shown = useMemo(() => {
     return teams.filter((t) => {
-      const matchRegion = region === "ALL" || t.region === region;
+      const matchRegion = region === "ALL" || t.region.toLowerCase() === region.toLowerCase();
       const matchSport = sport === "ALL" || t.sport.toLowerCase() === sport.toLowerCase();
       const matchCat =
         category === "ALL" ||
@@ -191,8 +226,8 @@ export function TeamDirectory() {
           <button
             key={s}
             role="tab"
-            aria-selected={sport === s}
-            className={`sport-tab-btn ${sport === s ? "active" : ""}`}
+            aria-selected={sport.toLowerCase() === s.toLowerCase()}
+            className={`sport-tab-btn ${sport.toLowerCase() === s.toLowerCase() ? "active" : ""}`}
             onClick={() => setSport(s)}
           >
             {s === "ALL" ? "All Sports" : s}
@@ -213,58 +248,52 @@ export function TeamDirectory() {
         <label>
           <span>Category</span>
           <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="ALL">All teams & squads</option>
+            <option value="ALL">All teams &amp; squads</option>
             <option value="NATIONAL">Malawi National Teams</option>
-            <option value="CLUBS">League & Club Teams</option>
+            <option value="CLUBS">League &amp; Club Teams</option>
           </select>
         </label>
         <label>
           <span>Region</span>
           <select value={region} onChange={(e) => setRegion(e.target.value)}>
-            <option value="ALL">All regions</option>
-            <option value="National">National Squads</option>
-            <option value="Central">Central Region</option>
+            <option value="ALL">All Regions</option>
             <option value="Southern">Southern Region</option>
+            <option value="Central">Central Region</option>
             <option value="Northern">Northern Region</option>
+            <option value="National">National Selections</option>
           </select>
         </label>
-        {(q || region !== "ALL" || sport !== "ALL" || category !== "ALL") && (
-          <button
-            className="button filter-reset"
-            onClick={() => {
-              setQ("");
-              setRegion("ALL");
-              setSport("ALL");
-              setCategory("ALL");
-            }}
-          >
-            Reset
-          </button>
-        )}
+        <button
+          className="button filter-reset"
+          onClick={() => {
+            setQ("");
+            setRegion("ALL");
+            setSport("ALL");
+            setCategory("ALL");
+          }}
+        >
+          Reset
+        </button>
       </div>
 
       <div className="results-count">
         <span>
-          {shown.length} {shown.length === 1 ? "team" : "teams"}{" "}
-          {sport !== "ALL" && `in ${sport}`}
+          {shown.length} {shown.length === 1 ? "team" : "teams"} found
+          {sport !== "ALL" && ` · ${sport}`}
+          {region !== "ALL" && ` · ${region}`}
         </span>
-        <DemoBadge compact />
       </div>
 
-      <div className="directory-grid teams-grid">
+      <div className="directory-grid">
         {shown.map((t) => (
-          <Link
-            className={`directory-card team-directory-card ${t.isNationalTeam || t.kind === "National team" ? "national-team-card" : ""}`}
-            href={`/teams/${t.slug}`}
-            key={t.slug}
-          >
-            <div className="team-avatar official-logo">
-              <TeamLogo slug={t.slug} name={t.name} size={68} />
+          <Link className="directory-card team-card" href={`/teams/${t.slug}`} key={t.slug}>
+            <div className="team-card-crest">
+              <TeamLogo slug={t.slug} name={t.name} size={48} />
             </div>
-            <div className="team-card-details">
-              <div className="team-tag-row">
-                <span className="sport-pill">{t.sport}</span>
-                {(t.isNationalTeam || t.kind === "National team") && <span className="national-pill">Malawi National Team</span>}
+            <div className="team-card-info">
+              <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4 }}>
+                <span className="sport-mini-badge">{t.sport}</span>
+                {t.isNationalTeam && <span className="national-mini-tag">National</span>}
                 <TrustBadge label={t.trust} />
               </div>
               <h2>{t.name}</h2>
@@ -295,8 +324,20 @@ export function TeamDirectory() {
 }
 
 export function AthleteDirectory() {
-  const [q, setQ] = useState("");
-  const [sport, setSport] = useState("ALL");
+  const searchParams = useSearchParams();
+  const [q, setQ] = useState(searchParams?.get("q") || "");
+  const [sport, setSport] = useState(searchParams?.get("sport") || "ALL");
+
+  useEffect(() => {
+    if (searchParams) {
+      const pSport = searchParams.get("sport");
+      if (pSport) setSport(pSport);
+      const pQ = searchParams.get("q");
+      if (pQ) setQ(pQ);
+    }
+  }, [searchParams]);
+
+  const sportList = ["ALL", ...sports.map((item) => item.name)];
 
   const shown = athletes.filter(
     (a) =>
@@ -319,14 +360,29 @@ export function AthleteDirectory() {
         <label>
           <span>Sport</span>
           <select value={sport} onChange={(e) => setSport(e.target.value)}>
-            <option value="ALL">All sports</option>
-            <option value="Basketball">Basketball</option>
-            <option value="Netball">Netball</option>
-            <option value="Football">Football</option>
-            <option value="Volleyball">Volleyball</option>
-            <option value="Athletics">Athletics</option>
+            {sportList.map((s) => (
+              <option key={s} value={s}>
+                {s === "ALL" ? "All sports" : s}
+              </option>
+            ))}
           </select>
         </label>
+        <button
+          className="button filter-reset"
+          onClick={() => {
+            setQ("");
+            setSport("ALL");
+          }}
+        >
+          Reset
+        </button>
+      </div>
+
+      <div className="results-count">
+        <span>
+          {shown.length} {shown.length === 1 ? "athlete profile" : "athlete profiles"} found
+          {sport !== "ALL" && ` in ${sport}`}
+        </span>
       </div>
 
       <div className="directory-grid">
@@ -361,25 +417,43 @@ export function AthleteDirectory() {
 }
 
 export function CompetitionDirectory() {
-  const [sport, setSport] = useState("ALL");
+  const searchParams = useSearchParams();
+  const [sport, setSport] = useState(searchParams?.get("sport") || "ALL");
+
+  useEffect(() => {
+    if (searchParams) {
+      const pSport = searchParams.get("sport");
+      if (pSport) setSport(pSport);
+    }
+  }, [searchParams]);
+
+  const sportList = ["ALL", ...sports.map((item) => item.name)];
+
   const filtered = competitions.filter(
     (c) => sport === "ALL" || c.sport.toLowerCase() === sport.toLowerCase()
   );
 
   return (
     <>
-      <div className="sport-filter-tabs" role="tablist">
-        {["ALL", "Basketball", "Netball", "Football", "Volleyball", "Athletics", "Boxing"].map((s) => (
+      <div className="sport-filter-tabs" role="tablist" aria-label="Filter competitions by sport">
+        {sportList.map((s) => (
           <button
             key={s}
             role="tab"
-            aria-selected={sport === s}
-            className={`sport-tab-btn ${sport === s ? "active" : ""}`}
+            aria-selected={sport.toLowerCase() === s.toLowerCase()}
+            className={`sport-tab-btn ${sport.toLowerCase() === s.toLowerCase() ? "active" : ""}`}
             onClick={() => setSport(s)}
           >
             {s === "ALL" ? "All Competitions" : s}
           </button>
         ))}
+      </div>
+
+      <div className="results-count">
+        <span>
+          {filtered.length} {filtered.length === 1 ? "competition" : "competitions"}
+          {sport !== "ALL" && ` in ${sport}`}
+        </span>
       </div>
 
       <div className="directory-grid">

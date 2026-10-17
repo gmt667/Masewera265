@@ -1,2 +1,27 @@
-import Link from "next/link"; import { MapPin, ArrowRight } from "lucide-react"; import { events } from "@/lib/demo-data"; import { DataNotice, PageHero } from "@/components/ui";
-export const metadata={title:"Venues"}; export default function Page(){const venues=[...new Map(events.map(e=>[e.venueSlug,{slug:e.venueSlug,name:e.venue,location:e.location}])).values()];return <><PageHero eyebrow="Places of sport" title="Venues" intro="Find locations and the available events connected to them."/><div className="container page-content"><DataNotice/><div className="directory-grid">{venues.map(v=><Link className="directory-card venue-card" href={`/venues/${v.slug}`} key={v.slug}><span><MapPin/></span><div><h2>{v.name}</h2><p>{v.location}, Malawi</p><small>{events.filter(e=>e.venueSlug===v.slug).length} events</small></div><ArrowRight/></Link>)}</div></div></>}
+import { VenuesView } from "@/components/venues-view";
+import { DataNotice, PageHero } from "@/components/ui";
+
+export const metadata = {
+  title: "Malawian Sporting Venues & Stadiums | Masewera265",
+  description:
+    "Explore Malawi's national stadiums, indoor arenas, and sports complexes across the Southern, Central, and Northern regions.",
+};
+
+export default function VenuesPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="NATIONAL SPORTING INFRASTRUCTURE"
+        title="Venues, Stadiums & Arenas"
+        intro="The places where Malawian sport happens — from the 45,000-seater Kamuzu Stadium in Blantyre and Bingu National Stadium in Lilongwe to regional arenas and multi-sport complexes."
+      />
+      <div className="container page-content">
+        <DataNotice
+          title="Verified Sporting Facilities"
+          body="Facility capacities, surface specifications, resident clubs, and technical amenities are sourced from official FAM, SULOM, and municipal registries."
+        />
+        <VenuesView />
+      </div>
+    </>
+  );
+}

@@ -4,6 +4,18 @@ import { ExternalLink, MapPin } from "lucide-react";
 import { athletes } from "@/lib/demo-data";
 import { DataNotice, TrustBadge } from "@/components/ui";
 
+export function generateStaticParams() {
+  return athletes.map((item) => ({ slug: item.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const athlete = athletes.find((item) => item.slug === slug);
+  return {
+    title: athlete ? `${athlete.name} (${athlete.team}) | Masewera265` : "Athlete Profile",
+  };
+}
+
 export default async function AthletePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const athlete = athletes.find((item) => item.slug === slug);

@@ -6,6 +6,10 @@ import { DataNotice, DemoBadge, TrustBadge } from "@/components/ui";
 import { TeamLogo } from "@/components/team-logo";
 import { EventTabs } from "@/components/event-tabs";
 
+export function generateStaticParams() {
+  return events.map((e) => ({ slug: e.slug }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const e = events.find((x) => x.slug === slug);

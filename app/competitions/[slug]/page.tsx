@@ -6,6 +6,19 @@ import { footballCompetitions, historicalChampions } from "@/lib/football-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
 import { SportIcon } from "@/components/sport-icon";
 
+export function generateStaticParams() {
+  const allComps = [...competitions, ...footballCompetitions];
+  const seen = new Set<string>();
+  const params: { slug: string }[] = [];
+  for (const c of allComps) {
+    if (!seen.has(c.slug)) {
+      seen.add(c.slug);
+      params.push({ slug: c.slug });
+    }
+  }
+  return params;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const c =

@@ -1,0 +1,23 @@
+{
+  "name": "Masewera265 - Malawi's Digital Home for Sport",
+  "short_name": "Masewera265",
+  "description": "The national multi-sport platform connecting all 14 Malawian sporting disciplines, 28 districts, national teams, leagues, and athletes under one digital roof.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b111c",
+  "theme_color": "#0b111c",
+  "orientation": "portrait-primary",
+  "categories": ["sports", "news"],
+  "icons": [
+    {
+      "src": "/images/brand-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/brand-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

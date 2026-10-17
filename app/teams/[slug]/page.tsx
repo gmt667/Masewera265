@@ -13,6 +13,10 @@ const identitySources: Record<string, { label: string; href: string }> = {
   "bravehearts-basketball": { label: "FIBA club profile", href: "https://www.fiba.basketball/en/events/fiba-africa-champions-clubs-road-to-bal-2025/news/meet-the-team-bravehearts-bc" },
 };
 
+export function generateStaticParams() {
+  return teams.map((item) => ({ slug: item.slug }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const team = teams.find((item) => item.slug === slug);
