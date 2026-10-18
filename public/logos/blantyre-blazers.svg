@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="blzGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="blzFlame" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#facc15"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="92" fill="url(#blzGrad)" stroke="#facc15" stroke-width="6"/>
+  <!-- Blazing Flame and Basketball -->
+  <g transform="translate(100, 85)">
+    <path d="M0 -42 C20 -20 35 5 20 30 C10 40 -10 40 -20 30 C-35 5 -20 -20 0 -42 Z" fill="url(#blzFlame)"/>
+    <circle cx="0" cy="10" r="22" fill="#ea580c" stroke="#ffffff" stroke-width="2"/>
+    <line x1="-22" y1="10" x2="22" y2="10" stroke="#ffffff" stroke-width="1.5"/>
+    <line x1="0" y1="-12" x2="0" y2="32" stroke="#ffffff" stroke-width="1.5"/>
+  </g>
+  <text x="100" y="38" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="11" font-weight="900" fill="#ffffff" letter-spacing="1.5">BLANTYRE</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="14" font-weight="900" fill="#facc15" letter-spacing="2">BLAZERS</text>
+  <text x="100" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="700" fill="#ffffff" opacity="0.8">BASKETBALL CLUB</text>
+</svg>

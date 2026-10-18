@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { AlertCircle, ArrowRight, CalendarDays, Clock3, MapPin, Search } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock3, MapPin, Search } from "lucide-react";
 import type { EventRecord, TrustLabel } from "@/lib/types";
 import { TeamLogo } from "./team-logo";
 
 export function DemoBadge({ compact }: { compact?: boolean } = {}) {
-  void compact;
-  return null;
+  return <span className={`demo-badge ${compact ? "compact" : ""}`}>Demo data</span>;
 }
 
 export function PreviewBadge() {
@@ -154,19 +153,6 @@ export function EmptyState({ onReset }: { onReset?: () => void }) {
           Clear filters
         </button>
       )}
-    </div>
-  );
-}
-
-export function UnavailableState() {
-  return (
-    <div className="empty-state error-state">
-      <span><AlertCircle size={24} /></span>
-      <h3>Connected data is unavailable</h3>
-      <p>No public endpoint is configured. Previously loaded records are not available.</p>
-      <button className="button secondary" onClick={() => location.reload()}>
-        Try again
-      </button>
     </div>
   );
 }

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="wolfBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+  </defs>
+  <path d="M100 12 L180 44 C180 125 140 174 100 192 C60 174 20 125 20 44 Z" fill="url(#wolfBlue)" stroke="#94a3b8" stroke-width="6"/>
+  <!-- Wolf Head Silhouette -->
+  <g transform="translate(100, 85)">
+    <polygon points="0,-40 -18,-15 -35,-32 -25,10 -35,25 -10,35 0,30 10,35 35,25 25,10 35,-32 18,-15" fill="#e2e8f0"/>
+    <polygon points="0,-25 -12,-5 -22,-15 -18,12 0,22 18,12 22,-15 12,-5" fill="#1e293b"/>
+    <!-- Glowing Blue Eyes -->
+    <polygon points="-10,-2 -4,0 -8,4" fill="#38bdf8"/>
+    <polygon points="10,-2 4,0 8,4" fill="#38bdf8"/>
+    <!-- Snout & Fangs -->
+    <polygon points="0,12 -5,8 5,8" fill="#e2e8f0"/>
+  </g>
+  <!-- Volleyball element -->
+  <circle cx="100" cy="135" r="14" fill="#ffffff" stroke="#1e3a8a" stroke-width="2"/>
+  <path d="M88 135 Q100 127 112 135 M95 123 Q102 135 95 147" stroke="#1e3a8a" stroke-width="1.5" fill="none"/>
+  
+  <text x="100" y="38" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="12" font-weight="900" fill="#ffffff" letter-spacing="2">WOLVES</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" font-weight="800" fill="#38bdf8" letter-spacing="1.5">VOLLEYBALL CLUB</text>
+  <text x="100" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="700" fill="#94a3b8">LILONGWE</text>
+</svg>

@@ -21,37 +21,31 @@ export function GooglePlayLogo({ size = 20, className = "" }: { size?: number; c
 
 export function AppStoreBadge({ compact = false }: { compact?: boolean }) {
   return (
-    <a
-      href="https://apps.apple.com"
-      target="_blank"
-      rel="noopener noreferrer"
+    <span
       className={`app-store-badge ${compact ? "compact" : ""}`}
-      aria-label="Download on the App Store"
+      aria-label="Masewera265 for iOS is coming soon"
     >
       <AppleLogo size={compact ? 20 : 26} className="store-badge-icon" />
       <div className="store-badge-text">
-        <small>Download on the</small>
-        <strong>App Store</strong>
+        <small>Coming soon for</small>
+        <strong>iOS</strong>
       </div>
-    </a>
+    </span>
   );
 }
 
 export function GooglePlayBadge({ compact = false }: { compact?: boolean }) {
   return (
-    <a
-      href="https://play.google.com"
-      target="_blank"
-      rel="noopener noreferrer"
+    <span
       className={`app-store-badge google-play-badge ${compact ? "compact" : ""}`}
-      aria-label="Get it on Google Play"
+      aria-label="Masewera265 for Android is coming soon"
     >
       <GooglePlayLogo size={compact ? 19 : 24} className="store-badge-icon" />
       <div className="store-badge-text">
-        <small>GET IT ON</small>
-        <strong>Google Play</strong>
+        <small>Coming soon for</small>
+        <strong>Android</strong>
       </div>
-    </a>
+    </span>
   );
 }
 
@@ -173,20 +167,8 @@ export const socialPlatforms = [
 
 export function SocialLinks({ className = "" }: { className?: string }) {
   return (
-    <div className={`social-links-grid ${className}`}>
-      {socialPlatforms.map((p) => (
-        <a
-          key={p.name}
-          href={p.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="social-icon-btn"
-          aria-label={`Follow Masewera265 on ${p.name}`}
-          title={p.name}
-        >
-          {p.icon}
-        </a>
-      ))}
+    <div className={`social-links-grid social-links-unavailable ${className}`} role="status">
+      <span>Official social channels coming soon</span>
     </div>
   );
 }

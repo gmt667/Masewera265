@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Masewera265">
+  <rect width="512" height="512" rx="112" fill="#0b111c"/>
+  <path d="M104 292a152 152 0 0 1 304 0" fill="none" stroke="#e11d48" stroke-width="48" stroke-linecap="round"/>
+  <circle cx="256" cy="250" r="44" fill="#00d084"/>
+  <path d="M105 356h302" stroke="#f4b942" stroke-width="24" stroke-linecap="round"/>
+  <text x="256" y="430" fill="#fff" font-family="Arial,sans-serif" font-size="70" font-weight="800" text-anchor="middle">265</text>
+</svg>

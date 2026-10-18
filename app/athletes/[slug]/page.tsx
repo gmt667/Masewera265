@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { ExternalLink, MapPin } from "lucide-react";
 import { athletes } from "@/lib/demo-data";
 import { DataNotice, TrustBadge } from "@/components/ui";
+import { DataStatePanel } from "@/components/data-state";
+import { dataMode, publicData } from "@/lib/data-service";
 
 export function generateStaticParams() {
   return athletes.map((item) => ({ slug: item.slug }));
@@ -10,7 +12,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const athlete = athletes.find((item) => item.slug === slug);
+  const athlete = dataMode === "demo" ? athletes.find((item) => item.slug === slug) : undefined;
   return {
     title: athlete ? `${athlete.name} (${athlete.team}) | Masewera265` : "Athlete Profile",
   };
@@ -18,14 +20,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function AthletePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const athlete = athletes.find((item) => item.slug === slug);
-  if (!athlete) notFound();
+  const result = await publicData.athlete(slug);
+  const athlete = result.data[0];
+  if (result.state === "empty") notFound();
+  if (!athlete) return <main className="container page-content"><DataStatePanel state={result.state === "ready" ? "error" : result.state} message={result.message} /></main>;
   const sourced = Boolean(athlete.sourceUrl);
 
   return <>
     <section className="profile-hero"><div className="container"><span className="athlete-silhouette">{athlete.number}</span><div><p className="eyebrow">{athlete.sport} · Athlete profile</p><h1>{athlete.name}</h1><p>{athlete.role} · <Link href={`/teams/${athlete.teamSlug}`}>{athlete.team}</Link></p><TrustBadge label={athlete.trust}/></div></div></section>
     <div className="container page-content">
-      <DataNotice title={sourced ? "Partially sourced athlete record" : "Athlete directory record"} body={sourced ? "Only the dated affiliations and identity details supported by the linked source are verified. Current club, squad number, biography and career totals remain unavailable unless separately sourced." : "This profile has no record-level authoritative source linked yet. Identity details are listed for directory purposes only and must not be treated as a current roster or statistical profile."} />
+      {result.isDemo && <DataNotice title={sourced ? "Partially sourced athlete record" : "Athlete directory record"} body={sourced ? "Only the dated affiliations and identity details supported by the linked source are verified. Current club, squad number, biography and career totals remain unavailable unless separately sourced." : "This profile has no record-level authoritative source linked yet. Identity details are listed for directory purposes only and must not be treated as a current roster or statistical profile."} />}
       <div className="profile-grid"><div>
         <section className="content-card"><h2>Season-specific affiliations</h2>{athlete.affiliations?.length ? athlete.affiliations.map((item) => <article className="affiliation-row" key={`${item.season}-${item.team}`}><div><strong>{item.team}</strong><p>{item.season}</p></div><a href={item.sourceUrl} target="_blank" rel="noreferrer">Evidence <ExternalLink size={14}/></a></article>) : <div className="unavailable-field"><span>—</span><h3>Affiliation history unavailable</h3><p>No season-specific affiliation records have been verified for this profile.</p></div>}</section>
         <section className="content-card"><h2>Published performances</h2><div className="unavailable-field"><span>—</span><h3>Comparable statistics unavailable</h3><p>No complete sourced season dataset supports appearances, starts, minutes, goals or assists. Values are not estimated.</p></div></section>

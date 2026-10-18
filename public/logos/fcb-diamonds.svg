@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="diaBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#082f49"/>
+    </linearGradient>
+    <linearGradient id="diaYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#eab308"/>
+    </linearGradient>
+  </defs>
+  <!-- Diamond Shape Outer Shield -->
+  <polygon points="100,10 185,75 100,192 15,75" fill="url(#diaBlue)" stroke="url(#diaYellow)" stroke-width="6"/>
+  <polygon points="100,24 170,78 100,174 30,78" fill="#0369a1" opacity="0.4"/>
+  
+  <!-- Facet lines of brilliant diamond cut -->
+  <polygon points="100,24 135,78 100,125 65,78" fill="#38bdf8" opacity="0.6"/>
+  <line x1="100" y1="24" x2="30" y2="78" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+  <line x1="100" y1="24" x2="170" y2="78" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+  <line x1="30" y1="78" x2="170" y2="78" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+  <line x1="65" y1="78" x2="100" y2="174" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+  <line x1="135" y1="78" x2="100" y2="174" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Netball ball symbol -->
+  <circle cx="100" cy="78" r="18" fill="#ffffff" stroke="#facc15" stroke-width="2.5"/>
+  <path d="M88 72 Q100 80 112 72 M88 84 Q100 76 112 84" stroke="#0284c7" stroke-width="2" fill="none"/>
+  
+  <!-- Team Titles -->
+  <text x="100" y="142" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="12" font-weight="900" fill="#ffffff" letter-spacing="1.5">DIAMONDS</text>
+  <text x="100" y="156" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="800" fill="#facc15" letter-spacing="1">NETBALL CLUB</text>
+  <text x="100" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="6.5" font-weight="700" fill="#ffffff" opacity="0.8">BLANTYRE</text>
+</svg>

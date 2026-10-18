@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="beNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="beSky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <!-- Police/Sports Shield -->
+  <path d="M100 12 L180 44 C180 125 140 174 100 192 C60 174 20 125 20 44 Z" fill="url(#beNavy)" stroke="url(#beSky)" stroke-width="6"/>
+  
+  <!-- Majestic Eagle with Outspread Wings (Area 30 Police symbol) -->
+  <g transform="translate(100, 78)">
+    <!-- Wings -->
+    <path d="M0 0 C-25 -30 -60 -35 -80 -20 C-65 0 -45 10 -20 15 C-40 25 -25 35 0 35 C25 35 40 25 20 15 C45 10 65 0 80 -20 C60 -35 25 -30 0 0 Z" fill="url(#beSky)"/>
+    <!-- Eagle Body & Head -->
+    <path d="M0 -22 C-8 -22 -10 -15 -10 -5 C-10 12 0 24 0 24 C0 24 10 12 10 -5 C10 -15 8 -22 0 -22 Z" fill="#ffffff"/>
+    <polygon points="0,-16 6,-12 0,-8" fill="#f59e0b"/>
+    <circle cx="-3" cy="-14" r="1.5" fill="#0f172a"/>
+  </g>
+  
+  <!-- Stars of Area 30 Police -->
+  <g fill="#f59e0b">
+    <polygon points="65,124 67,128 72,128 68,131 70,135 65,133 60,135 62,131 58,128 63,128"/>
+    <polygon points="100,122 102,126 107,126 103,129 105,133 100,131 95,133 97,129 93,126 98,126"/>
+    <polygon points="135,124 137,128 142,128 138,131 140,135 135,133 130,135 132,131 128,128 133,128"/>
+  </g>
+  
+  <!-- Text Banners -->
+  <text x="100" y="42" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="11" font-weight="900" fill="#ffffff" letter-spacing="1.5">BLUE EAGLES</text>
+  <text x="100" y="156" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="12" font-weight="900" fill="#38bdf8" letter-spacing="2">AREA 30</text>
+  <text x="100" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="800" fill="#ffffff" opacity="0.8">LILONGWE</text>
+</svg>

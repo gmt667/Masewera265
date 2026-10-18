@@ -10,7 +10,7 @@ export function SiteFooter() {
         <div className="container footer-top-inner">
           <div className="footer-top-brand">
             <span className="footer-kicker">MALAWI&apos;S DIGITAL HOME FOR SPORT</span>
-            <h3>Follow Masewera265 Across All Platforms</h3>
+            <h3>Official Social Channels Coming Soon</h3>
           </div>
           {/* Social Icons for TikTok, YouTube, LinkedIn, Instagram, WhatsApp, Facebook, Snapchat, X */}
           <div className="footer-top-socials">
@@ -53,6 +53,7 @@ export function SiteFooter() {
                   alt="AstraMind Labs logo"
                   width={140}
                   height={36}
+                  sizes="140px"
                   style={{ objectFit: "contain", height: "auto" }}
                 />
                 <ExternalLink size={14} className="astramind-external-icon" />
@@ -70,7 +71,7 @@ export function SiteFooter() {
           <Link href="/sports">Sports Hub</Link>
           <Link href="/fixtures">Fixtures &amp; Schedules</Link>
           <Link href="/results">Match Results</Link>
-          <Link href="/live">Live Centre</Link>
+          <Link href="/live">Demo Match Centre</Link>
           <Link href="/competitions">Competitions &amp; Cups</Link>
           <Link href="/national-teams">National Teams Hub</Link>
           <Link href="/news">News &amp; Features</Link>
@@ -91,17 +92,17 @@ export function SiteFooter() {
 
         {/* App Download Column */}
         <div className="footer-col-app">
-          <h2>Get The Mobile App</h2>
+          <h2>Mobile Apps Coming Soon</h2>
           <p className="footer-app-intro">
-            Fast scores, instant lineups, live alerts and low-data match updates directly on your smartphone.
+            iOS and Android apps are planned. No download or store listing is currently available.
           </p>
           <div className="footer-store-badges">
             <AppStoreBadge />
             <GooglePlayBadge />
           </div>
           <div className="footer-app-perks">
-            <span><ShieldCheck size={14} /> Optimized for Malawi networks</span>
-            <span><Sparkles size={14} /> Free on iOS &amp; Android</span>
+            <span><ShieldCheck size={14} /> Public website available now</span>
+            <span><Sparkles size={14} /> Mobile experience in planning</span>
           </div>
         </div>
       </div>

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, CalendarDays, MapPin, ShieldCheck, Trophy } from "lucide-react";
-import { athletes, events, teams } from "@/lib/demo-data";
+import { teams } from "@/lib/demo-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
 import { getTeamLogoSource, TeamLogo } from "@/components/team-logo";
+import { DataStatePanel } from "@/components/data-state";
+import { dataMode, publicData } from "@/lib/data-service";
 
 const identitySources: Record<string, { label: string; href: string }> = {
   "the-flames": { label: "Football Association of Malawi", href: "https://fam.mw/" },
@@ -19,7 +21,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const team = teams.find((item) => item.slug === slug);
+  const team = dataMode === "demo" ? teams.find((item) => item.slug === slug) : undefined;
   return {
     title: team ? `${team.name} | Masewera265` : "Team Profile",
   };
@@ -27,11 +29,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function TeamPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const team = teams.find((item) => item.slug === slug);
-  if (!team) notFound();
+  const [teamResult, eventResult, athleteResult] = await Promise.all([
+    publicData.team(slug), publicData.events({ participation: slug }), publicData.athletes({ pageSize: 100 }),
+  ]);
+  const team = teamResult.data[0];
+  if (teamResult.state === "empty") notFound();
+  if (!team) return <main className="container page-content"><DataStatePanel state={teamResult.state === "ready" ? "error" : teamResult.state} message={teamResult.message} /></main>;
 
-  const matches = events.filter((event) => event.homeSlug === slug || event.awaySlug === slug);
-  const teamAthletes = athletes.filter((a) => a.teamSlug === slug || a.team.toLowerCase().includes(team.shortName.toLowerCase()));
+  const matches = eventResult.data.filter((event) => event.homeSlug === slug || event.awaySlug === slug);
+  const teamAthletes = athleteResult.data.filter((a) => a.teamSlug === slug || a.team.toLowerCase().includes(team.shortName.toLowerCase()));
   const identitySource = identitySources[slug] ?? (team.sourceUrl ? { label: "record source", href: team.sourceUrl } : undefined);
   const logoSource = getTeamLogoSource(team.slug);
 
@@ -59,10 +65,10 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
       </section>
 
       <div className="container page-content">
-              <DataNotice
+              {teamResult.isDemo && <DataNotice
           title={`${team.name} identity page`}
           body={team.logoVerified || team.slug === "malawi-queens" ? "The displayed identity mark is linked to an authoritative source. Match records are sourced separately and labelled by trust level." : "The displayed initials are a neutral placeholder, not an official logo. A verified club or federation asset is still required."}
-              />
+              />}
 
         <div className="profile-grid">
           <div>

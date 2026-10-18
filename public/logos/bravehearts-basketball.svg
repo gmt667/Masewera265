@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bhGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#006837"/>
+      <stop offset="100%" stop-color="#00401f"/>
+    </linearGradient>
+    <linearGradient id="bhGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#f39c12"/>
+    </linearGradient>
+  </defs>
+  <!-- Shield Outline -->
+  <path d="M100 10 L180 42 C180 125 140 174 100 192 C60 174 20 125 20 42 Z" fill="url(#bhGreen)" stroke="url(#bhGold)" stroke-width="6"/>
+  <path d="M100 20 L170 48 C170 120 135 162 100 180 C65 162 30 120 30 48 Z" fill="#ffffff" opacity="0.12"/>
+  
+  <!-- Basketball & Roaring Lion Heart -->
+  <circle cx="100" cy="85" r="34" fill="#e67e22" stroke="#ffffff" stroke-width="2.5"/>
+  <!-- Basketball Ribs -->
+  <line x1="66" y1="85" x2="134" y2="85" stroke="#ffffff" stroke-width="2"/>
+  <line x1="100" y1="51" x2="100" y2="119" stroke="#ffffff" stroke-width="2"/>
+  <path d="M78 60 Q100 85 78 110" stroke="#ffffff" stroke-width="2" fill="none"/>
+  <path d="M122 60 Q100 85 122 110" stroke="#ffffff" stroke-width="2" fill="none"/>
+  
+  <!-- Champion Stars -->
+  <g fill="#ffd700">
+    <polygon points="100,26 103,34 111,34 105,39 107,47 100,42 93,47 95,39 89,34 97,34"/>
+    <polygon points="76,34 78,40 84,40 79,44 81,50 76,46 71,50 73,44 68,40 74,40"/>
+    <polygon points="124,34 126,40 132,40 127,44 129,50 124,46 119,50 121,44 116,40 122,40"/>
+  </g>
+
+  <!-- Club Banner Ribbon -->
+  <rect x="25" y="128" width="150" height="26" rx="4" fill="#1b2a4a" stroke="#ffd700" stroke-width="2"/>
+  <text x="100" y="145" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="11" font-weight="900" fill="#ffffff" letter-spacing="1">BRAVEHEARTS</text>
+  <text x="100" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" font-weight="800" fill="#ffd700" letter-spacing="1.5">BASKETBALL CLUB</text>
+  <text x="100" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="700" fill="#ffffff" opacity="0.8">EST 2015 · LILONGWE</text>
+</svg>

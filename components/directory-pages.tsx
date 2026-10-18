@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Search, MapPin, Users, Trophy, ArrowRight, Award } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { athletes, competitions, events, sports, teams } from "@/lib/demo-data";
+import type { Athlete, Competition, EventRecord, Sport, Team } from "@/lib/types";
 import { DemoBadge, EmptyState, EventCard, TimeNote, TrustBadge } from "./ui";
 import { TeamLogo } from "./team-logo";
 import { SportIcon } from "./sport-icon";
@@ -12,9 +12,13 @@ import { SportIcon } from "./sport-icon";
 export function FixtureBrowser({
   resultOnly = false,
   liveOnly = false,
+  eventsData,
+  sportsData,
 }: {
   resultOnly?: boolean;
   liveOnly?: boolean;
+  eventsData: EventRecord[];
+  sportsData: Sport[];
 }) {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams?.get("q") || "");
@@ -43,7 +47,7 @@ export function FixtureBrowser({
 
   const filtered = useMemo(
     () =>
-      events.filter(
+      eventsData.filter(
         (event) =>
           (!resultOnly || event.status === "FINAL") &&
           (!liveOnly || event.status === "LIVE") &&
@@ -54,7 +58,7 @@ export function FixtureBrowser({
             .toLowerCase()
             .includes(query.toLowerCase())
       ),
-    [query, status, location, sport, resultOnly, liveOnly]
+    [query, status, location, sport, resultOnly, liveOnly, eventsData]
   );
 
   const reset = () => {
@@ -64,17 +68,16 @@ export function FixtureBrowser({
     setSport("ALL");
   };
 
-  const sportList = ["ALL", ...sports.map((item) => item.name)];
+  const sportList = ["ALL", ...sportsData.map((item) => item.name)];
 
   return (
     <>
       {/* Sport quick selector tabs */}
-      <div className="sport-filter-tabs" role="tablist" aria-label="Filter by sport">
+      <div className="sport-filter-tabs" role="group" aria-label="Filter by sport">
         {sportList.map((s) => (
           <button
             key={s}
-            role="tab"
-            aria-selected={sport.toLowerCase() === s.toLowerCase()}
+            aria-pressed={sport.toLowerCase() === s.toLowerCase()}
             className={`sport-tab-btn ${sport.toLowerCase() === s.toLowerCase() ? "active" : ""}`}
             onClick={() => setSport(s)}
           >
@@ -106,7 +109,7 @@ export function FixtureBrowser({
           <span>Location</span>
           <select value={location} onChange={(e) => setLocation(e.target.value)}>
             <option value="ALL">All locations</option>
-            {[...new Set(events.map((event) => event.location))].map((value) => (
+            {[...new Set(eventsData.map((event) => event.location))].map((value) => (
               <option key={value}>{value}</option>
             ))}
           </select>
@@ -137,9 +140,9 @@ export function FixtureBrowser({
   );
 }
 
-export function SportsDirectory() {
+export function SportsDirectory({ sportsData }: { sportsData: Sport[] }) {
   const [q, setQ] = useState("");
-  const shown = sports.filter((s) => s.name.toLowerCase().includes(q.toLowerCase()));
+  const shown = sportsData.filter((s) => s.name.toLowerCase().includes(q.toLowerCase()));
 
   return (
     <>
@@ -178,7 +181,7 @@ export function SportsDirectory() {
   );
 }
 
-export function TeamDirectory() {
+export function TeamDirectory({ teamsData, sportsData }: { teamsData: Team[]; sportsData: Sport[] }) {
   const searchParams = useSearchParams();
   const [q, setQ] = useState(searchParams?.get("q") || "");
   const [region, setRegion] = useState(searchParams?.get("region") || "ALL");
@@ -198,10 +201,10 @@ export function TeamDirectory() {
     }
   }, [searchParams]);
 
-  const sportList = ["ALL", ...sports.map((item) => item.name)];
+  const sportList = ["ALL", ...sportsData.map((item) => item.name)];
 
   const shown = useMemo(() => {
-    return teams.filter((t) => {
+    return teamsData.filter((t) => {
       const matchRegion = region === "ALL" || t.region.toLowerCase() === region.toLowerCase();
       const matchSport = sport === "ALL" || t.sport.toLowerCase() === sport.toLowerCase();
       const matchCat =
@@ -216,17 +219,16 @@ export function TeamDirectory() {
 
       return matchRegion && matchSport && matchCat && matchQuery;
     });
-  }, [q, region, sport, category]);
+  }, [q, region, sport, category, teamsData]);
 
   return (
     <>
       {/* Quick Sport Selector Bar */}
-      <div className="sport-filter-tabs" role="tablist" aria-label="Filter teams by sport">
+      <div className="sport-filter-tabs" role="group" aria-label="Filter teams by sport">
         {sportList.map((s) => (
           <button
             key={s}
-            role="tab"
-            aria-selected={sport.toLowerCase() === s.toLowerCase()}
+            aria-pressed={sport.toLowerCase() === s.toLowerCase()}
             className={`sport-tab-btn ${sport.toLowerCase() === s.toLowerCase() ? "active" : ""}`}
             onClick={() => setSport(s)}
           >
@@ -323,7 +325,7 @@ export function TeamDirectory() {
   );
 }
 
-export function AthleteDirectory() {
+export function AthleteDirectory({ athletesData, sportsData }: { athletesData: Athlete[]; sportsData: Sport[] }) {
   const searchParams = useSearchParams();
   const [q, setQ] = useState(searchParams?.get("q") || "");
   const [sport, setSport] = useState(searchParams?.get("sport") || "ALL");
@@ -337,9 +339,9 @@ export function AthleteDirectory() {
     }
   }, [searchParams]);
 
-  const sportList = ["ALL", ...sports.map((item) => item.name)];
+  const sportList = ["ALL", ...sportsData.map((item) => item.name)];
 
-  const shown = athletes.filter(
+  const shown = athletesData.filter(
     (a) =>
       (sport === "ALL" || a.sport.toLowerCase() === sport.toLowerCase()) &&
       `${a.name} ${a.team} ${a.role}`.toLowerCase().includes(q.toLowerCase())
@@ -416,7 +418,7 @@ export function AthleteDirectory() {
   );
 }
 
-export function CompetitionDirectory() {
+export function CompetitionDirectory({ competitionsData, sportsData }: { competitionsData: Competition[]; sportsData: Sport[] }) {
   const searchParams = useSearchParams();
   const [sport, setSport] = useState(searchParams?.get("sport") || "ALL");
 
@@ -427,20 +429,19 @@ export function CompetitionDirectory() {
     }
   }, [searchParams]);
 
-  const sportList = ["ALL", ...sports.map((item) => item.name)];
+  const sportList = ["ALL", ...sportsData.map((item) => item.name)];
 
-  const filtered = competitions.filter(
+  const filtered = competitionsData.filter(
     (c) => sport === "ALL" || c.sport.toLowerCase() === sport.toLowerCase()
   );
 
   return (
     <>
-      <div className="sport-filter-tabs" role="tablist" aria-label="Filter competitions by sport">
+      <div className="sport-filter-tabs" role="group" aria-label="Filter competitions by sport">
         {sportList.map((s) => (
           <button
             key={s}
-            role="tab"
-            aria-selected={sport.toLowerCase() === s.toLowerCase()}
+            aria-pressed={sport.toLowerCase() === s.toLowerCase()}
             className={`sport-tab-btn ${sport.toLowerCase() === s.toLowerCase() ? "active" : ""}`}
             onClick={() => setSport(s)}
           >

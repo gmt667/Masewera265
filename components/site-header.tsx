@@ -23,6 +23,8 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const appDropdownRef = useRef<HTMLDivElement>(null);
   const exploreRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setOpen(false);
@@ -32,30 +34,21 @@ export function SiteHeader() {
 
   // Transparent ONLY at very top (scrollY === 0) — immediately solid the instant any scrolling begins
   useEffect(() => {
+    let frame = 0;
     const checkScroll = () => {
-      const scrollY =
-        (typeof window !== "undefined"
-          ? window.scrollY ||
-            window.pageYOffset ||
-            document.documentElement.scrollTop ||
-            document.body.scrollTop ||
-            0
-          : 0);
-      setScrolled(scrollY > 0);
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 0);
+        frame = 0;
+      });
     };
 
     checkScroll();
 
     window.addEventListener("scroll", checkScroll, { passive: true });
-    document.addEventListener("scroll", checkScroll, { passive: true, capture: true });
-    window.addEventListener("wheel", checkScroll, { passive: true });
-    window.addEventListener("touchmove", checkScroll, { passive: true });
-
     return () => {
       window.removeEventListener("scroll", checkScroll);
-      document.removeEventListener("scroll", checkScroll);
-      window.removeEventListener("wheel", checkScroll);
-      window.removeEventListener("touchmove", checkScroll);
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, [path]);
 
@@ -75,6 +68,7 @@ export function SiteHeader() {
         setAppOpen(false);
         setExplore(false);
         setOpen(false);
+        if (open) window.requestAnimationFrame(() => menuButtonRef.current?.focus());
       }
     }
     if (appOpen || explore || open) {
@@ -87,8 +81,20 @@ export function SiteHeader() {
     }
   }, [appOpen, explore, open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    mobileNavRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   const active = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
-  const isSolid = scrolled || open;
+  const isHomepage = path === "/";
+  const hasOverlayHero = isHomepage && process.env.NEXT_PUBLIC_DATA_MODE !== "connected";
+  const isSolid = !hasOverlayHero || scrolled || open || explore || appOpen;
 
   return (
     <>
@@ -100,9 +106,7 @@ export function SiteHeader() {
       <header
         className={`site-header ${isSolid ? "is-scrolled" : "is-transparent"}`}
         data-scrolled={isSolid ? "true" : "false"}
-        style={{
-          backgroundColor: isSolid ? "#0b111c" : "transparent",
-        }}
+        data-homepage={hasOverlayHero ? "true" : "false"}
       >
         <div className="nav-shell">
           <Link href="/" className="brand" aria-label="Masewera265 home">
@@ -131,13 +135,15 @@ export function SiteHeader() {
             <div className="explore-menu" ref={exploreRef}>
               <button
                 aria-expanded={explore}
+                aria-controls="more-navigation-menu"
+                aria-haspopup="menu"
                 onClick={() => setExplore(!explore)}
                 aria-label="Explore more categories"
               >
                 More <ChevronDown size={14} className={explore ? "rotate-180" : ""} />
               </button>
               {explore && (
-                <div className="menu-popover" role="menu">
+                <div id="more-navigation-menu" className="menu-popover" role="menu">
                   <Link href="/teams" role="menuitem" onClick={() => setExplore(false)}>Teams & clubs</Link>
                   <Link href="/athletes" role="menuitem" onClick={() => setExplore(false)}>Athletes</Link>
                   <Link href="/national-teams" role="menuitem" onClick={() => setExplore(false)}>National teams</Link>
@@ -157,10 +163,12 @@ export function SiteHeader() {
                 className={`nav-get-app-btn ${appOpen ? "active" : ""}`}
                 onClick={() => setAppOpen(!appOpen)}
                 aria-expanded={appOpen}
-                aria-label="Download Masewera265 mobile app"
+                aria-controls="app-availability-panel"
+                aria-haspopup="dialog"
+                aria-label="Masewera265 mobile app availability"
               >
                 <Smartphone size={15} />
-                <span className="nav-get-app-label">Get App</span>
+                <span className="nav-get-app-label">Apps</span>
                 <span className="app-store-icons-mini">
                   <AppleLogo size={13} />
                   <GooglePlayLogo size={12} />
@@ -169,17 +177,17 @@ export function SiteHeader() {
               </button>
 
               {appOpen && (
-                <div className="nav-app-popover" role="dialog" aria-label="Download apps">
+                <div id="app-availability-panel" className="nav-app-popover" role="dialog" aria-label="Download apps">
                   <div className="nav-app-popover-header">
-                    <strong>Get Masewera265 App</strong>
-                    <p>Live scores, fixtures, standings &amp; alerts on your phone</p>
+                    <strong>Masewera265 Apps</strong>
+                    <p>The iOS and Android apps are planned but not available yet.</p>
                   </div>
                   <div className="nav-app-popover-badges">
                     <AppStoreBadge compact />
                     <GooglePlayBadge compact />
                   </div>
                   <div className="nav-app-popover-footer">
-                    <span>Free on iOS &amp; Android · Low Data</span>
+                    <span>Coming soon · No store listing yet</span>
                   </div>
                 </div>
               )}
@@ -192,11 +200,15 @@ export function SiteHeader() {
 
             {/* Mobile Hamburger Menu Toggle */}
             <button
+              ref={menuButtonRef}
               className="menu-button"
-              onClick={() => setOpen(!open)}
+              onClick={() => {
+                if (open) menuButtonRef.current?.focus();
+                setOpen(!open);
+              }}
               aria-expanded={open}
               aria-controls="mobile-navigation"
-              aria-label="Toggle menu"
+              aria-label={open ? "Close navigation menu" : "Open navigation menu"}
             >
               {open ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -207,7 +219,7 @@ export function SiteHeader() {
         {open && (
           <>
             <div className="mobile-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />
-            <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
+            <nav ref={mobileNavRef} id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
               <div className="mobile-nav-links">
                 {primary.map(([label, href]) => (
                   <Link
@@ -230,8 +242,8 @@ export function SiteHeader() {
               </div>
 
               <div className="mobile-app-download-box">
-                <span className="mobile-download-title">Download Masewera265 App</span>
-                <p>Experience Malawi sport on the go with real-time updates</p>
+                <span className="mobile-download-title">Masewera265 Apps Coming Soon</span>
+                <p>No iOS or Android store listing is available yet.</p>
                 <div className="mobile-download-badges">
                   <AppStoreBadge compact />
                   <GooglePlayBadge compact />
@@ -241,6 +253,7 @@ export function SiteHeader() {
           </>
         )}
       </header>
+      <div className={`header-offset ${hasOverlayHero ? "header-offset-home" : ""}`} aria-hidden="true" />
     </>
   );
 }

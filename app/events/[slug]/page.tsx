@@ -5,6 +5,8 @@ import { events } from "@/lib/demo-data";
 import { DataNotice, DemoBadge, TrustBadge } from "@/components/ui";
 import { TeamLogo } from "@/components/team-logo";
 import { EventTabs } from "@/components/event-tabs";
+import { DataStatePanel } from "@/components/data-state";
+import { dataMode, publicData } from "@/lib/data-service";
 
 export function generateStaticParams() {
   return events.map((e) => ({ slug: e.slug }));
@@ -12,7 +14,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const e = events.find((x) => x.slug === slug);
+  const e = dataMode === "demo" ? events.find((x) => x.slug === slug) : undefined;
   return {
     title: e ? `${e.home} vs ${e.away} | Masewera265` : "Event Centre",
   };
@@ -20,8 +22,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const e = events.find((x) => x.slug === slug);
-  if (!e) notFound();
+  const result = await publicData.event(slug);
+  const e = result.data[0];
+  if (result.state === "empty") notFound();
+  if (!e) return <main className="container page-content"><DataStatePanel state={result.state === "ready" ? "error" : result.state} message={result.message} /></main>;
 
   const scored = e.status === "LIVE" || e.status === "FINAL";
 
@@ -49,7 +53,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
             <div className="scoreboard-center">
               <span>{e.status}</span>
-              <strong>{scored ? `${e.homeScore} â€“ ${e.awayScore}` : e.time}</strong>
+              <strong>{scored ? `${e.homeScore} – ${e.awayScore}` : e.time}</strong>
               <small>{scored ? (e.status === "LIVE" ? "In Progress" : "Final Score") : "CAT"}</small>
             </div>
 
@@ -79,7 +83,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
       </section>
 
       <div className="container page-content">
-        <DataNotice />
+        {result.isDemo && <DataNotice />}
         <div className="match-layout">
           <div>
             <EventTabs event={e} />

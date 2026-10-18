@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Clock3 } from "lucide-react";
 import { articles } from "@/lib/demo-data";
 import { DemoBadge } from "@/components/ui";
+import { DataStatePanel } from "@/components/data-state";
+import { dataMode, publicData } from "@/lib/data-service";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
@@ -10,7 +12,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const a = articles.find((x) => x.slug === slug);
+  const a = dataMode === "demo" ? articles.find((x) => x.slug === slug) : undefined;
   return {
     title: a ? `${a.title} | Masewera265 News` : "News Article",
     description: a?.excerpt,
@@ -19,8 +21,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function NewsSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const a = articles.find((x) => x.slug === slug);
-  if (!a) notFound();
+  const result = await publicData.article(slug);
+  const a = result.data[0];
+  if (result.state === "empty") notFound();
+  if (!a) return <main className="container page-content"><DataStatePanel state={result.state === "ready" ? "error" : result.state} message={result.message} /></main>;
 
   return (
     <article>
@@ -35,7 +39,7 @@ export default async function NewsSlugPage({ params }: { params: Promise<{ slug:
           <h1>{a.title}</h1>
           <p className="article-deck">{a.excerpt}</p>
           <div className="article-byline">
-            <DemoBadge compact />
+            {result.isDemo && <DemoBadge compact />}
             <span>{a.published}</span>
             <span>
               <Clock3 size={14} /> {a.readTime}

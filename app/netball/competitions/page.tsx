@@ -1,3 +1,3 @@
-import { LimitedCompetitionPage } from "@/components/limited-competition-page";
+import { redirect } from "next/navigation";
 export const metadata = { title: "Malawi Netball Competitions | Masewera265" };
-export default function NetballCompetitionsPage() { return <LimitedCompetitionPage sport="Netball"/>; }
+export default function NetballCompetitionsPage() { redirect("/competitions?sport=netball"); }

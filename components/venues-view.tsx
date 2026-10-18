@@ -4,16 +4,16 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin, Search, Users, Zap } from "lucide-react";
-import { malawiVenues } from "@/lib/venues-data";
-import { events } from "@/lib/demo-data";
+import type { VenueDetail } from "@/lib/venues-data";
+import type { EventRecord } from "@/lib/types";
 
-export function VenuesView() {
+export function VenuesView({ venuesData, eventsData }: { venuesData: VenueDetail[]; eventsData: EventRecord[] }) {
   const [selectedRegion, setSelectedRegion] = useState<string>("All");
   const [selectedType, setSelectedType] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const filteredVenues = useMemo(() => {
-    return malawiVenues.filter((v) => {
+    return venuesData.filter((v) => {
       const matchRegion = selectedRegion === "All" || v.region === selectedRegion;
       const matchType = selectedType === "All" || v.type === selectedType;
       const q = searchQuery.toLowerCase().trim();
@@ -26,11 +26,11 @@ export function VenuesView() {
         v.residentClubs.some((c) => c.toLowerCase().includes(q));
       return matchRegion && matchType && matchSearch;
     });
-  }, [selectedRegion, selectedType, searchQuery]);
+  }, [selectedRegion, selectedType, searchQuery, venuesData]);
 
   const totalCapacity = useMemo(() => {
-    return malawiVenues.reduce((acc, v) => acc + v.capacityNumber, 0);
-  }, []);
+    return venuesData.reduce((acc, v) => acc + v.capacityNumber, 0);
+  }, [venuesData]);
 
   return (
     <div className="venues-view-wrapper">
@@ -39,7 +39,7 @@ export function VenuesView() {
         <div className="stat-card">
           <MapPin size={22} className="stat-icon" />
           <div>
-            <strong>{malawiVenues.length}</strong>
+            <strong>{venuesData.length}</strong>
             <span>Active sporting venues</span>
           </div>
         </div>
@@ -96,7 +96,7 @@ export function VenuesView() {
       {/* Venues Grid */}
       <div className="venues-grid">
         {filteredVenues.map((v) => {
-          const venueEvents = events.filter((e) => e.venueSlug === v.slug);
+          const venueEvents = eventsData.filter((e) => e.venueSlug === v.slug);
           return (
             <article className="venue-card-rich" key={v.slug}>
               <div className="venue-card-media">
@@ -105,6 +105,7 @@ export function VenuesView() {
                   alt={v.name}
                   width={500}
                   height={280}
+                  sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
                   className="venue-card-img"
                 />
                 <span className="venue-type-tag">{v.type}</span>

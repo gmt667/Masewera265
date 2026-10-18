@@ -4,12 +4,21 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { articles, athletes, competitions, sports, teams } from "@/lib/demo-data";
-import { malawiVenues } from "@/lib/venues-data";
 import { EmptyState, TrustBadge } from "./ui";
 import type { TrustLabel } from "@/lib/types";
+import type { Athlete, Competition, NewsArticle, Sport, Team } from "@/lib/types";
+import type { VenueDetail } from "@/lib/venues-data";
 
-export function SearchExperience() {
+interface SearchData {
+  sports: Sport[];
+  teams: Team[];
+  athletes: Athlete[];
+  competitions: Competition[];
+  venues: VenueDetail[];
+  articles: NewsArticle[];
+}
+
+export function SearchExperience({ data }: { data: SearchData }) {
   const searchParams = useSearchParams();
   const initialQ = searchParams?.get("q") || "";
   const [q, setQ] = useState(initialQ);
@@ -28,7 +37,7 @@ export function SearchExperience() {
     return [
       {
         name: "Sports Platforms",
-        items: sports
+        items: data.sports
           .filter((x) => x.name.toLowerCase().includes(term) || x.summary.toLowerCase().includes(term))
           .map((x) => ({
             label: x.name,
@@ -38,7 +47,7 @@ export function SearchExperience() {
       },
       {
         name: "Teams & Clubs",
-        items: teams
+        items: data.teams
           .filter((x) => `${x.name} ${x.location} ${x.nickname || ""}`.toLowerCase().includes(term))
           .map((x) => ({
             label: x.name,
@@ -49,7 +58,7 @@ export function SearchExperience() {
       },
       {
         name: "Athletes",
-        items: athletes
+        items: data.athletes
           .filter((x) => `${x.name} ${x.team} ${x.role}`.toLowerCase().includes(term))
           .map((x) => ({
             label: x.name,
@@ -60,7 +69,7 @@ export function SearchExperience() {
       },
       {
         name: "Competitions & Cups",
-        items: competitions
+        items: data.competitions
           .filter((x) => `${x.name} ${x.sport}`.toLowerCase().includes(term))
           .map((x) => ({
             label: x.name,
@@ -71,7 +80,7 @@ export function SearchExperience() {
       },
       {
         name: "Venues & Stadiums",
-        items: malawiVenues
+        items: data.venues
           .filter(
             (v) =>
               `${v.name} ${v.location} ${v.district} ${v.sports.join(" ")}`.toLowerCase().includes(term)
@@ -84,7 +93,7 @@ export function SearchExperience() {
       },
       {
         name: "News & Features",
-        items: articles
+        items: data.articles
           .filter((x) => `${x.title} ${x.excerpt}`.toLowerCase().includes(term))
           .map((x) => ({
             label: x.title,
@@ -93,7 +102,7 @@ export function SearchExperience() {
           })),
       },
     ];
-  }, [term]);
+  }, [term, data]);
 
   const total = groups.reduce((n, g) => n + g.items.length, 0);
 

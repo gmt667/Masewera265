@@ -23,6 +23,7 @@ export function FootballHome() {
           width={1680}
           height={945}
           priority
+          sizes="100vw"
           alt="Malawian football players representing The Flames and domestic clubs"
           className="football-hero-bg"
         />
@@ -378,6 +379,7 @@ export function FootballHome() {
                     width={400}
                     height={220}
                     alt={article.title}
+                    sizes="(max-width: 720px) 100vw, 33vw"
                     className="news-card-img"
                   />
                   <span>Football</span>

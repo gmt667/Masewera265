@@ -1,5 +1,6 @@
 // Comprehensive Malawian Sporting Venues Catalog
 // Covers international stadiums, premiership grounds, and multi-sport indoor arenas / complexes.
+import type { TrustLabel } from "./types";
 
 export interface VenueDetail {
   slug: string;
@@ -18,6 +19,7 @@ export interface VenueDetail {
   image: string;
   floodlights: boolean;
   tier: "Category 1 (International)" | "Category 2 (National Standard)" | "Category 3 (Community / Regional)";
+  trust?: TrustLabel;
 }
 
 export const malawiVenues: VenueDetail[] = [

@@ -1,4 +1,4 @@
-import { FootballHome } from "@/components/football-home";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Malawian Football | Masewera265",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function FootballPage() {
-  return <FootballHome />;
+  redirect("/sports/football");
 }

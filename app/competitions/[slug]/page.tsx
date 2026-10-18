@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Award, ShieldCheck, Trophy } from "lucide-react";
-import { competitions, events } from "@/lib/demo-data";
+import { competitions } from "@/lib/demo-data";
 import { footballCompetitions, historicalChampions } from "@/lib/football-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
 import { SportIcon } from "@/components/sport-icon";
+import { DataStatePanel } from "@/components/data-state";
+import { dataMode, publicData } from "@/lib/data-service";
 
 export function generateStaticParams() {
   const allComps = [...competitions, ...footballCompetitions];
@@ -21,9 +23,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const c =
-    competitions.find((x) => x.slug === slug) ||
-    footballCompetitions.find((x) => x.slug === slug);
+  const c = dataMode === "demo" ? (
+    competitions.find((x) => x.slug === slug) || footballCompetitions.find((x) => x.slug === slug)
+  ) : undefined;
   return {
     title: c ? `${c.name} | Masewera265` : "Competition Profile",
   };
@@ -31,14 +33,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function CompetitionPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const c =
-    competitions.find((x) => x.slug === slug) ||
-    footballCompetitions.find((x) => x.slug === slug);
+  const competitionResult = dataMode === "connected" ? await publicData.competition(slug) : null;
+  const c = dataMode === "demo"
+    ? competitions.find((x) => x.slug === slug) || footballCompetitions.find((x) => x.slug === slug)
+    : competitionResult?.data[0];
 
-  if (!c) notFound();
+  if (competitionResult?.state === "empty" || (dataMode === "demo" && !c)) notFound();
+  if (!c) return <main className="container page-content"><DataStatePanel state={competitionResult?.state === "ready" || !competitionResult ? "error" : competitionResult.state} message={competitionResult?.message} /></main>;
 
-  const footballDetail = footballCompetitions.find((x) => x.slug === slug);
-  const matches = events.filter((e) => e.competitionSlug === slug);
+  const footballDetail = dataMode === "demo" ? footballCompetitions.find((x) => x.slug === slug) : undefined;
+  const eventResult = await publicData.events({ competition: slug });
+  const matches = eventResult.data.filter((e) => e.competitionSlug === slug);
   const relevantChampions = historicalChampions.filter(
     (h) =>
       h.competition.toLowerCase().includes(c.name.toLowerCase()) ||
@@ -68,10 +73,10 @@ export default async function CompetitionPage({ params }: { params: Promise<{ sl
       </section>
 
       <div className="container page-content">
-        <DataNotice
+        {dataMode === "demo" && <DataNotice
           title={`${c.name} competition record`}
           body="League standings, tournament structures, and historical champions are referenced against official FAM, SULOM, and governing body publications."
-        />
+        />}
 
         <div className="profile-grid">
           <div>

@@ -1,4 +1,4 @@
-import { BasketballHome } from "@/components/basketball-home";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Malawian Basketball | Masewera265",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function BasketballPage() {
-  return <BasketballHome />;
+  redirect("/sports/basketball");
 }

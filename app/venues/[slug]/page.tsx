@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CalendarDays, MapPin, Trophy } from "lucide-react";
-import { events } from "@/lib/demo-data";
 import { malawiVenues, getVenueBySlug } from "@/lib/venues-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
+import { DataStatePanel } from "@/components/data-state";
+import { dataMode, publicData } from "@/lib/data-service";
 
 export function generateStaticParams() {
   return malawiVenues.map((v) => ({ slug: v.slug }));
@@ -12,7 +13,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const venue = getVenueBySlug(slug);
+  const venue = dataMode === "demo" ? getVenueBySlug(slug) : undefined;
   return {
     title: venue ? `${venue.name} | Masewera265 Venues` : "Venue Profile | Masewera265",
     description: venue?.summary,
@@ -21,11 +22,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function VenueSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const venue = getVenueBySlug(slug);
+  const [venueResult, eventResult] = await Promise.all([publicData.venue(slug), publicData.events({ location: slug })]);
+  const venue = venueResult.data[0];
+  if (venueResult.state === "empty") notFound();
+  if (!venue) return <main className="container page-content"><DataStatePanel state={venueResult.state === "ready" ? "error" : venueResult.state} message={venueResult.message} /></main>;
 
-  if (!venue) notFound();
-
-  const venueEvents = events.filter((e) => e.venueSlug === slug);
+  const venueEvents = eventResult.data.filter((e) => e.venueSlug === slug);
 
   return (
     <div className="venue-detail-page">
@@ -40,13 +42,14 @@ export default async function VenueSlugPage({ params }: { params: Promise<{ slug
               height={180}
               className="venue-hero-thumb"
               priority
+              sizes="(max-width: 720px) 260px, 260px"
             />
           </div>
           <div>
             <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8, flexWrap: "wrap" }}>
               <span className="sport-pill">{venue.type}</span>
               <span className="national-pill">{venue.tier}</span>
-              <TrustBadge label="Verified" />
+              <TrustBadge label={venue.trust ?? "Unverified"} />
             </div>
             <h1>{venue.name}</h1>
             <p className="profile-sub">
@@ -63,10 +66,10 @@ export default async function VenueSlugPage({ params }: { params: Promise<{ slug
           </Link>
         </div>
 
-        <DataNotice
+        {venueResult.isDemo && <DataNotice
           title={`${venue.name} Facility Specifications`}
           body="Technical dimensions, official capacity, floodlighting capabilities, and tenant club affiliations are documented from verified registry records."
-        />
+        />}
 
         {/* Specifications Grid */}
         <div className="profile-grid">

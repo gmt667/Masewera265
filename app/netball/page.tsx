@@ -1,4 +1,4 @@
-import { NetballHome } from "@/components/netball-home";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Malawian Netball | Masewera265",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function NetballPage() {
-  return <NetballHome />;
+  redirect("/sports/netball");
 }

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="cougNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="92" fill="url(#cougNavy)" stroke="#f59e0b" stroke-width="6"/>
+  <circle cx="100" cy="100" r="82" fill="#ffffff" opacity="0.1"/>
+  
+  <!-- Cougar / Mountain Lion Silhouette -->
+  <g transform="translate(100, 85)">
+    <path d="M-35 -20 C-40 -40 -15 -35 -10 -25 C0 -30 20 -30 25 -20 C35 -20 40 0 35 15 C30 35 0 45 -10 40 C-25 35 -40 10 -35 -20 Z" fill="#f59e0b"/>
+    <!-- Snout & Ears -->
+    <polygon points="-28,-32 -22,-18 -34,-18" fill="#1e3a8a"/>
+    <polygon points="18,-30 22,-16 12,-16" fill="#1e3a8a"/>
+    <!-- Intense Eye -->
+    <polygon points="-8,-12 2,-8 -6,-4" fill="#ffffff"/>
+    <circle cx="-3" cy="-8" r="1.5" fill="#0f172a"/>
+    <!-- Fangs -->
+    <polygon points="-15,18 -10,30 -5,18" fill="#ffffff"/>
+    <polygon points="5,16 10,28 15,16" fill="#ffffff"/>
+  </g>
+  
+  <!-- Basketball element -->
+  <circle cx="100" cy="132" r="14" fill="#ea580c" stroke="#ffffff" stroke-width="2"/>
+  <line x1="86" y1="132" x2="114" y2="132" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="100" y1="118" x2="100" y2="146" stroke="#ffffff" stroke-width="1.5"/>
+
+  <!-- Text -->
+  <text x="100" y="38" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="12" font-weight="900" fill="#ffffff" letter-spacing="2">COUGARS</text>
+  <text x="100" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" font-weight="800" fill="#f59e0b" letter-spacing="1.5">BASKETBALL CLUB</text>
+  <text x="100" y="177" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="700" fill="#ffffff" opacity="0.8">BLANTYRE</text>
+</svg>

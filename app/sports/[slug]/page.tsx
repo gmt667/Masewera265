@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, CalendarDays, Trophy, Users, Award, MapPin } from "lucide-react";
 import { athletes, competitions, events, sports, teams } from "@/lib/demo-data";
-import { DataNotice, EventCard, SectionHeading } from "@/components/ui";
+import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";
 import { TeamLogo } from "@/components/team-logo";
 import { SportIcon } from "@/components/sport-icon";
 import { FootballHome } from "@/components/football-home";
@@ -19,6 +19,8 @@ import { HockeyHome } from "@/components/hockey-home";
 import { HandballHome } from "@/components/handball-home";
 import { RugbyHome } from "@/components/rugby-home";
 import { ChessHome } from "@/components/chess-home";
+import { DataStatePanel } from "@/components/data-state";
+import { dataMode, publicData } from "@/lib/data-service";
 
 export function generateStaticParams() {
   return sports.map((s) => ({ slug: s.slug }));
@@ -26,7 +28,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const s = sports.find((x) => x.slug === slug);
+  const s = dataMode === "demo" ? sports.find((x) => x.slug === slug) : undefined;
   return {
     title: s ? `${s.name} Platform | Masewera265` : "Sport Platform",
     description: s?.summary,
@@ -35,6 +37,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function SportPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (dataMode === "connected") {
+    const sportResult = await publicData.sport(slug);
+    const connectedSport = sportResult.data[0];
+    if (sportResult.state === "empty") notFound();
+    if (!connectedSport) return <main className="container page-content"><DataStatePanel state={sportResult.state === "ready" ? "error" : sportResult.state} message={sportResult.message} /></main>;
+    const [teamResult, eventResult, competitionResult, athleteResult] = await Promise.all([
+      publicData.teams({ sport: connectedSport.name }), publicData.events({ sport: connectedSport.name }),
+      publicData.competitions({ sport: connectedSport.name }), publicData.athletes({ sport: connectedSport.name }),
+    ]);
+    return <>
+      <section className={`sport-hero sport-${connectedSport.slug}`}><div className="container"><div className="sport-hero-icon"><SportIcon sport={connectedSport.slug} size={54} /></div><div><p className="eyebrow">CONNECTED SPORT PLATFORM</p><h1>{connectedSport.name} in Malawi</h1><p>{connectedSport.summary}</p></div></div></section>
+      <main className="container page-content">
+        <section className="sport-sub-section"><SectionHeading title={`${connectedSport.name} teams`} /><div className="directory-grid">{teamResult.data.map((team) => <Link className="directory-card" href={`/teams/${team.slug}`} key={team.slug}><TrustBadge label={team.trust} /><h3>{team.name}</h3><p>{team.location}</p></Link>)}</div></section>
+        <section className="sport-sub-section"><SectionHeading title={`${connectedSport.name} events`} /><div className="event-grid">{eventResult.data.map((event) => <EventCard event={event} key={event.id} />)}</div></section>
+        <section className="sport-sub-section"><SectionHeading title="Competitions" /><div className="directory-grid">{competitionResult.data.map((competition) => <Link className="directory-card" href={`/competitions/${competition.slug}`} key={competition.slug}><h3>{competition.name}</h3><p>{competition.season}</p></Link>)}</div></section>
+        <section className="sport-sub-section"><SectionHeading title="Athletes" /><div className="directory-grid">{athleteResult.data.map((athlete) => <Link className="directory-card" href={`/athletes/${athlete.slug}`} key={athlete.slug}><h3>{athlete.name}</h3><p>{athlete.role}</p></Link>)}</div></section>
+      </main>
+    </>;
+  }
   const sport = sports.find((s) => s.slug === slug);
   if (!sport) notFound();
   if (sport.slug === "football") return <FootballHome />;
