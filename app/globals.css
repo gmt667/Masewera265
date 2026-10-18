@@ -1000,15 +1000,12 @@ body:has(.design-home) .brand strong{color:#ef233c}
 
 /* ─── Navbar: Transparent & Solid Scrolled States ─────────────────────── */
 .site-header {
-  position: sticky;
-  top: 0;
+  position: fixed !important;
+  inset: 0 0 auto 0;
+  width: 100%;
   z-index: 100;
-  margin-bottom: -78px;
-  background-color: transparent;
-  transition: background-color 0.12s ease-in-out, border-color 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
-}
-body:has(.design-home) > .site-header {
-  margin-bottom: -76px;
+  margin-bottom: 0 !important;
+  transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, backdrop-filter 0.16s ease, -webkit-backdrop-filter 0.16s ease;
 }
 .site-header.is-transparent,
 .site-header[data-scrolled="false"],
@@ -1025,17 +1022,12 @@ body:has(.design-home) > .site-header[data-scrolled="false"] {
 .site-header[data-scrolled="true"],
 body:has(.design-home) > .site-header.is-scrolled,
 body:has(.design-home) > .site-header[data-scrolled="true"] {
-  background: #0b111c !important;
-  background-color: #0b111c !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: 1px solid #1e293b !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55) !important;
-}
-@media(max-width:720px){
-  .site-header {
-    margin-bottom: -66px;
-  }
+  background: rgba(11, 17, 28, 0.84) !important;
+  background-color: rgba(11, 17, 28, 0.84) !important;
+  backdrop-filter: saturate(135%) blur(14px) !important;
+  -webkit-backdrop-filter: saturate(135%) blur(14px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 6px 20px rgba(2, 8, 20, 0.18) !important;
 }
 .demo-bar {
   transition: height 0.2s ease, font-size 0.2s ease;
