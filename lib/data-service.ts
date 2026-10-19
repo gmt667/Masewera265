@@ -13,6 +13,15 @@ export interface PublicDataResult<T> {
   updatedAt?: string;
   message?: string;
   retryable: boolean;
+  errorCode?: "CONFIGURATION" | "HTTP" | "TIMEOUT" | "NETWORK" | "INVALID_RESPONSE";
+  pagination?: PublicPagination;
+}
+
+export interface PublicPagination {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
 }
 
 export interface PublicDataQuery {
@@ -31,7 +40,10 @@ interface ConnectedEnvelope<T> {
   data: T[];
   stale?: boolean;
   updatedAt?: string;
+  pagination?: PublicPagination;
 }
+
+type FetchImplementation = typeof fetch;
 
 const paths: Record<DataResource, string> = {
   sports: "/v1/public/sports",
@@ -52,8 +64,13 @@ function demoResult<T>(data: T[]): PublicDataResult<T> {
   return { state: data.length ? "ready" : "empty", data, isDemo: true, retryable: false };
 }
 
-function failureResult<T>(state: "unavailable" | "error", message: string): PublicDataResult<T> {
-  return { state, data: [], isDemo: false, message, retryable: state === "error" };
+function failureResult<T>(
+  state: "unavailable" | "error",
+  message: string,
+  errorCode: PublicDataResult<T>["errorCode"],
+  retryable = state === "error",
+): PublicDataResult<T> {
+  return { state, data: [], isDemo: false, message, retryable, errorCode };
 }
 
 function appendQuery(url: URL, query?: PublicDataQuery) {
@@ -63,74 +80,119 @@ function appendQuery(url: URL, query?: PublicDataQuery) {
   }
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasString(record: Record<string, unknown>, field: string) {
+  return typeof record[field] === "string" && record[field] !== "";
+}
+
+function isValidRecord(resource: DataResource, value: unknown) {
+  if (!isRecord(value)) return false;
+  if (resource === "events") return hasString(value, "slug") && hasString(value, "home") && hasString(value, "away");
+  if (resource === "places") return hasString(value, "region") && Array.isArray(value.places);
+  return hasString(value, "slug") && hasString(value, resource === "articles" ? "title" : "name");
+}
+
+function isValidPagination(value: unknown): value is PublicPagination {
+  if (!isRecord(value)) return false;
+  return ["page", "pageSize", "total", "totalPages"].every((field) => Number.isInteger(value[field]) && Number(value[field]) >= 0);
+}
+
+export interface ConnectedDataClientOptions {
+  baseUrl?: string;
+  fetchImpl?: FetchImplementation;
+  timeoutMs?: number;
+}
+
+export function createConnectedDataClient({ baseUrl, fetchImpl = fetch, timeoutMs = 8_000 }: ConnectedDataClientOptions) {
+  const normalizedBaseUrl = baseUrl?.replace(/\/$/, "");
+  const inFlight = new Map<string, Promise<PublicDataResult<unknown>>>();
+
+  const request = <T>(key: string, load: () => Promise<PublicDataResult<T>>) => {
+    const existing = inFlight.get(key) as Promise<PublicDataResult<T>> | undefined;
+    if (existing) return existing;
+    const promise = load().finally(() => inFlight.delete(key));
+    inFlight.set(key, promise as Promise<PublicDataResult<unknown>>);
+    return promise;
+  };
+
+  const fetchResource = <T>(resource: DataResource, query?: PublicDataQuery): Promise<PublicDataResult<T>> => {
+    if (!normalizedBaseUrl) return Promise.resolve(failureResult("unavailable", "Connected data is enabled, but no approved API endpoint is configured.", "CONFIGURATION", false));
+    const url = new URL(`${normalizedBaseUrl}${paths[resource]}`);
+    appendQuery(url, query);
+    return request<T>(url.toString(), async () => {
+      try {
+        const response = await fetchImpl(url, { headers: { Accept: "application/json" }, cache: "no-store", signal: AbortSignal.timeout(timeoutMs) });
+        if (!response.ok) {
+          const retryable = response.status === 408 || response.status === 429 || response.status >= 500;
+          return failureResult("error", `The ${resource} service returned HTTP ${response.status}.`, "HTTP", retryable);
+        }
+        const payload: unknown = await response.json();
+        const envelope: ConnectedEnvelope<T> | undefined = Array.isArray(payload)
+          ? { data: payload as T[] }
+          : isRecord(payload) && Array.isArray(payload.data)
+            ? payload as unknown as ConnectedEnvelope<T>
+            : undefined;
+        if (!envelope || !envelope.data.every((item) => isValidRecord(resource, item))) {
+          return failureResult("error", `The ${resource} service returned an invalid response.`, "INVALID_RESPONSE", false);
+        }
+        if (envelope.pagination !== undefined && !isValidPagination(envelope.pagination)) {
+          return failureResult("error", `The ${resource} service returned invalid pagination metadata.`, "INVALID_RESPONSE", false);
+        }
+        if (!envelope.data.length) {
+          return { state: "empty", data: [], isDemo: false, updatedAt: envelope.updatedAt, retryable: false, pagination: envelope.pagination };
+        }
+        return {
+          state: envelope.stale ? "stale" : "ready",
+          data: envelope.data,
+          isDemo: false,
+          updatedAt: envelope.updatedAt,
+          message: envelope.stale ? "Showing the last successful update while the source refresh is unavailable." : undefined,
+          retryable: Boolean(envelope.stale),
+          pagination: envelope.pagination,
+        };
+      } catch (error) {
+        const timedOut = error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+        return failureResult("error", timedOut ? `The ${resource} request timed out.` : `The ${resource} service could not be reached.`, timedOut ? "TIMEOUT" : "NETWORK", true);
+      }
+    });
+  };
+
+  const fetchItem = <T>(resource: DataResource, slug: string): Promise<PublicDataResult<T>> => {
+    if (!normalizedBaseUrl) return Promise.resolve(failureResult("unavailable", "Connected data is enabled, but no approved API endpoint is configured.", "CONFIGURATION", false));
+    const url = `${normalizedBaseUrl}${paths[resource]}/${encodeURIComponent(slug)}`;
+    return request<T>(url, async () => {
+      try {
+        const response = await fetchImpl(url, { headers: { Accept: "application/json" }, cache: "no-store", signal: AbortSignal.timeout(timeoutMs) });
+        if (response.status === 404) return { state: "empty", data: [], isDemo: false, retryable: false };
+        if (!response.ok) return failureResult("error", `The ${resource} service returned HTTP ${response.status}.`, "HTTP", response.status === 408 || response.status === 429 || response.status >= 500);
+        const payload: unknown = await response.json();
+        const item = isRecord(payload) && "data" in payload ? payload.data : payload;
+        if (!isValidRecord(resource, item)) return failureResult("error", `The ${resource} service returned an invalid record.`, "INVALID_RESPONSE", false);
+        return { state: "ready", data: [item as T], isDemo: false, retryable: false };
+      } catch (error) {
+        const timedOut = error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+        return failureResult("error", timedOut ? `The ${resource} request timed out.` : `The ${resource} service could not be reached.`, timedOut ? "TIMEOUT" : "NETWORK", true);
+      }
+    });
+  };
+
+  return { fetchResource, fetchItem };
+}
+
+const connectedClient = createConnectedDataClient({ baseUrl: apiBaseUrl });
+
 export async function fetchConnectedResource<T>(
   resource: DataResource,
   query?: PublicDataQuery,
 ): Promise<PublicDataResult<T>> {
-  if (!apiBaseUrl) {
-    return failureResult("unavailable", "Connected data is enabled, but no approved API endpoint is configured.");
-  }
-
-  const url = new URL(`${apiBaseUrl}${paths[resource]}`);
-  appendQuery(url, query);
-
-  try {
-    const response = await fetch(url, {
-      headers: { Accept: "application/json" },
-      cache: "no-store",
-      signal: AbortSignal.timeout(8_000),
-    });
-    if (!response.ok) {
-      return failureResult("error", `The ${resource} service returned HTTP ${response.status}.`);
-    }
-
-    const payload: unknown = await response.json();
-    const envelope: ConnectedEnvelope<T> = Array.isArray(payload)
-      ? { data: payload as T[] }
-      : (payload as ConnectedEnvelope<T>);
-
-    if (!envelope || !Array.isArray(envelope.data)) {
-      return failureResult("error", `The ${resource} service returned an invalid response.`);
-    }
-    if (!envelope.data.length) {
-      return { state: "empty", data: [], isDemo: false, updatedAt: envelope.updatedAt, retryable: false };
-    }
-    return {
-      state: envelope.stale ? "stale" : "ready",
-      data: envelope.data,
-      isDemo: false,
-      updatedAt: envelope.updatedAt,
-      message: envelope.stale ? "Showing the last successful update while the source refresh is unavailable." : undefined,
-      retryable: Boolean(envelope.stale),
-    };
-  } catch (error) {
-    const timedOut = error instanceof Error && error.name === "TimeoutError";
-    return failureResult("error", timedOut ? `The ${resource} request timed out.` : `The ${resource} service could not be reached.`);
-  }
+  return connectedClient.fetchResource<T>(resource, query);
 }
 
 export async function fetchConnectedItem<T>(resource: DataResource, slug: string): Promise<PublicDataResult<T>> {
-  if (!apiBaseUrl) {
-    return failureResult("unavailable", "Connected data is enabled, but no approved API endpoint is configured.");
-  }
-  try {
-    const response = await fetch(`${apiBaseUrl}${paths[resource]}/${encodeURIComponent(slug)}`, {
-      headers: { Accept: "application/json" },
-      cache: "no-store",
-      signal: AbortSignal.timeout(8_000),
-    });
-    if (response.status === 404) return { state: "empty", data: [], isDemo: false, retryable: false };
-    if (!response.ok) return failureResult("error", `The ${resource} service returned HTTP ${response.status}.`);
-    const payload: unknown = await response.json();
-    const item = payload && typeof payload === "object" && "data" in payload
-      ? (payload as { data: T }).data
-      : payload as T;
-    if (!item || typeof item !== "object") return failureResult("error", `The ${resource} service returned an invalid record.`);
-    return { state: "ready", data: [item], isDemo: false, retryable: false };
-  } catch (error) {
-    const timedOut = error instanceof Error && error.name === "TimeoutError";
-    return failureResult("error", timedOut ? `The ${resource} request timed out.` : `The ${resource} service could not be reached.`);
-  }
+  return connectedClient.fetchItem<T>(resource, slug);
 }
 
 function resource<T>(resourceName: DataResource, demoData: T[]) {

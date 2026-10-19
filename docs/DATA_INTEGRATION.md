@@ -42,6 +42,21 @@ Dates should arrive as ISO-8601 values with an explicit offset. The UI defaults 
 
 The connected adapter must expose loading, empty, unavailable, error-with-retry and stale-data states. On refresh failure, retained data may be displayed only with its last successful update and a clear stale warning. A failed real request must never be replaced by demo records.
 
+List responses may be a bare array for backwards compatibility, but the preferred response is this envelope:
+
+```json
+{
+  "data": [],
+  "updatedAt": "2026-10-19T10:00:00+02:00",
+  "stale": false,
+  "pagination": { "page": 1, "pageSize": 20, "total": 0, "totalPages": 0 }
+}
+```
+
+The browser adapter validates the envelope, pagination values and minimum identity fields before exposing records to the UI. Invalid payloads fail closed with `INVALID_RESPONSE`; they are never rendered as trusted records. It also distinguishes configuration, HTTP, timeout and network failures. Timeouts, rate limits and server failures are retryable; malformed payloads and ordinary client errors are not. Concurrent identical reads share one in-flight request.
+
+Screens should pass the returned `retryable` value and a local reload callback to `DataStatePanel` when they can repeat a query without reloading the entire application. The component retains a page-reload fallback for existing callers.
+
 ## Provider integration boundary
 
 API-Football/API-Sports and Sportmonks are backend integrations. The backend must normalize provider identifiers, confirm subscription and Malawian competition coverage, respect licensing, apply caching/rate limits and publish only approved public records. The browser receives Masewera265 records and no provider secret.

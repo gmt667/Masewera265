@@ -26,6 +26,8 @@ Provider tokens, database credentials, signing secrets and private API keys must
 
 The former Next.js build produced server-rendered/static HTML per route. Vite now serves one client-rendered HTML shell. Page titles and descriptions update after routing, but crawlers that do not execute JavaScript may see only the default metadata. For strong search discoverability, add a prerendering step or place an SSR-capable frontend in front of the same React route model.
 
+`src/route-metadata.ts` centralizes public, dynamic, dashboard and not-found metadata. The runtime updates descriptions, robots directives, canonical links, Open Graph fields and the Twitter card. Vite generates `sitemap.xml` from the same public route and demo-record model during development and production builds; dashboard routes are excluded. These improvements do not replace prerendering or SSR for crawlers that do not execute JavaScript.
+
 ## Nested-route fallback
 
 Every host must rewrite unknown application paths to `/index.html`, while continuing to serve real assets normally. This repository includes:

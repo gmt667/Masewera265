@@ -14,7 +14,7 @@ npm run dev
 
 Open `http://localhost:5173`. Preview a production build with `npm run build` followed by `npm run preview`.
 
-Validation uses `npm run lint`, `npm run typecheck`, `npm run test:regression`, and `npm run build`.
+Validation uses `npm test`, `npm run lint`, `npm run typecheck`, `npm run test:regression`, `npm run test:navbar`, and `npm run build`. The Vitest/Testing Library suite exercises dashboard access boundaries, device-local profile behavior, navbar keyboard interactions, route loading and metadata updates in a DOM environment. Axe checks cover structural accessibility; real-browser testing must still verify responsive layout, focus order and color contrast.
 
 ## Delivery status
 

@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useLocation, useParams } from "react-router-do
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AsyncRoute, RouteMeta } from "@/src/components/route-support";
+import { resolveRouteMetadata } from "@/src/route-metadata";
 import HomePage from "@/app/page";
 import AboutPage from "@/app/about/page";
 import AthletesPage from "@/app/athletes/page";
@@ -55,16 +56,8 @@ function DynamicPageRoute({ page }: { page: DynamicPage }) {
 
 function MetadataManager() {
   const { pathname } = useLocation();
-  const labels: Array<[RegExp, string]> = [
-    [/^\/$/, "Masewera265 | Malawi's Digital Home for Sport"], [/^\/fixtures/, "Fixtures"],
-    [/^\/results/, "Results"], [/^\/live/, "Live Events"], [/^\/teams/, "Teams & Clubs"],
-    [/^\/athletes/, "Athletes"], [/^\/competitions/, "Competitions"], [/^\/news/, "News"],
-    [/^\/venues/, "Venues"], [/^\/sports/, "Sports"], [/^\/search/, "Search"],
-    [/^\/national-teams/, "National Teams"], [/^\/dashboard/, "Dashboard"], [/^\/football/, "Malawian Football"],
-    [/^\/about/, "About & Coverage"],
-  ];
-  const title = labels.find(([pattern]) => pattern.test(pathname))?.[1] ?? "Page not found";
-  return <RouteMeta title={title} description="Malawi sports, fixtures, results, teams, athletes, competitions and communities on Masewera265." />;
+  const metadata = resolveRouteMetadata(pathname);
+  return <RouteMeta {...metadata} />;
 }
 
 function RouteScrollManager() {
