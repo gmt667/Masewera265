@@ -9,12 +9,18 @@ import {
   Building,
   Check,
   CheckCircle2,
+  Copy,
   KeyRound,
+  Lock,
   Mail,
   RefreshCw,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
   Smartphone,
   Sparkles,
   User,
+  Zap,
 } from "lucide-react";
 import { MaseweraCrest } from "./masewera-logo";
 
@@ -38,48 +44,86 @@ export interface AuthUser {
   demoChannel: "sms" | "whatsapp";
 }
 
-const ROLE_OPTIONS: { id: Role; label: string; desc: string; badge: string }[] = [
+const ROLE_OPTIONS: { id: Role; label: string; desc: string; badge: string; color: string }[] = [
   {
     id: "supporter",
     label: "Supporter / Fan",
     desc: "Follow clubs, personalized fixtures, Flames & Scorchers updates",
     badge: "Demo",
+    color: "#10b981",
   },
   {
     id: "athlete",
     label: "Athlete / Player",
     desc: "Preview profile, affiliation and performance-request interfaces",
     badge: "Demo",
+    color: "#3b82f6",
   },
   {
     id: "manager",
     label: "Club & Team Manager",
     desc: "Official squad lists, match lineups & club transfer submissions",
     badge: "Demo",
+    color: "#f59e0b",
   },
   {
     id: "organizer",
     label: "Association / Organizer",
     desc: "Tournament editions, season scheduling & venue allocations",
     badge: "Demo",
+    color: "#8b5cf6",
   },
   {
     id: "reporter",
     label: "Sports Reporter",
     desc: "Field assignments, real-time match events & press notes",
     badge: "Demo",
+    color: "#06b6d4",
   },
   {
     id: "editor",
     label: "Editor & Verifier",
     desc: "Result audit queues, evidence verification & archive governance",
     badge: "Demo",
+    color: "#ec4899",
   },
   {
     id: "administrator",
     label: "System Administrator",
     desc: "Entity hierarchy, user governance, API feeds & security audit",
     badge: "Demo",
+    color: "#ef4444",
+  },
+];
+
+const PRESET_DEMO_ACCOUNTS = [
+  {
+    fullName: "Chimwemwe Phiri",
+    identifier: "+265 991 265 001",
+    role: "supporter" as Role,
+    roleName: "Supporter",
+    org: "Nyasa Big Bullets Fan",
+  },
+  {
+    fullName: "Tamika Gondwe",
+    identifier: "+265 888 265 002",
+    role: "manager" as Role,
+    roleName: "Team Manager",
+    org: "Silver Strikers FC",
+  },
+  {
+    fullName: "Blessings Banda",
+    identifier: "+265 992 265 003",
+    role: "reporter" as Role,
+    roleName: "Sports Reporter",
+    org: "Malawi Sports Press",
+  },
+  {
+    fullName: "Tionge Kaunda",
+    identifier: "+265 995 265 004",
+    role: "editor" as Role,
+    roleName: "Editor & Verifier",
+    org: "Masewera Editorial Bureau",
   },
 ];
 
@@ -170,8 +214,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
 
   // Clean phone input formatting for Malawi numbers
   const formatMalawiPhone = (val: string) => {
-    const cleaned = val.replace(/[^\d+]/g, "");
-    return cleaned;
+    return val.replace(/[^\d+ ]/g, "");
   };
 
   const handleRequestOtp = (e: React.FormEvent) => {
@@ -209,9 +252,10 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
     }, 150);
   };
 
-  const handleQuickSignIn = (acc: AuthUser) => {
-    setSignInIdentifier(acc.phone || acc.email || acc.fullName);
-    setTargetDisplay(acc.phone || acc.email || acc.fullName);
+  const handleQuickSignIn = (acc: { fullName: string; identifier?: string; phone?: string; email?: string; role: Role; organization?: string }) => {
+    const idVal = acc.identifier || acc.phone || acc.email || acc.fullName;
+    setSignInIdentifier(idVal);
+    setTargetDisplay(idVal);
     setRole(acc.role);
     setFullName(acc.fullName);
     setOrganization(acc.organization || "");
@@ -314,39 +358,55 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
 
   return (
     <div className="auth-portal-shell">
+      {/* Background ambient lighting */}
+      <div className="auth-ambient-glow auth-glow-1" aria-hidden="true" />
+      <div className="auth-ambient-glow auth-glow-2" aria-hidden="true" />
+
       <div className="auth-portal-card">
-        {/* Header / Brand */}
-        <div className="auth-header">
-          <Link href="/" className="auth-brand-row" aria-label="Return to Masewera265 Home">
-            <MaseweraCrest size={38} />
-            <div>
+        {/* Header / Brand with New High-Res Logo */}
+        <header className="auth-header">
+          <Link href="/" className="auth-brand-badge" aria-label="Return to Masewera265 Home">
+            <div className="auth-crest-container">
+              <MaseweraCrest size={56} />
+            </div>
+            <div className="auth-brand-text-block">
               <span className="auth-brand-name">
                 MASEWERA<strong>265</strong>
               </span>
-              <small className="auth-brand-sub">Malawi Digital Home for Sport</small>
+              <span className="auth-brand-tagline">Malawi&apos;s Digital Home for Sport</span>
             </div>
           </Link>
-          <div className="auth-badge-pill">
-            <Sparkles size={12} />
+
+          <div className="auth-badge-pill" role="status">
+            <span className="auth-pulse-dot" aria-hidden="true" />
+            <Sparkles size={13} className="text-amber-400" />
             <span>Device-local access demonstration</span>
           </div>
-        </div>
+        </header>
 
+        {/* Security & Access Boundary Note */}
         <div className="auth-alert demo-boundary" role="note">
-          <AlertCircle size={17} />
-          <span>This preview creates no account, sends no code, verifies no identity and grants no protected access. Use sample information only.</span>
+          <div className="auth-alert-icon-wrap">
+            <ShieldAlert size={18} />
+          </div>
+          <div className="auth-alert-content">
+            <strong>Access Preview Boundary</strong>
+            <p>
+              This preview creates no account, sends no code, verifies no identity and grants no protected access. Use sample information only.
+            </p>
+          </div>
         </div>
 
         {/* Global Error / Success Notices */}
         {errorMsg && (
           <div className="auth-alert error" role="alert">
-            <AlertCircle size={16} />
+            <AlertCircle size={17} />
             <span>{errorMsg}</span>
           </div>
         )}
         {successMsg && (
           <div className="auth-alert success" role="status">
-            <CheckCircle2 size={16} />
+            <CheckCircle2 size={17} />
             <span>{successMsg}</span>
           </div>
         )}
@@ -355,7 +415,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
         {step === "details" && (
           <>
             {/* Tabs */}
-            <div className="auth-tab-switch" role="tablist">
+            <div className="auth-tab-switch" role="tablist" aria-label="Sign in mode">
               <button
                 type="button"
                 role="tab"
@@ -366,7 +426,8 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                   setErrorMsg("");
                 }}
               >
-                <KeyRound size={15} /> Preview sign-in
+                <KeyRound size={15} />
+                <span>Preview sign-in</span>
               </button>
               <button
                 type="button"
@@ -378,15 +439,20 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                   setErrorMsg("");
                 }}
               >
-                <User size={15} /> Create demo profile
+                <User size={15} />
+                <span>Create demo profile</span>
               </button>
             </div>
 
-            {/* Quick Sign-In Pills if previous account exists */}
-            {tab === "signin" && savedAccounts.length > 0 && (
+            {/* Quick-Access Demo Profiles Selector */}
+            {tab === "signin" && (
               <div className="saved-accounts-box">
-                <p className="saved-accounts-title">Saved demo profiles on this device:</p>
+                <div className="saved-accounts-header">
+                  <Zap size={14} className="accent-icon" />
+                  <span className="saved-accounts-title">Quick demo roles &amp; saved profiles:</span>
+                </div>
                 <div className="saved-accounts-list">
+                  {/* Previous local sessions if any */}
                   {savedAccounts.map((acc) => (
                     <button
                       key={acc.id}
@@ -399,9 +465,32 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                         <strong>{acc.fullName}</strong>
                         <small>{acc.role.toUpperCase()} • {acc.phone || acc.email}</small>
                       </div>
-                      <ArrowRight size={14} />
+                      <ArrowRight size={14} className="chip-arrow" />
                     </button>
                   ))}
+
+                  {/* Preset quick test accounts if none or fewer */}
+                  {savedAccounts.length === 0 && (
+                    <div className="preset-roles-grid">
+                      {PRESET_DEMO_ACCOUNTS.map((p) => (
+                        <button
+                          key={p.role}
+                          type="button"
+                          className="preset-role-card"
+                          onClick={() => handleQuickSignIn({
+                            fullName: p.fullName,
+                            identifier: p.identifier,
+                            role: p.role,
+                            organization: p.org,
+                          })}
+                        >
+                          <span className="preset-role-badge">{p.roleName}</span>
+                          <strong className="preset-role-name">{p.fullName}</strong>
+                          <small className="preset-role-org">{p.org}</small>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -414,11 +503,11 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                     Sample phone or email
                   </label>
                   <div className="input-with-icon">
-                    <Smartphone size={17} className="input-icon" />
+                    <Smartphone size={18} className="input-icon" />
                     <input
                       id="signin-id"
                       type="text"
-                      placeholder="e.g. +265 991 234 567 or email@domain.mw"
+                      placeholder="e.g. +265 991 234 567 or supporter@masewera.mw"
                       value={signInIdentifier}
                       onChange={(e) => setSignInIdentifier(e.target.value)}
                       required
@@ -431,8 +520,8 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                 </div>
 
                 <div className="form-group">
-                  <label>Preview delivery channel</label>
-                  <div className="channel-selector">
+                  <label id="delivery-label">Preview delivery channel</label>
+                  <div className="channel-selector" role="radiogroup" aria-labelledby="delivery-label">
                     <label className={`channel-pill ${otpChannel === "sms" ? "active" : ""}`}>
                       <input
                         type="radio"
@@ -441,7 +530,8 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                         checked={otpChannel === "sms"}
                         onChange={() => setOtpChannel("sms")}
                       />
-                      <Smartphone size={14} /> SMS preview
+                      <Smartphone size={15} />
+                      <span>SMS preview</span>
                     </label>
                     <label className={`channel-pill ${otpChannel === "whatsapp" ? "active" : ""}`}>
                       <input
@@ -458,7 +548,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
 
                 <button type="submit" className="auth-submit-btn">
                   <span>Continue to demo code</span>
-                  <ArrowRight size={16} />
+                  <ArrowRight size={17} />
                 </button>
               </form>
             )}
@@ -469,7 +559,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                 <div className="form-group">
                   <label htmlFor="reg-name">Full Name *</label>
                   <div className="input-with-icon">
-                    <User size={17} className="input-icon" />
+                    <User size={18} className="input-icon" />
                     <input
                       id="reg-name"
                       type="text"
@@ -485,7 +575,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                   <div className="form-group">
                     <label htmlFor="reg-phone">Sample phone number *</label>
                     <div className="input-with-icon">
-                      <Smartphone size={17} className="input-icon" />
+                      <Smartphone size={18} className="input-icon" />
                       <input
                         id="reg-phone"
                         type="tel"
@@ -500,7 +590,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                   <div className="form-group">
                     <label htmlFor="reg-email">Sample email (optional)</label>
                     <div className="input-with-icon">
-                      <Mail size={17} className="input-icon" />
+                      <Mail size={18} className="input-icon" />
                       <input
                         id="reg-email"
                         type="email"
@@ -527,7 +617,8 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                     ))}
                   </select>
                   <div className="selected-role-desc">
-                    {ROLE_OPTIONS.find((r) => r.id === role)?.desc}
+                    <ShieldCheck size={14} className="role-desc-icon" />
+                    <span>{ROLE_OPTIONS.find((r) => r.id === role)?.desc}</span>
                   </div>
                 </div>
 
@@ -536,7 +627,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                     Club / Association / Media Affiliation
                   </label>
                   <div className="input-with-icon">
-                    <Building size={17} className="input-icon" />
+                    <Building size={18} className="input-icon" />
                     <input
                       id="reg-org"
                       type="text"
@@ -560,7 +651,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
 
                 <button type="submit" className="auth-submit-btn">
                   <span>Create demo profile</span>
-                  <ArrowRight size={16} />
+                  <ArrowRight size={17} />
                 </button>
               </form>
             )}
@@ -572,7 +663,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
           <div className="otp-step-wrap">
             <div className="otp-instruction">
               <div className="otp-icon-bubble">
-                <KeyRound size={28} />
+                <KeyRound size={26} />
               </div>
               <h3>Enter the demonstration code</h3>
               <p>
@@ -580,7 +671,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
               </p>
             </div>
 
-            {/* Sandbox Demo helper */}
+            {/* Sandbox Demo helper card */}
             <div className="demo-otp-banner">
               <div className="demo-otp-header">
                 <Sparkles size={16} />
@@ -595,7 +686,8 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
                 className="auto-fill-btn"
                 onClick={autoFillDemoOtp}
               >
-                Auto-fill Code ({DEMO_OTP})
+                <Copy size={13} />
+                <span>Auto-fill Code ({DEMO_OTP})</span>
               </button>
             </div>
 
@@ -619,7 +711,7 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
               ))}
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Button */}
             <button
               type="button"
               className="auth-submit-btn"
@@ -628,12 +720,12 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
             >
               {isVerifying ? (
                 <>
-                  <RefreshCw size={16} className="spin-icon" />
+                  <RefreshCw size={17} className="spin-icon" />
                   <span>Verifying Code...</span>
                 </>
               ) : (
                 <>
-                  <Check size={16} />
+                  <Check size={17} />
                   <span>Enter workspace preview</span>
                 </>
               )}
@@ -675,15 +767,15 @@ export function DashboardAuth({ onDemoStarted, defaultRole = "supporter" }: Dash
         )}
 
         {/* Demo boundary & return to public site */}
-        <div className="auth-footer-meta">
+        <footer className="auth-footer-meta">
           <div className="security-tag">
-            <AlertCircle size={12} />
+            <Lock size={12} />
             <span>No authentication, message delivery, encryption gateway or protected session is connected.</span>
           </div>
           <Link href="/" className="auth-back-home">
-            ← Return to Masewera265 Public Website
+            &larr; Return to Masewera265 Public Website
           </Link>
-        </div>
+        </footer>
       </div>
     </div>
   );
