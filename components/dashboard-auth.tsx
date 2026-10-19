@@ -12,7 +12,6 @@ import {
   KeyRound,
   Mail,
   RefreshCw,
-  ShieldCheck,
   Smartphone,
   Sparkles,
   User,
