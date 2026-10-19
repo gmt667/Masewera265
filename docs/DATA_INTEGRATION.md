@@ -53,7 +53,7 @@ List responses may be a bare array for backwards compatibility, but the preferre
 }
 ```
 
-The browser adapter validates the envelope, pagination values and minimum identity fields before exposing records to the UI. Invalid payloads fail closed with `INVALID_RESPONSE`; they are never rendered as trusted records. It also distinguishes configuration, HTTP, timeout and network failures. Timeouts, rate limits and server failures are retryable; malformed payloads and ordinary client errors are not. Concurrent identical reads share one in-flight request.
+The browser adapter validates the envelope, pagination values and minimum identity fields before exposing records to the UI. Invalid payloads fail closed with `INVALID_RESPONSE`; they are never rendered as trusted records. It also distinguishes configuration, HTTP, timeout, network and navigation-cancellation failures. Timeouts, rate limits and server failures are retryable; cancelled navigation, malformed payloads and ordinary client errors are not. Concurrent identical reads within the same route request share one in-flight request, while requests owned by different route abort signals stay isolated.
 
 Screens should pass the returned `retryable` value and a local reload callback to `DataStatePanel` when they can repeat a query without reloading the entire application. The component retains a page-reload fallback for existing callers.
 

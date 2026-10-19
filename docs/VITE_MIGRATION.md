@@ -38,3 +38,5 @@ Every host must rewrite unknown application paths to `/index.html`, while contin
 - for Apache: use `FallbackResource /index.html` or an equivalent rewrite rule.
 
 Without this rule, directly opening or refreshing `/teams/the-flames`, `/events/...`, `/football/history` or `/dashboard/platform` returns a hosting 404 before React Router starts.
+
+`public/_headers` supplies baseline response hardening and immutable caching for fingerprinted `/assets/*` files on hosts that support Netlify-style header rules. Other hosts must translate those rules into their native configuration. Keep `/index.html` on `no-cache` so a deployment never pins references to replaced chunks. A deployment pipeline should run `npm run build && npm run test:build`; the smoke test verifies representative nested-route refreshes, entry assets, fallback rules, headers and sitemap safety against the built output.

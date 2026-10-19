@@ -3,11 +3,14 @@ import { ArrowRight } from "lucide-react";
 import { DataStatePanel } from "@/components/data-state";
 import { DemoBadge, PageHero } from "@/components/ui";
 import { publicData } from "@/lib/data-service";
+import { DataPagination } from "@/components/data-pagination";
+import { requestedPage, type RouteSearchParams } from "@/lib/pagination";
 
 export const metadata = { title: "News" };
 
-export default async function NewsPage() {
-  const result = await publicData.news();
+export default async function NewsPage({ searchParams, signal }: { searchParams: Promise<RouteSearchParams>; signal: AbortSignal }) {
+  const params = await searchParams;
+  const result = await publicData.news({ page: requestedPage(params), pageSize: 12 }, { signal });
   return <>
     <PageHero eyebrow="Stories from Malawian sport" title="Latest news" intro="Published stories organized by sport, place and related records." />
     <div className="container page-content">
@@ -22,6 +25,7 @@ export default async function NewsPage() {
           <Link className="text-link" href={`/news/${article.slug}`}>Read story <ArrowRight /></Link>
         </div>
       </article>)}</div> : <DataStatePanel state={result.state === "ready" ? "empty" : result.state} message={result.message} />}
+      <DataPagination pagination={result.pagination} />
     </div>
   </>;
 }

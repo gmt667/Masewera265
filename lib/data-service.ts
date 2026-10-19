@@ -13,7 +13,7 @@ export interface PublicDataResult<T> {
   updatedAt?: string;
   message?: string;
   retryable: boolean;
-  errorCode?: "CONFIGURATION" | "HTTP" | "TIMEOUT" | "NETWORK" | "INVALID_RESPONSE";
+  errorCode?: "CONFIGURATION" | "HTTP" | "TIMEOUT" | "NETWORK" | "INVALID_RESPONSE" | "CANCELLED";
   pagination?: PublicPagination;
 }
 
@@ -106,9 +106,25 @@ export interface ConnectedDataClientOptions {
   timeoutMs?: number;
 }
 
+export interface PublicDataRequestOptions {
+  signal?: AbortSignal;
+}
+
 export function createConnectedDataClient({ baseUrl, fetchImpl = fetch, timeoutMs = 8_000 }: ConnectedDataClientOptions) {
   const normalizedBaseUrl = baseUrl?.replace(/\/$/, "");
   const inFlight = new Map<string, Promise<PublicDataResult<unknown>>>();
+  const signalIds = new WeakMap<AbortSignal, number>();
+  let nextSignalId = 1;
+
+  const requestKey = (url: string, signal?: AbortSignal) => {
+    if (!signal) return url;
+    let id = signalIds.get(signal);
+    if (!id) {
+      id = nextSignalId++;
+      signalIds.set(signal, id);
+    }
+    return `${url}#signal-${id}`;
+  };
 
   const request = <T>(key: string, load: () => Promise<PublicDataResult<T>>) => {
     const existing = inFlight.get(key) as Promise<PublicDataResult<T>> | undefined;
@@ -118,13 +134,17 @@ export function createConnectedDataClient({ baseUrl, fetchImpl = fetch, timeoutM
     return promise;
   };
 
-  const fetchResource = <T>(resource: DataResource, query?: PublicDataQuery): Promise<PublicDataResult<T>> => {
+  const requestSignal = (signal?: AbortSignal) => signal
+    ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)])
+    : AbortSignal.timeout(timeoutMs);
+
+  const fetchResource = <T>(resource: DataResource, query?: PublicDataQuery, options?: PublicDataRequestOptions): Promise<PublicDataResult<T>> => {
     if (!normalizedBaseUrl) return Promise.resolve(failureResult("unavailable", "Connected data is enabled, but no approved API endpoint is configured.", "CONFIGURATION", false));
     const url = new URL(`${normalizedBaseUrl}${paths[resource]}`);
     appendQuery(url, query);
-    return request<T>(url.toString(), async () => {
+    return request<T>(requestKey(url.toString(), options?.signal), async () => {
       try {
-        const response = await fetchImpl(url, { headers: { Accept: "application/json" }, cache: "no-store", signal: AbortSignal.timeout(timeoutMs) });
+        const response = await fetchImpl(url, { headers: { Accept: "application/json" }, cache: "no-store", signal: requestSignal(options?.signal) });
         if (!response.ok) {
           const retryable = response.status === 408 || response.status === 429 || response.status >= 500;
           return failureResult("error", `The ${resource} service returned HTTP ${response.status}.`, "HTTP", retryable);
@@ -154,18 +174,19 @@ export function createConnectedDataClient({ baseUrl, fetchImpl = fetch, timeoutM
           pagination: envelope.pagination,
         };
       } catch (error) {
+        if (options?.signal?.aborted) return failureResult("error", `The ${resource} request was cancelled.`, "CANCELLED", false);
         const timedOut = error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
         return failureResult("error", timedOut ? `The ${resource} request timed out.` : `The ${resource} service could not be reached.`, timedOut ? "TIMEOUT" : "NETWORK", true);
       }
     });
   };
 
-  const fetchItem = <T>(resource: DataResource, slug: string): Promise<PublicDataResult<T>> => {
+  const fetchItem = <T>(resource: DataResource, slug: string, options?: PublicDataRequestOptions): Promise<PublicDataResult<T>> => {
     if (!normalizedBaseUrl) return Promise.resolve(failureResult("unavailable", "Connected data is enabled, but no approved API endpoint is configured.", "CONFIGURATION", false));
     const url = `${normalizedBaseUrl}${paths[resource]}/${encodeURIComponent(slug)}`;
-    return request<T>(url, async () => {
+    return request<T>(requestKey(url, options?.signal), async () => {
       try {
-        const response = await fetchImpl(url, { headers: { Accept: "application/json" }, cache: "no-store", signal: AbortSignal.timeout(timeoutMs) });
+        const response = await fetchImpl(url, { headers: { Accept: "application/json" }, cache: "no-store", signal: requestSignal(options?.signal) });
         if (response.status === 404) return { state: "empty", data: [], isDemo: false, retryable: false };
         if (!response.ok) return failureResult("error", `The ${resource} service returned HTTP ${response.status}.`, "HTTP", response.status === 408 || response.status === 429 || response.status >= 500);
         const payload: unknown = await response.json();
@@ -173,6 +194,7 @@ export function createConnectedDataClient({ baseUrl, fetchImpl = fetch, timeoutM
         if (!isValidRecord(resource, item)) return failureResult("error", `The ${resource} service returned an invalid record.`, "INVALID_RESPONSE", false);
         return { state: "ready", data: [item as T], isDemo: false, retryable: false };
       } catch (error) {
+        if (options?.signal?.aborted) return failureResult("error", `The ${resource} request was cancelled.`, "CANCELLED", false);
         const timedOut = error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
         return failureResult("error", timedOut ? `The ${resource} request timed out.` : `The ${resource} service could not be reached.`, timedOut ? "TIMEOUT" : "NETWORK", true);
       }
@@ -187,22 +209,23 @@ const connectedClient = createConnectedDataClient({ baseUrl: apiBaseUrl });
 export async function fetchConnectedResource<T>(
   resource: DataResource,
   query?: PublicDataQuery,
+  options?: PublicDataRequestOptions,
 ): Promise<PublicDataResult<T>> {
-  return connectedClient.fetchResource<T>(resource, query);
+  return connectedClient.fetchResource<T>(resource, query, options);
 }
 
-export async function fetchConnectedItem<T>(resource: DataResource, slug: string): Promise<PublicDataResult<T>> {
-  return connectedClient.fetchItem<T>(resource, slug);
+export async function fetchConnectedItem<T>(resource: DataResource, slug: string, options?: PublicDataRequestOptions): Promise<PublicDataResult<T>> {
+  return connectedClient.fetchItem<T>(resource, slug, options);
 }
 
 function resource<T>(resourceName: DataResource, demoData: T[]) {
-  return (query?: PublicDataQuery) =>
-    dataMode === "connected" ? fetchConnectedResource<T>(resourceName, query) : Promise.resolve(demoResult(demoData));
+  return (query?: PublicDataQuery, options?: PublicDataRequestOptions) =>
+    dataMode === "connected" ? fetchConnectedResource<T>(resourceName, query, options) : Promise.resolve(demoResult(demoData));
 }
 
 function itemResource<T extends { slug: string }>(resourceName: DataResource, demoData: T[]) {
-  return (slug: string) => dataMode === "connected"
-    ? fetchConnectedItem<T>(resourceName, slug)
+  return (slug: string, options?: PublicDataRequestOptions) => dataMode === "connected"
+    ? fetchConnectedItem<T>(resourceName, slug, options)
     : Promise.resolve(demoResult(demoData.filter((item) => item.slug === slug)));
 }
 

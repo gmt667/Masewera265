@@ -4,7 +4,7 @@ import react from "eslint-plugin-react";
 import hooks from "eslint-plugin-react-hooks";
 
 export default tseslint.config(
-  { ignores: ["dist/**", ".next/**", "node_modules/**", "temp_doc/**", "temp_plan/**", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts"] },
+  { ignores: ["dist/**", ".next/**", ".george/**", "node_modules/**", "temp_doc/**", "temp_plan/**", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

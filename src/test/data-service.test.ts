@@ -76,6 +76,21 @@ describe("connected public data client", () => {
     await expect(timedOut.fetchResource("sports")).resolves.toMatchObject({ errorCode: "TIMEOUT", retryable: true });
   });
 
+  it("classifies navigation cancellation without offering retry", async () => {
+    const controller = new AbortController();
+    const fetchImpl = mockFetch(async () => {
+      controller.abort();
+      throw Object.assign(new Error("cancelled"), { name: "AbortError" });
+    });
+    const client = createConnectedDataClient({ baseUrl: "https://api.example.test", fetchImpl });
+
+    await expect(client.fetchResource("sports", undefined, { signal: controller.signal })).resolves.toMatchObject({
+      state: "error",
+      errorCode: "CANCELLED",
+      retryable: false,
+    });
+  });
+
   it("returns empty for missing items and coalesces identical in-flight reads", async () => {
     const missing = createConnectedDataClient({ baseUrl: "https://api.example.test", fetchImpl: mockFetch(async () => response({}, 404)) });
     await expect(missing.fetchItem("sports", "missing")).resolves.toMatchObject({ state: "empty" });

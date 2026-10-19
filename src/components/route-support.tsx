@@ -1,21 +1,28 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { DataStatePanel } from "@/components/data-state";
 import NotFound from "@/app/not-found";
 import { NotFoundError, RedirectError } from "@/src/platform/navigation";
+import { RouteRetryContext } from "@/src/components/route-retry";
 
-export function AsyncRoute({ load }: { load: () => Promise<ReactNode> }) {
+export function AsyncRoute({ load }: { load: (signal: AbortSignal) => Promise<ReactNode> }) {
   const [state, setState] = useState<{ node?: ReactNode; error?: unknown }>({});
+  const [attempt, setAttempt] = useState(0);
+  const retry = useCallback(() => setAttempt((value) => value + 1), []);
+
   useEffect(() => {
-    let active = true;
+    const controller = new AbortController();
     setState({});
-    load().then((node) => active && setState({ node })).catch((error) => active && setState({ error }));
-    return () => { active = false; };
-  }, [load]);
+    load(controller.signal)
+      .then((node) => !controller.signal.aborted && setState({ node }))
+      .catch((error) => !controller.signal.aborted && setState({ error }));
+    return () => controller.abort();
+  }, [attempt, load]);
   if (state.error instanceof RedirectError) return <Navigate to={state.error.to} replace />;
   if (state.error instanceof NotFoundError) return <NotFound />;
-  if (state.error) return <DataStatePanel state="error" message="This page could not be loaded." />;
-  return state.node ?? <div className="route-state" role="status" aria-live="polite"><span className="state-spinner" /><h1>Loading Masewera265</h1><p>Preparing the latest available page data.</p></div>;
+  if (state.error) return <DataStatePanel state="error" message="This page could not be loaded." onRetry={retry} />;
+  if (!state.node) return <div className="route-state" role="status" aria-live="polite"><span className="state-spinner" /><h1>Loading Masewera265</h1><p>Preparing the latest available page data.</p></div>;
+  return <RouteRetryContext.Provider value={retry}>{state.node}</RouteRetryContext.Provider>;
 }
 
 function ensureMeta(selector: string, attributes: Record<string, string>) {

@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:ui": "vitest run",
     "test:regression": "node scripts/regression-checks.cjs",
-    "test:navbar": "node scripts/test-navbar.cjs"
+    "test:navbar": "node scripts/test-navbar.cjs",
+    "test:build": "node scripts/test-production-build.cjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

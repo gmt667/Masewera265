@@ -1,4 +1,5 @@
 .next/
+.george/
 dist/
 node_modules/
 .env

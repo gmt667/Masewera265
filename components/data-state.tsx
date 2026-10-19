@@ -2,6 +2,7 @@
 
 import { AlertCircle, RefreshCw } from "lucide-react";
 import type { DataState } from "@/lib/data-service";
+import { useRouteRetry } from "@/src/components/route-retry";
 
 interface DataStatePanelProps {
   state: Exclude<DataState, "ready">;
@@ -11,6 +12,7 @@ interface DataStatePanelProps {
 }
 
 export function DataStatePanel({ state, message, retryable, onRetry }: DataStatePanelProps) {
+  const retryRoute = useRouteRetry();
   const title = state === "empty"
     ? "No records available"
     : state === "stale"
@@ -19,7 +21,7 @@ export function DataStatePanel({ state, message, retryable, onRetry }: DataState
         ? "Connected data is not configured"
         : "Connected data could not be loaded";
   const canRetry = retryable ?? (state === "error" || state === "stale");
-  const handleRetry = onRetry ?? (() => window.location.reload());
+  const handleRetry = onRetry ?? retryRoute ?? (() => window.location.reload());
 
   return (
     <div className={`empty-state data-state data-state-${state}`} role={state === "error" ? "alert" : "status"}>

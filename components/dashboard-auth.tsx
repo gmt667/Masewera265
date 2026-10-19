@@ -14,7 +14,6 @@ import {
   Lock,
   Mail,
   RefreshCw,
-  Shield,
   ShieldAlert,
   ShieldCheck,
   Smartphone,

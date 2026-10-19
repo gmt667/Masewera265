@@ -3,14 +3,21 @@ import { TeamDirectory } from "@/components/directory-pages";
 import { DataNotice, PageHero } from "@/components/ui";
 import { DataStatePanel } from "@/components/data-state";
 import { publicData } from "@/lib/data-service";
+import { DataPagination } from "@/components/data-pagination";
+import { requestedPage, type RouteSearchParams } from "@/lib/pagination";
 
 export const metadata = {
   title: "Teams & Clubs Directory | Masewera265",
   description: "Find supported clubs, squads, and national selections across all 14 Malawian sporting disciplines.",
 };
 
-export default async function TeamsPage() {
-  const [teamResult, sportResult] = await Promise.all([publicData.teams(), publicData.sports()]);
+export default async function TeamsPage({ searchParams, signal }: { searchParams: Promise<RouteSearchParams>; signal: AbortSignal }) {
+  const params = await searchParams;
+  const requestOptions = { signal };
+  const [teamResult, sportResult] = await Promise.all([
+    publicData.teams({ page: requestedPage(params), pageSize: 24 }, requestOptions),
+    publicData.sports({ pageSize: 100 }, requestOptions),
+  ]);
   const failure = teamResult.state !== "ready" && teamResult.state !== "stale" ? teamResult : sportResult;
   return (
     <>
@@ -27,6 +34,7 @@ export default async function TeamsPage() {
             <TeamDirectory teamsData={teamResult.data} sportsData={sportResult.data} />
           </Suspense>
         ) : <DataStatePanel state={failure.state === "ready" ? "empty" : failure.state} message={failure.message} />}
+        <DataPagination pagination={teamResult.pagination} />
       </div>
     </>
   );

@@ -4,6 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { DashboardAuth } from "@/components/dashboard-auth";
 import { SiteHeader } from "@/components/site-header";
+import { DataStatePanel } from "@/components/data-state";
+import { DataPagination } from "@/components/data-pagination";
 
 async function expectNoAccessibilityViolations(container: HTMLElement) {
   const results = await axe.run(container, {
@@ -40,6 +42,20 @@ describe("automated accessibility checks", () => {
       <MemoryRouter initialEntries={["/sports"]}>
         <SiteHeader />
         <main id="main"><h1>Sports</h1></main>
+      </MemoryRouter>,
+    );
+
+    await expectNoAccessibilityViolations(container);
+  });
+
+  it("finds no structural violations in data recovery and pagination controls", async () => {
+    const { container } = render(
+      <MemoryRouter initialEntries={["/news?page=2"]}>
+        <main>
+          <h1>News</h1>
+          <DataStatePanel state="stale" retryable message="Showing the latest retained records." />
+          <DataPagination pagination={{ page: 2, pageSize: 12, total: 30, totalPages: 3 }} />
+        </main>
       </MemoryRouter>,
     );
 

@@ -2752,3 +2752,44 @@ textarea:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
     font-size: 24px;
   }
 }
+
+.data-pagination {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.data-pagination p,
+.data-pagination div > span {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.data-pagination div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pagination-button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+}
+.pagination-button svg { width: 16px; }
+.pagination-button.disabled { color: #929ba7; background: var(--mist); cursor: not-allowed; }
+@media (max-width: 600px) {
+  .data-pagination { align-items: stretch; flex-direction: column; }
+  .data-pagination div { justify-content: space-between; }
+  .pagination-button { padding-inline: 10px; }
+}
