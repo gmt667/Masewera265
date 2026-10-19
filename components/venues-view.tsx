@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import Link from "@/src/platform/link";
+import Image from "@/src/platform/image";
 import { ArrowRight, MapPin, Search, Users, Zap } from "lucide-react";
 import type { VenueDetail } from "@/lib/venues-data";
 import type { EventRecord } from "@/lib/types";

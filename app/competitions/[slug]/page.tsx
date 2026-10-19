@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import Link from "@/src/platform/link";
+import { notFound } from "@/src/platform/navigation";
 import { ArrowRight, Award, ShieldCheck, Trophy } from "lucide-react";
 import { competitions } from "@/lib/demo-data";
 import { footballCompetitions, historicalChampions } from "@/lib/football-data";

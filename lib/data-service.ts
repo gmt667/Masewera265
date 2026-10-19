@@ -44,8 +44,8 @@ const paths: Record<DataResource, string> = {
   places: "/v1/public/places",
 };
 
-export const dataMode: DataMode = process.env.NEXT_PUBLIC_DATA_MODE === "connected" ? "connected" : "demo";
-const apiBaseUrl = process.env.MASEWERA265_API_BASE_URL?.replace(/\/$/, "");
+export const dataMode: DataMode = import.meta.env.VITE_DATA_MODE === "connected" ? "connected" : "demo";
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "");
 export const connectedDataAvailable = dataMode === "connected" && Boolean(apiBaseUrl);
 
 function demoResult<T>(data: T[]): PublicDataResult<T> {

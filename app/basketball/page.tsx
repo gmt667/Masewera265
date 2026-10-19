@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { redirect } from "@/src/platform/navigation";
 
 export const metadata = {
   title: "Malawian Basketball | Masewera265",

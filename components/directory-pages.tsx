@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import Link from "@/src/platform/link";
+import { useSearchParams } from "@/src/platform/navigation";
 import { Search, MapPin, Users, Trophy, ArrowRight, Award } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { Athlete, Competition, EventRecord, Sport, Team } from "@/lib/types";

@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import Link from "@/src/platform/link";
+import { notFound } from "@/src/platform/navigation";
 import { ExternalLink, MapPin } from "lucide-react";
 import { athletes } from "@/lib/demo-data";
 import { DataNotice, TrustBadge } from "@/components/ui";

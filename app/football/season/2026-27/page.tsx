@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, CalendarDays, ExternalLink, ShieldAlert, Users } from "lucide-react";
 import { DataNotice, PageHero } from "@/components/ui";
 import { currentFootballSeason } from "@/lib/football-season";

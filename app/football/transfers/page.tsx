@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { footballTransfers } from "@/lib/football-data";
 import { DataNotice, TrustBadge } from "@/components/ui";

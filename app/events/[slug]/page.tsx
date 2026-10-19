@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import Link from "@/src/platform/link";
+import { notFound } from "@/src/platform/navigation";
 import { CalendarDays, Clock3, MapPin, ShieldCheck } from "lucide-react";
 import { events } from "@/lib/demo-data";
 import { DataNotice, DemoBadge, TrustBadge } from "@/components/ui";

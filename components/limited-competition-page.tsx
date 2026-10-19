@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, CalendarDays, ExternalLink, ShieldAlert, Trophy } from "lucide-react";
 import { competitions } from "@/lib/demo-data";
 import { DataNotice, PageHero } from "@/components/ui";

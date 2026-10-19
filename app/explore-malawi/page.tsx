@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import { DataStatePanel } from "@/components/data-state";
 import { DemoBadge, PageHero } from "@/components/ui";

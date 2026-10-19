@@ -2,9 +2,9 @@
 
 ## Separation of concerns
 
-Domain types live in `lib/types.ts`, demonstration fixtures in `lib/demo-data.ts`, and the replaceable access boundary in `lib/data-service.ts`. UI code must consume normalized Masewera265 domain records, never provider-specific payloads. Provider credentials must remain on the backend and must not use `NEXT_PUBLIC_` variables.
+Domain types live in `lib/types.ts`, demonstration fixtures in `lib/demo-data.ts`, and the replaceable access boundary in `lib/data-service.ts`. UI code must consume normalized Masewera265 domain records, never provider-specific payloads. Provider credentials must remain on the backend and must never use `VITE_` variables.
 
-Set `NEXT_PUBLIC_DATA_MODE=demo` for this delivery. `connected` mode must not silently fall back to fictional data when a request fails.
+Set `VITE_DATA_MODE=demo` for this delivery. `connected` mode must not silently fall back to fictional data when a request fails. `VITE_API_BASE_URL` may contain only the public API gateway origin.
 
 ## Required public endpoints
 

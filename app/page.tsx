@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { HomeExperience } from "@/components/home-experience";
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { DataStatePanel } from "@/components/data-state";
 import { EventCard, PageHero, TrustBadge } from "@/components/ui";
 import { dataMode, publicData } from "@/lib/data-service";

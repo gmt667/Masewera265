@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { Activity, ArrowLeft, Database, FileCheck2, PlugZap, ShieldAlert } from "lucide-react";
 
 const indicators = [

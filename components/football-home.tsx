@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from "@/src/platform/image";
+import Link from "@/src/platform/link";
 import { ArrowRight, BookOpen, History, MapPin, ShieldCheck, Trophy, ExternalLink, ArrowLeftRight, Landmark } from "lucide-react";
 import { articles, athletes, events, teams } from "@/lib/demo-data";
 import { footballCompetitions, footballSources } from "@/lib/football-data";

@@ -1,7 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from "@/src/platform/image";
+import Link from "@/src/platform/link";
 import { AppStoreBadge, GooglePlayBadge, SocialLinks } from "./social-and-app-links";
 import { ExternalLink, ShieldCheck, Sparkles } from "lucide-react";
+import { MaseweraLogo } from "./masewera-logo";
 
 export function SiteFooter() {
   return (
@@ -22,16 +23,7 @@ export function SiteFooter() {
       <div className="container footer-grid">
         {/* Brand Column */}
         <div className="footer-col-brand">
-          <div className="footer-brand-logo">
-            <svg className="brand-crest" width="38" height="32" viewBox="0 0 44 36" fill="none" aria-hidden="true">
-              <path d="M 6 22 A 16 16 0 0 1 38 22" stroke="#e11d48" strokeWidth="5" strokeLinecap="round"/>
-              <circle cx="22" cy="18" r="4" fill="#00d084"/>
-            </svg>
-            <div className="brand-text">
-              <span className="brand-title"><b>MASEWERA</b><strong className="brand-code">265</strong></span>
-              <small className="brand-sub">MALAWI&apos;S DIGITAL HOME FOR SPORT</small>
-            </div>
-          </div>
+          <MaseweraLogo className="footer-brand-logo" crestSize={42} linkToHome={false} />
           <p className="footer-brand-desc">
             The national multi-sport platform connecting all 14 Malawian sporting disciplines, 28 districts, national teams, leagues, and athletes under one digital roof.
           </p>

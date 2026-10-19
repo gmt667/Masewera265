@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowLeftRight, ArrowRight } from "lucide-react";
 import { DataNotice, TrustBadge } from "@/components/ui";
 

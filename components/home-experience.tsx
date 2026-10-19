@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import Image from "@/src/platform/image";
+import Link from "@/src/platform/link";
+import { useRouter, useSearchParams } from "@/src/platform/navigation";
 import {
   ArrowRight,
   BarChart3,

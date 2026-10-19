@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import Link from "@/src/platform/link";
+import { notFound } from "@/src/platform/navigation";
 import { ArrowLeft, Clock3 } from "lucide-react";
 import { articles } from "@/lib/demo-data";
 import { DemoBadge } from "@/components/ui";

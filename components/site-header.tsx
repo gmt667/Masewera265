@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "@/src/platform/link";
+import { usePathname } from "@/src/platform/navigation";
 import { ChevronDown, Menu, Search, Smartphone, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { MaseweraLogo } from "./masewera-logo";
 import { AppleLogo, AppStoreBadge, GooglePlayBadge, GooglePlayLogo } from "./social-and-app-links";
 
 const primary = [
@@ -70,6 +71,23 @@ export function SiteHeader() {
         setOpen(false);
         if (open) window.requestAnimationFrame(() => menuButtonRef.current?.focus());
       }
+      if (e.key === "Tab" && open && mobileNavRef.current) {
+        const focusable = Array.from(
+          mobileNavRef.current.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first || !last) return;
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          menuButtonRef.current?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          menuButtonRef.current?.focus();
+        }
+      }
     }
     if (appOpen || explore || open) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -93,7 +111,7 @@ export function SiteHeader() {
 
   const active = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
   const isHomepage = path === "/";
-  const hasOverlayHero = isHomepage && process.env.NEXT_PUBLIC_DATA_MODE !== "connected";
+  const hasOverlayHero = isHomepage && import.meta.env.VITE_DATA_MODE !== "connected";
   const isSolid = !hasOverlayHero || scrolled || open || explore || appOpen;
 
   return (
@@ -109,25 +127,11 @@ export function SiteHeader() {
         data-homepage={hasOverlayHero ? "true" : "false"}
       >
         <div className="nav-shell">
-          <Link href="/" className="brand" aria-label="Masewera265 home">
-            <div className="brand-logo-wrap">
-              <svg className="brand-crest" width="34" height="28" viewBox="0 0 44 36" fill="none" aria-hidden="true">
-                <path d="M 6 22 A 16 16 0 0 1 38 22" stroke="#e11d48" strokeWidth="5" strokeLinecap="round" />
-                <circle cx="22" cy="18" r="4" fill="#00d084" />
-              </svg>
-              <div className="brand-text">
-                <span className="brand-title">
-                  <b>MASEWERA</b>
-                  <strong className="brand-code">265</strong>
-                </span>
-                <small className="brand-sub">MALAWI&apos;S DIGITAL HOME FOR SPORT</small>
-              </div>
-            </div>
-          </Link>
+          <MaseweraLogo crestSize={38} />
 
           <nav className="desktop-nav" aria-label="Main navigation">
             {primary.map(([label, href]) => (
-              <Link key={href} className={active(href) ? "active" : ""} href={href}>
+              <Link key={href} className={active(href) ? "active" : ""} href={href} aria-current={active(href) ? "page" : undefined}>
                 {label}
               </Link>
             ))}
@@ -226,6 +230,7 @@ export function SiteHeader() {
                     key={href}
                     className={active(href) ? "active" : ""}
                     href={href}
+                    aria-current={active(href) ? "page" : undefined}
                     onClick={() => setOpen(false)}
                   >
                     {label}

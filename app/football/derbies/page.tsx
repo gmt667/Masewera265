@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import { footballDerbies } from "@/lib/football-data";
 import { DataNotice } from "@/components/ui";

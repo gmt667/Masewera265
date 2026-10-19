@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import Link from "@/src/platform/link";
+import { notFound } from "@/src/platform/navigation";
 import { ArrowRight, CalendarDays, Trophy, Users, Award, MapPin } from "lucide-react";
 import { athletes, competitions, events, sports, teams } from "@/lib/demo-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";

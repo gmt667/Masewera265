@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/src/platform/image";
 
 interface TeamLogoProps {
   slug: string;

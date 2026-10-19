@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, BarChart3, CalendarDays, ShieldCheck, Trophy, Users } from "lucide-react";
 import { teams, athletes, competitions, events } from "@/lib/demo-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";

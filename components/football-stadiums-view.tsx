@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import Image from "@/src/platform/image";
+import Link from "@/src/platform/link";
 import { ArrowRight, MapPin, Users, Zap, Sun, ShieldCheck, Search, Filter, Trophy, Compass } from "lucide-react";
 import type { FootballStadium } from "@/lib/football-data";
 

@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
+import { notFound } from "@/src/platform/navigation";
+import Image from "@/src/platform/image";
+import Link from "@/src/platform/link";
 import { ArrowLeft, ArrowRight, CalendarDays, MapPin, Trophy } from "lucide-react";
 import { malawiVenues, getVenueBySlug } from "@/lib/venues-data";
 import { DataNotice, EventCard, SectionHeading, TrustBadge } from "@/components/ui";

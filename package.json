@@ -2,26 +2,33 @@
   "name": "masewera265-public-frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test:regression": "node scripts/regression-checks.cjs"
+    "test:regression": "node scripts/regression-checks.cjs",
+    "test:navbar": "node scripts/test-navbar.cjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
-    "next": "^15.1.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^9.17.0",
-    "eslint-config-next": "^15.1.3",
-    "typescript": "^5.7.2"
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.46.0",
+    "vite": "^7.1.0"
   }
 }

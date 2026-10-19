@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, ExternalLink, ShieldCheck, Trophy, Users } from "lucide-react";
 import { DataNotice, PageHero } from "@/components/ui";
 const sources=[{title:"ITF national associations — Malawi",url:"https://www.itftennis.com/en/about-us/organisation/member-associations/"},{title:"Malawi Olympic Committee associations",url:"https://www.moc.org.mw/associations/"},{title:"Malawi Open reporting",url:"https://mwnation.com/simbanet-bails-ltam/"}];

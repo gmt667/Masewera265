@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, CalendarDays, Clock3, MapPin, Search } from "lucide-react";
 import type { EventRecord, TrustLabel } from "@/lib/types";
 import { TeamLogo } from "./team-logo";

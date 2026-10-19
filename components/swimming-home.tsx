@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, ExternalLink, ShieldCheck, Trophy, Users } from "lucide-react";
 import { DataNotice, PageHero } from "@/components/ui";
 const sources=[{title:"Malawi Aquatic Union — about",url:"https://malawiaquaticunion.mw/about-us/"},{title:"Malawi Aquatic Union programme",url:"https://malawiaquaticunion.mw/"},{title:"World Aquatics — 2026 Malawi National Championships",url:"https://www.worldaquatics.com/competitions/5300/2026-malawi-national-swimming-championships-25m-"}];

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/src/platform/link";
 import { ArrowRight, ExternalLink, ShieldCheck, Trophy, Users } from "lucide-react";
 import { DataNotice, PageHero } from "@/components/ui";
 const sources=[{title:"Malawi Olympic Committee associations",url:"https://www.moc.org.mw/associations/"},{title:"Malawi Olympic Committee athlete portal",url:"https://www.moc.org.mw/athlete-portal/"}];
